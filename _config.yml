@@ -3,7 +3,7 @@ permalink:
 
 # Setup
 title:               Harrison Wang
-tagline:             I once made a decision without data, just to see what it was like.
+tagline:             Data Scientist in Training
 url:                 http://harrisonized.github.io
 paginate:            2
 baseurl:             ""
@@ -17,19 +17,14 @@ sass:
 
 # About/contact
 author:
-  name:              Zach Miller
-  url:               https://twitter.com/harrisonized
+  name:              Harrison Wang
+  url:               https://www.linkedin.com/in/harrison-wang-a3a634107/
   email:             harrisonized@gmail.com
 
 # Custom vars
 version:             2.0.0
 github:
   repo:              https://github.com/harrisonized
-
-# Gems
-gems:
-  - harrisonized-paginate
-  - harrisonized-gist
 
 # Page List
 pages_list:       
