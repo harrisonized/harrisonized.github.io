@@ -3,7 +3,7 @@ permalink:
 
 # Setup
 title:               Harrison Wang
-tagline:             Data Scientist in Training
+tagline:             Data Scientist
 url:                 http://harrisonized.github.io
 paginate:            2
 baseurl:             ""
@@ -18,7 +18,7 @@ sass:
 # About/contact
 author:
   name:              Harrison Wang
-  url:               https://www.linkedin.com/in/harrison-wang-a3a634107/
+  url:               https://www.linkedin.com/in/harrisonized/
   email:             harrisonized@gmail.com
 
 # Custom vars
