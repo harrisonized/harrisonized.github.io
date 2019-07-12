@@ -263,43 +263,43 @@ The out-of-sample R² score is even higher than just the Poisson regression alon
         	<th style="text-align: left">Test R² Score</th>
         </tr>
     </thead>
-	<tr>
- 		<td style="text-align: left">Ordinary Least Squares</td>
-        <td style="text-align: left">0.7851 +/- 0.0668</td>
-        <td style="text-align: left">0.6426</td>
-    <tr>
-		<td style="text-align: left">Ridge</td>
-        <td style="text-align: left">0.7859 +/- 0.0798</td>
-        <td style="text-align: left">0.6583</td>
-    </tr>
-    <tr>
-		<td style="text-align: left">Lasso</td>
-        <td style="text-align: left">0.7794 +/- 0.0886</td>
-        <td style="text-align: left">0.6647</td>
-    </tr>
-    <tr>
-		<td style="text-align: left">Elastic Net</td>
-        <td style="text-align: left">0.6640 +/- 0.1143</td>
-        <td style="text-align: left">0.6593</td>
-    </tr>
-    <tr>
-		<td style="text-align: left">Log-Linear</td>
-        <td style="text-align: left">0.7193 +/- 0.1004</td>
-        <td style="text-align: left">0.7713</td>
-    </tr>
-    <tr>
-		<td style="text-align: left">Poisson</td>
-        <td style="text-align: left">0.8067 +/- 0.0936</td>
-        <td style="text-align: left">0.8212</td>
-    </tr>
-    <tr>
-		<td style="text-align: left">Log-Linear Poisson Ensemble</td>
-        <td style="text-align: left">0.7444 +/- 0.0816</td>
-        <td style="text-align: left">0.8420</td>
-    </tr>
+    <tbody>
+        <tr>
+            <td style="text-align: left">Ordinary Least Squares</td>
+            <td style="text-align: left">0.7851 +/- 0.0668</td>
+            <td style="text-align: left">0.6426</td>
+        <tr>
+            <td style="text-align: left">Ridge</td>
+            <td style="text-align: left">0.7859 +/- 0.0798</td>
+            <td style="text-align: left">0.6583</td>
+        </tr>
+        <tr>
+            <td style="text-align: left">Lasso</td>
+            <td style="text-align: left">0.7794 +/- 0.0886</td>
+            <td style="text-align: left">0.6647</td>
+        </tr>
+        <tr>
+            <td style="text-align: left">Elastic Net</td>
+            <td style="text-align: left">0.6640 +/- 0.1143</td>
+            <td style="text-align: left">0.6593</td>
+        </tr>
+        <tr>
+            <td style="text-align: left">Log-Linear</td>
+            <td style="text-align: left">0.7193 +/- 0.1004</td>
+            <td style="text-align: left">0.7713</td>
+        </tr>
+        <tr>
+            <td style="text-align: left">Poisson</td>
+            <td style="text-align: left">0.8067 +/- 0.0936</td>
+            <td style="text-align: left">0.8212</td>
+        </tr>
+        <tr>
+            <td style="text-align: left">Log-Linear Poisson Ensemble</td>
+            <td style="text-align: left">0.7444 +/- 0.0816</td>
+            <td style="text-align: left">0.8420</td>
+        </tr>
+	</tbody>
 </table>
-
-
 
 
 
