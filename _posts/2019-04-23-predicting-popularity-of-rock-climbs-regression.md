@@ -299,7 +299,7 @@ The out-of-sample R² score is even higher than just the Poisson regression alon
             <td style="text-align: left">Log-Linear Poisson Ensemble</td>
             <td style="text-align: left">0.7444 +/- 0.0816</td>
             <td style="text-align: left">0.8420</td>
-        </tr>
+        </tr></tbody></table>
 
 
 
