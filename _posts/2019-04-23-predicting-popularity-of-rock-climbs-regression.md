@@ -299,6 +299,7 @@ The out-of-sample R² score is even higher than just the Poisson regression alon
 
 
 
+
 ## **Conclusion**
 
 In conclusion, I made an accurate predictor of whether a particular rock climb will be on someone's to-do-list based on just five features: the Star Ratings, Ticks, Average Stars, Length, and Grade. My final model is an optimized weighted ensemble of Poisson and log-linear regression, which improved the out-of-sample test score (R²) to 0.842 from 0.643 of the baseline linear regression model.
