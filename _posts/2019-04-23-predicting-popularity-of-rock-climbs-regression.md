@@ -35,7 +35,9 @@ To obtain the remaining features, I wrote a [simple script](https://github.com/h
 
 ## **Exploratory Data Analysis**
 
-To visualize and understand the data that I had, I used the following one-line-wonder from the [Seaborn library](https://seaborn.pydata.org/) to generate a pair plot. This enabled me to see how the features relate to each other and determine whether or not I needed to transform any of them for the final modeling.
+To visualize and understand the data that I had, I used the following one-line-wonder from the [Seaborn library](https://seaborn.pydata.org/) to generate a pair plot. A pair plot is simply a n-by-n grid, where the diagonals are histograms of the distribution of each variable, and the off-diagonal entries are scatter plots of one variable with another. With the pair plot, I prefer my target to be on the bottom row and right column, and I typically arrange the features in decreasing order of correlation with the target from top to bottom, left to right.
+
+Generating a pair plot enables me to see how the features relate to each other and determine whether or not I needed to transform any of them for the final modeling. From the pairplot, it is apparent that Avg Stars, Length, and Grade have a non-linear relationship with the target, indicating that transformations are needed for these features in particular.
 
 ```python
 sns.pairplot(bishop_proc_df[features_target_list])
@@ -55,7 +57,7 @@ ax.set_title('Correlation Heatmap for True Baseline Case', fontsize = 18)
 
 ![correlation-heatmap-for-true-baseline-case.png](https://raw.githubusercontent.com/harrisonized/predicting-popularity-of-rock-climbs-regression/master/figures/bishop/eda/correlation-heatmap-for-true-baseline-case.png?raw=true)
 
-From both the pairplot and the heatmap, it is evident that StarRatings and Ticks are collinear. However, though trial-and-error, I found that keeping both features improved the model by a marginal amount. If speed is valued over performance, then Ticks can be removed from the list of features.
+From both the pairplot and the heatmap, it is evident that StarRatings and Ticks are collinear. However, though trial-and-error, I found that keeping both features does, in fact, improve the model. If speed is valued over performance, then Ticks can be removed from the set of features.
 
 
 
@@ -67,7 +69,9 @@ I built an initial model based on the untransformed variables to obtain a measur
 
 In adherence to best practices, I used sklearn's [train_test_split](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) function to set aside 20% of the data, which **must** remain untouched while training the model. Testing the model on this out-of-sample test set will provide a reasonable estimate for how well the model generalizes to other out-of-sample data.
 
-Of the remaining 80% of the data, I used sklearn's [KFold](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html) function to make a 5-fold cross-validation loop with an 80-20 split. In other words, this function partitions the data five times, enabling me to train on 80% (64% of my total data) and validate on the remaining 20% (16% of my total data). KFold splits the data in such a way that none of the 20% in each validation set overlaps with the next, allowing equal representation of all data points. After training and validating on each fold, I can obtain a score to measure how well my model performs on in-sample data, which in this case is the R^2 validation score. Finally, I trained on the entire 80% of the data and tested on the first 20% I set aside to obtain the R^2 test score for out-of-sample data.
+Of the remaining 80% of the data, I used sklearn's [KFold](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html) function to make a 5-fold cross-validation loop with an 80-20 split. In other words, this function partitions the data five times, enabling me to train on 80% (64% of my total data) and validate on the remaining 20% (16% of my total data). KFold splits the data in such a way that none of the 20% in each validation set overlaps with the next, allowing equal representation of all data points.
+
+After training and validating on each fold, I can obtain a score to measure how well my model performs on in-sample data, or the R² validation score, which I will explain below. Finally, I trained on the entire 80% of the data and tested on the first 20% I set aside to obtain the R² test score for out-of-sample data.
 
 
 
@@ -75,9 +79,15 @@ Of the remaining 80% of the data, I used sklearn's [KFold](https://scikit-learn.
 
 ## **Measuring Model Performance**
 
-The R^2 value is a good metric for regression problems, because it is a measure of how well my model captures the variance of my data. It is defined as as 1-SSE/SST, where SSE (Sum of Squares Error) is a measure of how far my predictions deviate from the observed data, and SST (Sum of Squares Total) is a measure of how much the data deviates from the mean. A perfect model (or perfect data) would theoretically have an R^2 of 1, while a model that is completely erroneous could have a negative R^2. Doing cross-validation is a good way to ensure that my validation score is not arbitrarily high or low simply because of the way the data was split.
+The R² value is a good metric for regression problems, because it is a measure of how well my model captures the variance of my data. It is defined by the following formula:
 
-For this task, I chose to use both sklearn's [LinearRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html) function and Statsmodel's [OLS](https://www.statsmodels.org/devel/generated/statsmodels.regression.linear_model.OLS.html), just to compare the two libraries. I found that I prefer [Statsmodels](https://www.statsmodels.org/devel/index.html) over sklearn for regression problems, because it provides other statistics alongside the main model. There are other nuances I'll elaborate on later. As expected, the models from both libraries gave the same scores.
+```python
+R² = 1 - SSE/SST
+```
+
+SSE (Sum of Squares Error) is a measure of how far my predictions deviate from the observed data, and SST (Sum of Squares Total) is a measure of how much the data deviates from the mean. A perfect model (or perfect data) has an R² of 1, while a model that is completely erroneous could have a negative R². When R² is between 0 and 1, it can be interpreted as the fraction of the data that is explained by the model. For example, if R² = 0.65, then my model explains 65% of the variation in my data.
+
+Doing cross-validation is a good way to ensure that my validation score is not arbitrarily high or low simply because of the way the data was split. For this task, I chose to use both sklearn's [LinearRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html) function and Statsmodel's [OLS](https://www.statsmodels.org/devel/generated/statsmodels.regression.linear_model.OLS.html), just to compare the two libraries. I found that I prefer [Statsmodels](https://www.statsmodels.org/devel/index.html) over sklearn for regression problems, because alongside the main model, it also provides other statistics that give a wider picture of model performance. As expected, the models from both libraries gave the same scores.
 
 ```python
 # Sklearn's Linear Regression
@@ -113,7 +123,7 @@ To rein in the effects of heteroscedasticity, one effective technique is to use 
 
 ## **Ridge**
 
-With the graph below, it is possible to see how the weights of the linear regression model changes with regularization. At alpha = 0 (the right side of the graph), the weights should equal those of the linear regression, while at alpha = inf (the left side of the graph), the weights shrink to zero.
+With the graph below, it is possible to see how the weights of the linear regression model changes with regularization. At alpha = 0 (the right side of the graph), the weights should equal those of the linear regression, while as alpha approaches infinity (the left side of the graph), the weights shrink to zero.
 
 ![weights-vs-alpha.png](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/blob/master/figures/bishop/ridge/weights-vs-alpha.png?raw=true)
 
@@ -181,7 +191,7 @@ Here, the in-sample validation score more closely resembles the out-of-sample te
 
 ## **Log Linear Regression**
 
-Because the above pairplot shows that not all features are linearly related to the target, it is advantageous to transform the data using the log and square root transforms to linearize the features with respect to the target. After some trial-and-error in testing different combinations of features and targets, here's the pairplot for the combination that gave the highest R^2 score in linear regression.
+Because the above pairplot shows that not all features are linearly related to the target, it is advantageous to transform the data using the log and square root transforms to linearize the features with respect to the target. After some trial-and-error in testing different combinations of features and targets, here's the pairplot for the combination that gave the highest R² score in linear regression.
 
 ![log-linear-pairplot.png](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/blob/master/figures/bishop/log-linear/log-linear-pairplot.png?raw=true)
 
@@ -235,18 +245,63 @@ val_r2_score:  0.7443756283032941  +/-  0.08159091648379424
 test_r2_score:  0.8420211467188347
 ```
 
-The out-of-sample R^2 score is even higher than just the Poisson regression alone, and you can see the predicted vs. observed are visibly closer to the diagonal than in any of the previous models.
+The out-of-sample R² score is even higher than just the Poisson regression alone, and you can see the predicted vs. observed are visibly closer to the diagonal than in any of the previous models.
 
 ![predicted-vs-observed.png](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/blob/master/figures/bishop/ensemble/predicted-vs-observed.png?raw=true)
 
 
 
+
+
+## **Summary** of Results
+
+<table>
+	<tr>
+		<th>Regression Type</th>
+		<th>Cross-validation R² Score</th>
+        <th>Test R² Score</th>
+	</tr>
+	<tr>
+ 		<th>Ordinary Least Squares</th>
+        <td>0.7851 +/- 0.0668</td>
+        <td>0.6426</td>
+    <tr>
+		<th>Ridge</th>
+        <td>0.7859 +/- 0.0798</td>
+        <td>0.6583</td>
+    </tr>
+    <tr>
+		<th>Lasso</th>
+        <td>0.7794 +/- 0.0886</td>
+        <td>0.6647</td>
+    </tr>
+    <tr>
+		<th>Elastic Net</th>
+        <td>0.6640 +/- 0.1143</td>
+        <td>0.6593</td>
+    </tr>
+    <tr>
+		<th>Log-Linear</th>
+        <td>0.7193 +/- 0.1004</td>
+        <td>0.7713</td>
+    </tr>
+    <tr>
+		<th>Poisson</th>
+        <td>0.8067 +/- 0.0936</td>
+        <td>0.8212</td>
+    </tr>
+    <tr>
+		<th>Log-Linear Poisson Ensemble</th>
+        <td>0.7444 +/- 0.0816</td>
+        <td>0.8420</td>
+    </tr>
+
+
+
 ## **Conclusion**
 
-In conclusion, I made an accurate predictor of whether a particular rock climb will be on someone's to-do-list based on just five features: the Star Ratings, Ticks, Average Stars, Length, and Grade. My final model is an optimized weighted ensemble of Poisson and log-linear regression, which improved the out-of-sample test score (R^2) to 0.842 from 0.643 of the baseline linear regression model.
+In conclusion, I made an accurate predictor of whether a particular rock climb will be on someone's to-do-list based on just five features: the Star Ratings, Ticks, Average Stars, Length, and Grade. My final model is an optimized weighted ensemble of Poisson and log-linear regression, which improved the out-of-sample test score (R²) to 0.842 from 0.643 of the baseline linear regression model.
 
 Using this model, it is possible to compare the model predictions to the observed number of people who have a rock climb on their to-do-list, and in cases which the model predicts much higher than the observed count, recommend that climbers put them on their to-do-list. This will decrease the traffic on the more popular rock climbs and hopefully improve the experience of climbers who choose to climb outdoors.
 
 
-
-Thank you for reading, happy climbing, and hope you learned something cool about machine learning along the way!
