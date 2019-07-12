@@ -295,6 +295,7 @@ The out-of-sample R² score is even higher than just the Poisson regression alon
         <td>0.7444 +/- 0.0816</td>
         <td>0.8420</td>
     </tr>
+</table>
 
 
 
