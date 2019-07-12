@@ -256,16 +256,16 @@ The out-of-sample R² score is even higher than just the Poisson regression alon
 ## **Results Summary**
 
 
-```html
+
 <table class="tg">
-    <thead>
+    <thead class="tg">
         <tr>
             <th style="text-align: left">Regression Type</th>
             <th style="text-align: left">Cross-validation R² Score</th>
             <th style="text-align: left">Test R² Score</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="tg">
         <tr>
             <td style="text-align: left">Ordinary Least Squares</td>
             <td style="text-align: left">0.7851 +/- 0.0668</td>
@@ -302,7 +302,6 @@ The out-of-sample R² score is even higher than just the Poisson regression alon
         </tr>
     </tbody>
 </table>
-```
 
 
 
