@@ -11,7 +11,7 @@ title: Predicting Popularity of Rock Climbs
 
 ## **Introduction**
 
-[Rock climbing](https://en.wikipedia.org/wiki/Rock_climbing) is one of the fastest growing sports in the world. According to the [Climbing Business Journal](https://www.climbingbusinessjournal.com/gyms-and-trends-2018/), the establishment of new climbing gyms in the United States is currently in exponential growth, with an estimated 100 new gyms opening between 2018 and 2020 to meet the growing demand of new climbers (as shown below). With the ever-increasing number of new gym climbers, it is expected that more people will also become interested in outdoor climbing.
+[Rock climbing](https://en.wikipedia.org/wiki/Rock_climbing) is one of the fastest growing sports in the world. According to the [Climbing Business Journal](https://www.climbingbusinessjournal.com/gyms-and-trends-2018/), the establishment of new climbing gyms in the United States is currently in exponential growth, with an estimated 100 new gyms opening between 2018 and 2020 to meet the growing demand of new climbers. With the ever-increasing number of new gym climbers, it is expected that more people will also become interested in outdoor climbing.
 
 ![total-gyms-vs-percent-growth.png](https://raw.githubusercontent.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/master/Climbing%20Business%20Journal/Plotly%20Figures/total-gyms-vs-percent-growth.png)
 
@@ -27,7 +27,7 @@ As classic areas and popular rock climbs become saturated with new climbers, exp
 
 Some of the data is freely available for download as a csv file from [Mountain Project](https://www.mountainproject.com/route-finder?selectedIds=106064825&type=boulder&diffMinrock=1800&diffMinboulder=20000&diffMinaid=70000&diffMinice=30000&diffMinmixed=50000&diffMaxrock=5500&diffMaxboulder=21700&diffMaxaid=75260&diffMaxice=38500&diffMaxmixed=60000&is_trad_climb=1&is_sport_climb=1&is_top_rope=1&stars=0&pitches=0&sort1=area&sort2=rating). However, this is limited to 1000 rows at a time to limit the online traffic, and only a limited number of features are included: the Average Stars, Length, and Grade. Two other features and the target (On-To-Do-List) are only available through the website. Fortunately, the links to the individual pages containing these data are available in the csv file, ensuring that the scraping process will be relatively easy.
 
-To obtain the remaining features, I wrote a [simple script](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/blob/master/Scrape%20Website.ipynb) using [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) and added a random time-out so that I didn't overload the website. I obtained [data](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/tree/master/Data) for rock climbs in the [Bishop, CA](https://www.mountainproject.com/area/106064825/bishop-area) and [Joshua Tree](https://www.mountainproject.com/area/105720495/joshua-tree-national-park) areas, although I later chose to focus on the Bishop dataset, since it is the most popular climbing destination in California.
+To obtain the remaining features, I wrote a [simple script](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/blob/master/Scrape%20Website.ipynb) using [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) and added a random time-out so that I didn't overload the website. I obtained [data](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/tree/master/data) for rock climbs in the [Bishop, CA](https://www.mountainproject.com/area/106064825/bishop-area) and [Joshua Tree](https://www.mountainproject.com/area/105720495/joshua-tree-national-park) areas, although I later chose to focus on the Bishop dataset, since it is the most popular climbing destination in California.
 
 
 
@@ -199,9 +199,7 @@ In fact, the test score is higher than the validation score, suggesting that the
 
 ![predicted-vs-observed.png](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/blob/master/figures/bishop/log-linear/predicted-vs-observed.png?raw=true)
 
-From the graph, it would appear that the regresssion is performing especially well on data in the lower left corner. Also, looking at the diagnostic [quantile-quantile](https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot) plot of the residuals below, you can see that except at the extreme edges, the residuals are normally distributed, a requirement for linear regression to perform well. This was not the case for any regression model on the untransformed variables.
-
-![log-qq-plot.png](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/blob/master/figures/bishop/log-linear/log-qq-plot.png?raw=true)
+From the graph, it would appear that the regresssion is performing especially well on data in the lower left corner.
 
 
 
@@ -223,7 +221,7 @@ Furthermore, this model performs well for data points toward the upper right sid
 
 ## **Ensembling Log-Linear and Poisson Regression**
 
-The question throughout this entire process is the following: "Can we do better?" As it turns out, we can. As shown above, log-linear regression performs well for lower counts, and Poisson regression perfoms well for higher counts. What if we can combine them in such a way to obtain the best of both worlds?
+The central theme throughout this entire process is the following: "Can we do better?" As it turns out, we can. As can be seen in the figures above, log-linear regression performs well for lower counts, and Poisson regression perfoms well for higher counts. What if we can combine them in such a way to obtain the best of both worlds?
 
 The process of combining multiple machine learning models is called [ensembling](https://en.wikipedia.org/wiki/Ensemble_learning). Similar to how ElasticNet is an ensemble of Ridge and Lasso regression, let's ensemble log-linear and Poisson regression to make a better model. The hyperparameter in this case is the ratio of log-linear to Poisson regression.
 
@@ -245,10 +243,10 @@ The out-of-sample R^2 score is even higher than just the Poisson regression alon
 
 ## **Conclusion**
 
-In conclusion, I made a very good predictor of whether a particular rock climb will be on someone's to-do-list based on just five features: the Star Ratings, Ticks, Average Stars, Length, and Grade. My final model is an optimized weighted ensemble of Poisson and log-linear regression, which improved the out-of-sample test score (R^2) to 0.842 from 0.643 of the baseline linear regression model.
+In conclusion, I made an accurate predictor of whether a particular rock climb will be on someone's to-do-list based on just five features: the Star Ratings, Ticks, Average Stars, Length, and Grade. My final model is an optimized weighted ensemble of Poisson and log-linear regression, which improved the out-of-sample test score (R^2) to 0.842 from 0.643 of the baseline linear regression model.
 
-Using this model, one can compare the model predictions to the observed number of people who have a rock climb on their to-do-list, and in cases which the model predicts higher than the observed count, recommend that climbers put them on their to-do-list. This will decrease the traffic on the more popular rock climbs and hopefully improve the experience of people climbing outdoors.
+Using this model, it is possible to compare the model predictions to the observed number of people who have a rock climb on their to-do-list, and in cases which the model predicts much higher than the observed count, recommend that climbers put them on their to-do-list. This will decrease the traffic on the more popular rock climbs and hopefully improve the experience of climbers who choose to climb outdoors.
 
 
 
-Thank you for reading, and hope you learned something cool about machine learning along the way!
+Thank you for reading, happy climbing, and hope you learned something cool about machine learning along the way!
