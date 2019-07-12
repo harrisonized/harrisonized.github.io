@@ -27,7 +27,7 @@ As classic areas and popular rock climbs become saturated with new climbers, exp
 
 Some of the data is freely available for download as a csv file from [Mountain Project](https://www.mountainproject.com/route-finder?selectedIds=106064825&type=boulder&diffMinrock=1800&diffMinboulder=20000&diffMinaid=70000&diffMinice=30000&diffMinmixed=50000&diffMaxrock=5500&diffMaxboulder=21700&diffMaxaid=75260&diffMaxice=38500&diffMaxmixed=60000&is_trad_climb=1&is_sport_climb=1&is_top_rope=1&stars=0&pitches=0&sort1=area&sort2=rating). However, this is limited to 1000 rows at a time to limit the online traffic, and only a limited number of features are included: the Average Stars, Length, and Grade. Two other features and the target (On-To-Do-List) are only available through the website. Fortunately, the links to the individual pages containing these data are available in the csv file, ensuring that the scraping process will be relatively easy.
 
-To obtain the remaining features, I wrote a [simple script](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/blob/master/Scrape%20Website.ipynb) using [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) and added a random time-out so that I didn't overload the website. I obtained [data](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/tree/master/data) for rock climbs in the [Bishop, CA](https://www.mountainproject.com/area/106064825/bishop-area) and [Joshua Tree](https://www.mountainproject.com/area/105720495/joshua-tree-national-park) areas, although I later chose to focus on the Bishop dataset, since it is the most popular climbing destination in California.
+To obtain the remaining features, I wrote a [simple script](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/blob/master/Scrape%20Website.ipynb) using [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) with a random time-out so that I didn't overload the website. I obtained [data](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/tree/master/data) for rock climbs in the [Bishop, CA](https://www.mountainproject.com/area/106064825/bishop-area) and [Joshua Tree](https://www.mountainproject.com/area/105720495/joshua-tree-national-park) areas, although I later chose to focus on the Bishop dataset, since it is the most popular climbing destination in California.
 
 
 
@@ -123,7 +123,7 @@ To rein in the effects of heteroscedasticity, one effective technique is to use 
 
 ## **Ridge**
 
-With the graph below, it is possible to see how the weights of the linear regression model changes with regularization. At alpha = 0 (the right side of the graph), the weights should equal those of the linear regression, while as alpha approaches infinity (the left side of the graph), the weights shrink to zero.
+With the graph below, it is possible to see how the weights of the linear regression model changes with regularization. At alpha = 0 (the right side of the graph), the weights should equal those of the linear regression, while as alpha approaches infinity (the left side of the graph), the weights shrink to zero. (The x-axis is reversed; this is the convention in data science.)
 
 ![weights-vs-alpha.png](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/blob/master/figures/bishop/ridge/weights-vs-alpha.png?raw=true)
 
@@ -253,7 +253,7 @@ The out-of-sample R² score is even higher than just the Poisson regression alon
 
 
 
-## **Summary** of Results
+## **Results Summary**
 
 <table>
 	<tr>
