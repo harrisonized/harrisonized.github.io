@@ -81,7 +81,7 @@ After training and validating on each fold, I can obtain a score to measure how 
 
 The R² value is a good metric for regression problems, because it is a measure of how well my model captures the variance of my data. It is defined by the following formula:
 
-```python
+```markdown
 R² = 1 - SSE/SST
 ```
 
@@ -123,7 +123,7 @@ To rein in the effects of heteroscedasticity, one effective technique is to use 
 
 ## **Ridge**
 
-With the graph below, it is possible to see how the weights of the linear regression model changes with regularization. At alpha = 0 (the right side of the graph), the weights should equal those of the linear regression, while as alpha approaches infinity (the left side of the graph), the weights shrink to zero. (The x-axis is reversed; this is the convention in data science.)
+With the graph below, it is possible to see how the weights of the linear regression model changes with regularization. As alpha approaches 0 (the right side of the graph), the weights should equal those of the linear regression, while as alpha approaches infinity (the left side of the graph), the weights shrink to zero. (Note: The x-axis is reversed; this is the convention in data science.)
 
 ![weights-vs-alpha.png](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/blob/master/figures/bishop/ridge/weights-vs-alpha.png?raw=true)
 
@@ -195,7 +195,7 @@ Because the above pairplot shows that not all features are linearly related to t
 
 ![log-linear-pairplot.png](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression/blob/master/figures/bishop/log-linear/log-linear-pairplot.png?raw=true)
 
-(replace this image)
+
 
 Due to the linearization, this model performs much better than regression on the untransformed variables.
 
