@@ -15,7 +15,7 @@ title: Analyzing Yelp Reviews for Climbing Gyms
 
 ## **Data Acquisition**
 
-The first step in this project was to obtain some [data](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/tree/master/yelp/data). Although Yelp releases a new [competition dataset](https://www.yelp.com/dataset/challenge) each year, I wanted up-to-date data, so I had to look for another access method. However, the competition dataset did give me insight into on how Yelp structures their data in [JSON](https://www.json.org/) format, which gave me a good idea of the data I would be working with.
+Since Yelp releases a new [competition dataset](https://www.yelp.com/dataset/challenge) each year in [JSON](https://www.json.org/) format, this was the right place to start. The entries in the competition dataset are structured as follows.
 
 ```python
 # Review
@@ -59,13 +59,13 @@ The first step in this project was to obtain some [data](https://github.com/harr
    'Sun': '9:00 am - 6:00 pm'}}
 ```
 
-The way that Yelp data is structured is great, because all files contain the business_id, which can be used to join them together if necessary.
+This is great, because all of the files contain the business_id, which can be used to join them together if necessary. However, this also has some drawbacks, since the data is truncated starting the beginning of the year, and I wanted data that was up-to-date.
 
-Since I wanted up-to-date data, I looked into Yelp's newest API, called [Yelp GraphQL](https://www.yelp.com/developers/graphql/guides/intro), which enables users to enter [queries](https://www.yelp.com/developers/graphql/query/search) and return the results all in JSON. Yelp even has an [online console](https://www.yelp.com/developers/graphiql) where you can send such queries. For data science projects, it is also easy to use an [ipython notebook](http://localhost:8888/notebooks/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/yelp-graphql-api.ipynb) to make queries following a simple [setup](https://www.youtube.com/watch?v=Wdy-9daEd0o).
+Next, I looked into Yelp's newest API, called [Yelp GraphQL](https://www.yelp.com/developers/graphql/guides/intro), which enables users to enter [queries](https://www.yelp.com/developers/graphql/query/search) and return the results all in JSON. Yelp even has an [online console](https://www.yelp.com/developers/graphiql) where you can send such queries. For data science projects, it is also easy to use an [ipython notebook](http://localhost:8888/notebooks/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/yelp-graphql-api.ipynb) to make queries after a simple [setup](https://www.youtube.com/watch?v=Wdy-9daEd0o).
 
-Unfortunately, there was an enormous drawback to using the Yelp API. I found out about it only after hours of setup and learning about GraphQL, since it is not obvious from reading the website, that Yelp's API is *extremely* [limiting](https://www.yelp.com/developers/graphql/guides/rate_limiting). There is a hard limit of 3 results per query, and review text is limited to 150 characters per review. This is so much less data than simply accessing the data as html through the website that it makes the Yelp API effectively useless to ay normal user. On top of that, Yelp has a point system that limits the number of entries it is possible to obtain per day.
+Unfortunately, there was an enormous drawback to using the Yelp API, which I found out about it only after hours of setup and learning about GraphQL: Yelp's API is *extremely* [limiting](https://www.yelp.com/developers/graphql/guides/rate_limiting). There is a hard limit of 3 results per query, and review text is limited to 150 characters per review. This is so much less data than simply accessing the data as html through the website that it makes the Yelp API effectively useless to any normal user. I make special mention of this limitation, because it was not obvious at all from reading Yelp's documentation, and hopefully, you did not also go through the same painful process only to be unrewarded in the end.
 
-Because of these limitations, I found that the only easy way to access the data that I wanted was just to scrape it using [Beautifulsoup4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/). Because part of my goals was to work with unstructured data, I sought to stay as close as possible to the format that Yelp already made available through their challenge dataset. Here are the scrapers I built for [reviews](http://localhost:8888/notebooks/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/scrape-yelp-for-reviews.ipynb) and for [business](http://localhost:8888/notebooks/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/scrape-yelp-for-business-information.ipynb) information.
+Because of these limitations, I found that the only easy way to access the data that I wanted was just to scrape it using [Beautifulsoup4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/). I sought to stay as close as possible to the format that Yelp already made available through their challenge dataset, so that it would be as if I was working with data that Yelp handed to me directly. Here are the scrapers I built for [reviews](http://localhost:8888/notebooks/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/scrape-yelp-for-reviews.ipynb) and for [business](http://localhost:8888/notebooks/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/scrape-yelp-for-business-information.ipynb) information, in case you would like to adapt them to your purposes. In order to use them, I made a [list of urls](http://localhost:8888/edit/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/data/url-list.txt) of all the climbing gyms in California, which I sought to analyze.
 
 
 
@@ -81,6 +81,6 @@ I extracted the important topics for 1- and 5-star reviews and reduce dimensiona
 
 If you're seeking to open a new climbing gym, here are some do's and don'ts.
 
-Do: 1. Make the experience of day-pass users enjoyable. 2. Try to increase the membership rate.
+Do's: 1. Make the experience of day-pass users enjoyable. 2. Try to increase the membership rate.
 
-Don't: 1. Hire rude staff. 2. Throw birthday parties.
+Don'ts: 1. Hire rude staff. 2. Throw birthday parties.
