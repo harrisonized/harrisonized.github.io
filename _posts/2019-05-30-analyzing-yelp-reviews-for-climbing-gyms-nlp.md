@@ -5,6 +5,8 @@ title: Analyzing Yelp Reviews for Climbing Gyms
 
 [Github Repository](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp)
 
+
+
 ## **Introduction**
 
 [Rock climbing](https://en.wikipedia.org/wiki/Rock_climbing) is one of the fastest growing sports in the world. According to the [Climbing Business Journal](https://www.climbingbusinessjournal.com/gyms-and-trends-2018/), the establishment of new climbing gyms in the United States is currently in exponential growth, with an estimated 100 new gyms opening between 2018 and 2020 to meet the growing demand of new climbers (shoutout to my friend [Shirley Yang](https://www.linkedin.com/in/shirley-yang-01a40a13/), who is opening a [gym](https://www.agilityboulders.com/) of her own). As a [Data Scientist](https://www.linkedin.com/in/harrisonized) and a [rock climber](https://www.instagram.com/harrisonized/?hl=en), I wondered if there was any data-driven business insights I could deliver to her using my toolbox of data science techniques.
@@ -12,6 +14,8 @@ title: Analyzing Yelp Reviews for Climbing Gyms
 ![total-gyms-vs-percent-growth.png](https://raw.githubusercontent.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/master/climbing-business-journal/plotly-figures/total-gyms-vs-percent-growth.png)
 
 [Yelp](https://www.yelp.com/) is an online directory in which users can publish reviews on businesses. It is often a great source of information for first-time visits to new areas. Using Yelp reviews, I wanted to see if I could use some natural language processing techniques to be able to categorize reviews and come up with a list of do's and don'ts for climbing gyms in California.
+
+
 
 ## **Data Acquisition**
 
@@ -65,7 +69,13 @@ Next, I looked into Yelp's newest API, called [Yelp GraphQL](https://www.yelp.co
 
 Unfortunately, there was an enormous drawback to using the Yelp API, which I found out about it only after hours of setup and learning about GraphQL: Yelp's API is *extremely* [limiting](https://www.yelp.com/developers/graphql/guides/rate_limiting). There is a hard limit of 3 results per query, and review text is limited to 150 characters per review. This is so much less data than simply accessing the data as html through the website that it makes the Yelp API effectively useless to any normal user. I make special mention of this limitation, because it was not obvious at all from reading Yelp's documentation, and hopefully, you did not also go through the same painful process only to be unrewarded in the end.
 
-Because of these limitations, I found that the only easy way to access the data that I wanted was just to scrape it using [Beautifulsoup4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/). I sought to stay as close as possible to the format that Yelp already made available through their challenge dataset, so that it would be as if I was working with data that Yelp handed to me directly. Here are the scrapers I built for [reviews](http://localhost:8888/notebooks/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/scrape-yelp-for-reviews.ipynb) and for [business](http://localhost:8888/notebooks/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/scrape-yelp-for-business-information.ipynb) information, in case you would like to adapt them to your purposes. In order to use them, I made a [list of urls](http://localhost:8888/edit/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/data/url-list.txt) of all the climbing gyms in California, which I sought to analyze.
+Because of these limitations, I found that the only easy way to access the data that I wanted was just to scrape it using [Beautifulsoup4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/). I sought to stay as close as possible to the format that Yelp already made available through their challenge dataset, so that it would be as if I was working with data that Yelp handed to me directly. Here are the scrapers I built for [reviews](http://localhost:8888/notebooks/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/scrape-yelp-for-reviews.ipynb) and for [business](http://localhost:8888/notebooks/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/scrape-yelp-for-business-information.ipynb) information, in case you would like to adapt them to your purposes. In order to use them, I made a [list of urls](http://localhost:8888/edit/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/data/url-list.txt) of all the climbing gyms in California, which I sought to analyze. Finally, for easy access, I [concatenated](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/concatenate-yelp-review-data.ipynb) the data so I could do some exploratory data analysis.
+
+
+
+## **Exploratory Data Analysis**
+
+To understand what data I would be working with, I made some simple visualizations. I found the following information.
 
 
 
@@ -73,11 +83,11 @@ Because of these limitations, I found that the only easy way to access the data 
 
 Used multi-class classification on user reviews to predict the number of stars given by the reviewer. Adjusted the class weights to give minority classes more importance, improving my out-of-sample test accuracy score from 0.635 to 0.867.
 
-### **Topic Modeling**
+## **Topic Modeling**
 
 I extracted the important topics for 1- and 5-star reviews and reduce dimensionality of the data.
 
-### **Conclusions**
+## **Conclusions**
 
 If you're seeking to open a new climbing gym, here are some do's and don'ts.
 
