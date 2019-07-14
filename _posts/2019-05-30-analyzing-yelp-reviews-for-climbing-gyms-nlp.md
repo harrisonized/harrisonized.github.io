@@ -9,7 +9,7 @@ title: Analyzing Yelp Reviews for Climbing Gyms
 
 [Rock climbing](https://en.wikipedia.org/wiki/Rock_climbing) is one of the fastest growing sports in the world. According to the [Climbing Business Journal](https://www.climbingbusinessjournal.com/gyms-and-trends-2018/), the establishment of new climbing gyms in the United States is currently in exponential growth, with an estimated 100 new gyms opening between 2018 and 2020 to meet the growing demand of new climbers (shoutout to my friend [Shirley Yang](https://www.linkedin.com/in/shirley-yang-01a40a13/), who is opening a [gym](https://www.agilityboulders.com/) of her own). As a [Data Scientist](https://www.linkedin.com/in/harrisonized) and a [rock climber](https://www.instagram.com/harrisonized/?hl=en), I wondered if there was any data-driven business insights I could deliver to her using my toolbox of data science techniques.
 
-![total-gyms-vs-percent-growth.png](https://raw.githubusercontent.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/master/Climbing%20Business%20Journal/Plotly%20Figures/total-gyms-vs-percent-growth.png)
+![total-gyms-vs-percent-growth.png](https://raw.githubusercontent.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/master/climbing-business-journal/plotly-figures/total-gyms-vs-percent-growth.png)
 
 [Yelp](https://www.yelp.com/) is an online directory in which users can publish reviews on businesses. It is often a great source of information for first-time visits to new areas. Using Yelp reviews, I wanted to see if I could use some natural language processing techniques to be able to categorize reviews and come up with a list of do's and don'ts for climbing gyms in California.
 
