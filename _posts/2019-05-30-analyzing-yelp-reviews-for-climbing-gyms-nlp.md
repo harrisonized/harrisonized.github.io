@@ -95,21 +95,69 @@ To understand what data I would be working with, I made some simple visualizatio
 
 4. None of the other features offered by Yelp have a particularly strong correlation with the star rating.
 
+   ![correlation-heatmap.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/correlation-heatmap.png?raw=true)
+
    ![correlation-bar.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/plotly-figures/correlation-bar.png?raw=true)
 
 ## **Classifying Reviews**
 
-As a business owner, Shirley will likely receive more spoken reviews than written ones, and she may also solicit unlabeled reviews if she includes a comment box in her gym. If she records these data for downstream applications, such as topic-modeling, it will be important for her to be able to correctly classify reviews according to the star rating, especially given the decline in the number of reviews after 2016 in the Yelp dataset. The problem of classifying reviews into five categories is [multi-class classification](https://en.wikipedia.org/wiki/Multiclass_classification) problem and is a classic technique of [machine learning](https://en.wikipedia.org/wiki/Machine_learning). Let's see how this works.
+As a business owner, Shirley will likely receive more spoken reviews than written ones, and she may also receive unlabeled reviews if she includes a comments and suggestions box in her gym. If she records these data for downstream applications, such as topic-modeling, it will be important for her to be able to correctly classify reviews according to the star rating, especially given the decline in the number of reviews after 2016 in the Yelp dataset. The problem of classifying reviews into five categories is [multi-class classification](https://en.wikipedia.org/wiki/Multiclass_classification) problem and is a classic technique of [machine learning](https://en.wikipedia.org/wiki/Machine_learning). Let's see how this works.
 
+The first step in any machine-learning process is to set aside some data that **must** remain untouched while training the model. Only on testing on an out-of-sample test set is it possible to estimate how well the model can generalize to data it has never seen before. I found that 20% of the data occurs after May 28th, 2017, so I split the dataset into a training set comprising of data prior to this date and a test set comprising of data after this date.
 
+The next step in text processing is tokenization, or the process of converting sentences into individual words, which make up the features for the classification via [logistic regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html). For this process, I found that sklearn's [count-vectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html) outperforms [TF-IDF](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html), and that keeping an [n-gram](https://en.wikipedia.org/wiki/N-gram) range of 1 to 3 gives the best performance in terms of speed and accuracy.
 
+```python
+# Count Vectorizer
+count_vectorizer = CountVectorizer(stop_words='english', ngram_range=(1,3))
+```
 
+Let's see what the initial classification looks like. One way to check how many reviews were correctly classified is to generate a [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix), which is a table that shows how many items from each class were correctly classified. For example, in the confusion matrix below, you can see that 951 5-star reviews were correctly classified, 108 5-star reviews were mis-classified as 4-star reviews, and the rest were mis-classified as 3 or below.
 
-Finally, I adjusted the class weights to give minority classes more importance, improving my out-of-sample test accuracy score from 0.635 to 0.867.
+![confusion-2.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/confusion-2.png?raw=true)
+
+In fact, the performance of this classifier is great for 1- and 5-star reviews, but suffers in classifying anything in between. This is very easy to see in the graph below, which shows the percentage of reviews that are classified in each class.
+
+![class-predictions-2.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/class-predictions-2.png?raw=true)
+
+The performance of this classifier can be measured by looking at the [ROC curves](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) for the individual classes, which shows the ability of the classifier to classify reviews correctly when the thresholds are adjusted. For each curve, the area under the curve (AUC) is the probability that given a random set of two reviews that the classifier will correctly classify the two reviews. As expected, the AUCs correlate with the percentage of reviews that were correctly classified.
+
+![roc-1.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/roc-1.png?raw=true)
+
+How do we fix such a class imbalance? On way to adjust the class weights to give minority classes more importance. To do this, I found that the following weights give the model good performance.
+
+```python
+# New Thresholds
+count_dict = Counter(target_train_ser)
+threshold_array = np.array([1/count_dict[1], 2.5/count_dict[2], 3/count_dict[3], 1/count_dict[4], 1/count_dict[5]])
+features_train_vectorized_proba_array_new = normalize(features_train_vectorized_proba_array * threshold_array, axis=1, norm='l1')
+```
+
+Let's see how this changes our classification.
+
+![confusion-1.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/confusion-1.png?raw=true)
+
+![class-predictions-1.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/class-predictions-1.png?raw=true)
+
+![roc-3.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/roc-3.png?raw=true)
+
+Now the classifier is performing much better on 2-4 star reviews, even though it is performing slightly worse on 1- and 5-star reviews. In my opinion, this is acceptable, because it gives a higher ability for the model to distinguish between reviews. The out-of-sample test accuracy score increased from 0.635 to 0.867 when averaging across all classes.
 
 ## **Topic Modeling**
 
-I extracted the important topics for 1- and 5-star reviews and reduce dimensionality of the data.
+I extracted the important topics for 1- and 5-star reviews.
+
+1-Star Reviews:
+
+![word-cloud-1_star-0.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/topic-modeling/word-cloud-1_star-0.png?raw=true)
+
+![word-cloud-1_star-3.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/topic-modeling/word-cloud-1_star-3.png?raw=true)
+
+5-Star Reviews
+
+![word-cloud-5_star-0.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/topic-modeling/word-cloud-5_star-0.png?raw=true)
+
+![word-cloud-5_star-1.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/topic-modeling/word-cloud-5_star-1.png?raw=true)
 
 ## **Conclusions**
 
