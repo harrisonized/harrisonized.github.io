@@ -13,13 +13,13 @@ title: Analyzing Yelp Reviews for Climbing Gyms
 
 ![total-gyms-vs-percent-growth.png](https://raw.githubusercontent.com/harrisonized/yelp-climbing-gyms/master/climbing-business-journal/plotly-figures/total-gyms-vs-percent-growth.png)
 
-[Yelp](https://www.yelp.com/) is an online directory in which users can publish reviews on businesses. It is often a great source of information for first-time visits to new areas. Using Yelp reviews, I wanted to see if I could use some natural language processing techniques to be able to categorize reviews and come up with a list of do's and don'ts for climbing gyms in California.
+[Yelp](https://www.yelp.com/) is an online directory in which users can publish reviews on businesses. It is often a great resource for first-time visits to new areas. Using Yelp reviews, I wanted to see if I could use some natural language processing techniques to be able to categorize reviews and come up with a list of do's and don'ts for climbing gyms in California.
 
 
 
 ## **Data Acquisition**
 
-Since Yelp releases a new [competition dataset](https://www.yelp.com/dataset/challenge) each year in [JSON](https://www.json.org/) format, this was the right place to start. The entries in the competition dataset are structured as follows.
+Since Yelp releases a new [competition dataset](https://www.yelp.com/dataset/challenge) each year in [JSON](https://www.json.org/) format, I felt this was the right place to start. The entries in the competition dataset are structured like in the two following examples.
 
 ```python
 # Review
@@ -63,15 +63,13 @@ Since Yelp releases a new [competition dataset](https://www.yelp.com/dataset/cha
    'Sun': '9:00 am - 6:00 pm'}}
 ```
 
-
-
-This is great, because all of the files contain the business_id, which can be used to join them together if necessary. However, this also has some drawbacks, since the data is truncated starting the beginning of the year, and I wanted data that was up-to-date.
+This is great, because all of the files contain the business_id, which can be used to join them together if necessary. However, this also has some drawbacks, since I also wanted data that was up-to-date.
 
 Next, I looked into Yelp's newest API, called [Yelp GraphQL](https://www.yelp.com/developers/graphql/guides/intro), which enables users to enter [queries](https://www.yelp.com/developers/graphql/query/search) and return the results all in JSON. Yelp even has an [online console](https://www.yelp.com/developers/graphiql) where you can send such queries. For data science projects, it is also easy to use an [ipython notebook](http://localhost:8888/notebooks/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/yelp-graphql-api.ipynb) to make queries after a simple [setup](https://www.youtube.com/watch?v=Wdy-9daEd0o).
 
-Unfortunately, there was an enormous drawback to using the Yelp API, which I found out about it only after hours of setup and learning about GraphQL: Yelp's API is *extremely* [limiting](https://www.yelp.com/developers/graphql/guides/rate_limiting). There is a hard limit of 3 results per query, and review text is limited to 150 characters per review. This is so much less data than simply accessing the data as html through the website that it makes the Yelp API effectively useless to any normal user. I make special mention of this limitation, because it was not obvious at all from reading Yelp's documentation, and hopefully, you did not also go through the same painful process only to be unrewarded in the end.
+Unfortunately, there was an enormous drawback to using the Yelp API, which I found out about it only after hours of setup and learning about GraphQL: Yelp's API is *extremely* [limiting](https://www.yelp.com/developers/graphql/guides/rate_limiting). There is a hard limit of 3 results per query, and review text is limited to 150 characters per review. This is so much less data than simply accessing the data as html through the website that it makes the Yelp API effectively useless to any normal user. I make special mention of this limitation, because it was not obvious at all from reading Yelp's documentation, and hopefully, you did not also go through the same process only to be unrewarded in the end.
 
-Because of these limitations, I found that the only easy way to access the data that I wanted was just to scrape it using [Beautifulsoup4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/). I sought to stay as close as possible to the format that Yelp already made available through their challenge dataset, so that it would be as if I was working with data that Yelp handed to me directly.
+Because of these limitations, I found that the only easy way to access the data that I wanted was to scrape it using [Beautifulsoup4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/). I sought to stay as close as possible to the format that Yelp already made available through their challenge dataset, so that it would be as if I was working with data that Yelp handed to me directly.
 
 Here are the scrapers I built for [reviews](http://localhost:8888/notebooks/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/scrape-yelp-for-reviews.ipynb) and for [business](http://localhost:8888/notebooks/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/scrape-yelp-for-business-information.ipynb) information, in case you would like to adapt them to your purposes. In order to use them, I made a [list of urls](http://localhost:8888/edit/github/analyzing-yelp-reviews-for-climbing-gyms-nlp/yelp/data/url-list.txt) of all the climbing gyms in California, which I sought to analyze. Finally, for easy access, I [concatenated](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/concatenate-yelp-review-data.ipynb) the data so I could do some exploratory data analysis.
 
@@ -79,40 +77,40 @@ Here are the scrapers I built for [reviews](http://localhost:8888/notebooks/gith
 
 ## **Exploratory Data Analysis**
 
-To understand what data I would be working with, I made some simple visualizations and learned the following facts.
+To understand what data I would be working with, I made some simple visualizations and learned the following facts:
 
-1. The total number of reviews had been declining in the last three years. In my opinion, the most-likely reason is that new visitors do not feel the need to add more reviews to the already-existing corpus.
+A) The total number of reviews had been declining in the last three years. In my opinion, the most-likely reason is that new visitors do not feel the need to add more reviews to the already-existing corpus.
 
-![number-of-reviews-by-year.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/classification/number-of-reviews-by-year.png?raw=true)
+![number-of-reviews-by-year.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/eda/number-of-reviews-by-year.png?raw=true)
 
-2. Reviews are skewed heavily toward 5-star reviews. This is reflective of the overall [trend](https://minimaxir.com/2014/09/one-star-five-stars/) on Yelp in general, as most businesses follow this kind of a distribution.
+B) Reviews are skewed heavily toward 5-star reviews. This is reflective of the overall [trend](https://minimaxir.com/2014/09/one-star-five-stars/) on Yelp in general, as most businesses follow this kind of a distribution.
 
-![number-of-reviews-by-rating-bar.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/classification/number-of-reviews-by-rating-bar.png?raw=true)
+![number-of-reviews-by-rating-bar.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/eda/number-of-reviews-by-rating-bar.png?raw=true)
 
-3. There is a negative correlation between the length of the review and the star rating.
+C) There is a negative correlation between the length of the review and the star rating.
 
-![length-of-reviews-by-rating-bar.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/classification/length-of-reviews-by-rating-bar.png?raw=true)
+![length-of-reviews-by-rating-bar.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/eda/length-of-reviews-by-rating-bar.png?raw=true)
 
-4. None of the other features offered by Yelp have a particularly strong correlation with the star rating.
+D) The other features offered by Yelp have a weak correlation with the star rating.
 
-![correlation-heatmap.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/classification/correlation-heatmap.png?raw=true)
+![correlation-heatmap.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/eda/correlation-heatmap.png?raw=true)
 
 ![correlation-bar.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/plotly-figures/correlation-bar.png?raw=true)
 
-## **Classifying Reviews**
+## **Classifying Reviews on Text**
 
 Gym owners will likely receive more spoken reviews than written ones, and they may also receive unlabeled reviews if they includes comments and suggestions box in their gyms. If they record these data for downstream applications, such as topic-modeling, it will be important for them to be able to correctly classify reviews according to the star rating, especially given the decline in the number of reviews after 2016 in the Yelp dataset. The problem of classifying reviews into five categories is [multi-class classification](https://en.wikipedia.org/wiki/Multiclass_classification) problem and is a classic technique of [machine learning](https://en.wikipedia.org/wiki/Machine_learning). Let's see how this works.
 
-The first step in any machine-learning process is always to set aside some data that **must** remain untouched while training the model. Only on testing on an out-of-sample test set is it possible to estimate how well the model can generalize to data it has never seen before. I found that 20% of the data occurs after May 28th, 2017, so I split the dataset into a training set comprising of data prior to this date and a test set comprising of data after this date.
+The first step in any machine-learning process is always to set aside some data that **must** remain untouched while training the model. Only on testing on an out-of-sample test set is it possible to estimate how well the model can generalize to data it has never seen before. I found that 20% of the data occurs after May 28th, 2017, so I split the dataset into a training set of data prior to this date and a test set of data after this date.
 
-For text processing, the first step is tokenization, or the process of converting sentences into individual words, which make up the features for the classification. For this process, I found that sklearn's [count-vectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html) outperforms [TF-IDF](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html), and that keeping an [n-gram](https://en.wikipedia.org/wiki/N-gram) range of 1 to 3 gives the best performance in terms of speed and accuracy.
+For text processing, in order to work with the text, it must be tokenized, or converted into individual words which make up the features for the classification. I found that sklearn's [count-vectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html) outperforms [TF-IDF](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html), and that keeping an [n-gram](https://en.wikipedia.org/wiki/N-gram) range of 1 to 3 gives the best performance in terms of speed and accuracy. Also, I removed the standard [stop-words](https://en.wikipedia.org/wiki/Stop_words) to avoid having the model be trained on useless features.
 
 ```python
 # Count Vectorizer
-count_vectorizer = CountVectorizer(stop_words='english', ngram_range=(1,3))
+count_vectorizer = CountVectorizer(ngram_range=(1,3), stop_words='english')
 ```
 
-With the above setup, I can train my model on the [logistic regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) classifier and measure the model accuracy on the test set. To this end, I generated a [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix), which is a table that shows how many items from each class were correctly classified. For example the confusion matrix below shows that 963 5-star reviews were correctly classified, 109 5-star reviews were mis-classified as 4-star reviews, and the rest were mis-classified as 3 or below.
+With the above setup, I can build a [logistic regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) classifier, which is a good first-choice for natural language processing. To get an overview of the model accuracy on the test set, I generated a [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix), which is a table that shows how many items from each class were correctly classified. For example the confusion matrix below shows that 963 5-star reviews were correctly classified, 109 5-star reviews were mis-classified as 4-star reviews, and the rest were mis-classified as 3 or below.
 
 ![confusion-unweighted.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/classification/confusion-unweighted.png?raw=true)
 
@@ -153,25 +151,64 @@ Weighted Micro-Average Test Accuracy:  0.6764872521246459
 Weighted Macro-Average Test Accuracy (+/-1):  0.8415133147419817
 ```
 
-Looking at the micro-average test accuracy, the improvement might appear to be insignificant at first, but this shows that the macro-average test accuracy is a better metric for measuring the performance of the classifier. As seen in the graph below, except for 3-star reviews, the correct classification now makes up the majority of the predictions for each class.
+If you only look at the micro-average test accuracy, the improvement might appear to be insignificant. However, this demonstrates that the macro-average test accuracy is a better metric for measuring the performance of the classifier. As seen in the graph below, except for 3-star reviews, the correct classification now makes up the majority of the predictions for each class.
 
 ![class-predictions-weighted.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/classification/class-predictions-weighted.png?raw=true)
 
-As a final measure of performance, we can examine the [ROC curves](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) for the individual classes.
+
+
+## Evaluating Performance
+
+As another measure of performance, we can examine the [ROC curves](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) for the individual classes.
 
 A ROC curve plots the false positive rate (FPR) on the x-axis and the true positive rate (TPR) on the y-axis. The curve is generated by considering all thresholds for each classification. For example, a random guess is represented by a diagonal line, since there, FPR and TPR are equal. Models that perform better than a random guess are pushed up toward the top left corner, since this is the space in which the TPR is higher than the FPR.
 
-The ROC curve has an additional [probabilistic interpretation](https://www.alexejgossmann.com/auc/) that the Area-Under-the-Curve (AUC) is the probability that given a random positive-negative pair that the classifier will classify each correctly. For example, given a 2-star review and a 5-star review, the classifier will correctly classify the 2-star review with a probability of 0.8661 and the 5-star review with probability 0.8719.
+The ROC curve has an additional [probabilistic interpretation](https://www.alexejgossmann.com/auc/) that the Area-Under-the-Curve (AUC) is the probability that given a random positive-negative pair that the classifier will classify each correctly. For example, given a 2-star review and a 5-star review, the classifier will correctly classify the 5-star review with probability 0.8719.
 
 ![roc-weighted.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/classification/roc-weighted.png?raw=true)
 
 In addition to the individual ROC curves, it is possible to calculate a micro-average and a macro-average ROC curve, using similar [procedures](https://datascience.stackexchange.com/questions/15989/micro-average-vs-macro-average-performance-in-a-multiclass-classification-settin) as with the accuracy score calculations. However, similar to before, the micro-average ROC AUC is an overestimate, because it is skewed by the enormous number of 5-star reviews in the dataset. Hence, the macro-average ROC curve is a better measure of performance, since it is a measure of how well the model will perform given a balanced dataset.
 
-## **Combining Numerical Features**
+## **Including Categorical Features**
 
-Feature Union
+Along with the text of the main review, Yelp also provides additional features that may help users determine which reviews to read. For example, other users can vote on whether a review is useful, funny, or cool, and businesses can list whether they allow dogs or if they have bike parking. As an improvement on simply using the review text alone, I wanted to see if by combining these additional features, I could improve my classifier. For this purpose, sklearn's [Feature Union](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.FeatureUnion.html) helps to concatenate features, and sklearn's [Pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html) tool helps to organize the training phase succinctly.
 
+By combining the following list of features, let's see if we can get an improvement in the modeling.
 
+```python
+feats = FeatureUnion([('count', count), 
+                      ('tfidf', tfidf), 
+                      ('text_length', text_length),
+                      ('useful', useful),
+                      ('review_count', review_count),
+                      ('Dogs Allowed', dogs_allowed),
+                      ('funny', funny),
+                      ('Open to All', open_to_all),
+                      ('Accepts Credit Cards', accepts_credit_cards),
+                      ('cool', cool),
+                      ('Bike Parking', bike_parking),
+                      ('Good for Kids', good_for_kids), 
+                      ('avg_stars', avg_stars)])
+
+# Create the pipeline
+pipeline = Pipeline([
+    ('feats', feats),
+    ('logreg_mlt_pipe clf', LogisticRegression(multi_class = 'multinomial', solver = 'newton-cg')),
+])
+```
+
+And the improvement is...
+
+```python
+Micro-Average Test Accuracy:  0.6764872521246459
+Macro-Average Test Accuracy (+/-1):  0.6907512934391933
+Weighted Micro-Average Test Accuracy:  0.6719546742209632
+Weighted Macro-Average Test Accuracy (+/-1):  0.84267517676204
+```
+
+... insignificant. Even though there was a minor improvement, it's hard to justify adding these additional features into the model given that it makes the training stage take a lot longer.
+
+However, that does not mean we should ignore the utility of sklearn's Pipeline. If a gym owner receives a hand-written comment in their comments box and hand-labels it before entering it into a database, this additional hand-labeled feature could be very important for predictions and should be added to the classifier using sklearn's Pipeline.
 
 ## **Topic Modeling**
 
