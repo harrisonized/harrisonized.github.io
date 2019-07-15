@@ -112,61 +112,56 @@ The next step in text processing is tokenization, or the process of converting s
 count_vectorizer = CountVectorizer(stop_words='english', ngram_range=(1,3))
 ```
 
-Finally, I train my model on the [logistic regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) classifier and measure the model performance on the test set and generate a generate a [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix), which is a table that shows how many items from each class were correctly classified. For example the confusion matrix below shows that 951 5-star reviews were correctly classified, 108 5-star reviews were mis-classified as 4-star reviews, and the rest were mis-classified as 3 or below.
+Finally, with the above setup, I can train my model on the [logistic regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) classifier and measure the model accuracy on the test set. To this end, I generated a [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix), which is a table that shows how many items from each class were correctly classified. For example the confusion matrix below shows that 963 5-star reviews were correctly classified, 109 5-star reviews were mis-classified as 4-star reviews, and the rest were mis-classified as 3 or below.
 
 ![confusion-unweighted.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/confusion-unweighted.png?raw=true)
 
- Let's see how well this model is performing.
+Let's see how well this model performs using the following two metrics: micro-average and macro-average accuracy.
 
 ```python
-Total accuracy: 0.6652
-Average accuracy: 0.6351
+Micro-Average Test Accuracy:  0.6651558073654391
+Macro-Average Test Accuracy (+/-1):  0.6866352509102764
 ```
 
-The total accuracy is the total number of correctly classified reviews divided by the total number of reviews. In this case, 802 out of 1168 reviews were classified correctly, giving a score of 0.6652. The weighted accuracy is the average of the accuracy for each class.
+The micro-average test accuracy is the total number of correctly classified reviews divided by the total number of reviews for the test set. In this case, 1174 out of 1765 reviews were classified correctly, giving a score of 0.6652. The macro-average test accuracy is the average of the accuracy for each class, within one class. Both of these metrics seem similar, but I will later explain why the macro-average test accuracy can be used to show model improvement.
 
-In this initial model, it is apparent that the classifier is great for 1- and 5-star reviews, but suffers for anything in between. This is very easy to see in the graph below, which shows for each type of review, what fraction is assigned to each class. For example, approximately 0.9 of 5-star reviews were correctly classified as being 5-stars.
+In this initial model, it is apparent that the classifier is great for 1- and 5-star reviews, but suffers for anything in between. This is very easy to see in the graph below, which shows what fraction of predictions fall in each category for each type of review. For example, looking at the purple curve, approximately 0.9 of 5-star reviews were correctly classified as being 5-stars, and approximately 0.1 of 5-star reviews were mis-classified as 4-star reviews.
 
 ![class-predictions-unweighted.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/class-predictions-unweighted.png?raw=true)
 
+As expected from the initial data, the class imbalance of the dataset plays a huge role the model performance.
 
-
-
-
-
-
-
-
-
-
-
-
-The performance of this classifier can also be measured by looking at the [ROC curves](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) for the individual classes, which shows the ability of the classifier to classify reviews correctly when the thresholds are adjusted. For each curve, the area under the curve (AUC) is the probability that given a random set of two reviews that the classifier will correctly classify the two reviews. As expected, the AUCs correlate with the percentage of reviews that were correctly classified.
-
-![roc-1.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/roc-1.png?raw=true)
-
-How do we fix such a class imbalance? On way to adjust the class weights to give minority classes more importance. To do this, I found that the following weights give the model good performance.
+One way to correct for predictions from logistic regression is to add a weight matrix, where the importance of minority classes is increased according to the new weights. For [multinomial logistic regression](https://en.wikipedia.org/wiki/Multinomial_logistic_regression), scikit-learn recommends having [class weights](https://scikit-learn.org/stable/modules/generated/sklearn.utils.class_weight.compute_class_weight.html) that are inversely proportional to the size of the classes.
 
 ```python
-# New Thresholds
+# Class Weights
 count_dict = Counter(target_train_ser)
-threshold_array = np.array([1/count_dict[1], 1/count_dict[2], 1/count_dict[3], 1/count_dict[4], 1/count_dict[5]])
-features_train_vectorized_proba_array_new = normalize(features_train_vectorized_proba_array * threshold_array, axis=1, norm='l1')
+class_weight = np.array([1/count_dict[1], 1/count_dict[2], 1/count_dict[3], 1/count_dict[4], 1/count_dict[5]])
+features_train_vectorized_proba_array_new = normalize(features_train_vectorized_proba_array * class_weight, axis=1, norm='l1')
 ```
 
-Let's see how this changes our classification.
+Let's see if using the new weights improves our classifier by looking at our confusion matrix.
 
-![confusion-1.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/confusion-1.png?raw=true)
+![confusion-weighted.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/confusion-weighted.png?raw=true)
 
-![class-predictions-1.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/class-predictions-1.png?raw=true)
+As can be seen in the confusion matrix above, the model is now better at classifying across the board, except for 5-star reviews, which took a minor drop in performance. This is reflected in our accuracy scores below.
 
-![roc-3.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/roc-3.png?raw=true)
+```python
+Weighted Micro-Average Test Accuracy:  0.6764872521246459
+Weighted Macro-Average Test Accuracy (+/-1):  0.8415133147419817
+```
 
-Now the classifier is performing much better on 2-4 star reviews, even though it is performing slightly worse on 1- and 5-star reviews. In my opinion, this is acceptable, because it gives a higher ability for the model to distinguish between reviews. The out-of-sample test accuracy score increased from 0.635 to 0.867 when averaging across all classes.
+Looking at the micro-average test accuracy alone, the improvement might appear at first to be insignificant, but this shows that the macro-average test accuracy is a better metric for measuring the performance of the classifier. As seen in the graph below, except for 3-star reviews, the correct classification now makes up the majority of the predictions for each class.
+
+![class-predictions-weighted.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/class-predictions-weighted.png?raw=true)
+
+As a final measure of performance, we can examine the ROC curves for individual classes. (Insert ROC AUC discussion here).
+
+![roc-weighted.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/roc-weighted.png?raw=true)
 
 ## **Combining Numerical Features**
 
-
+Feature Union
 
 
 
