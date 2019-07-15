@@ -103,33 +103,35 @@ To understand what data I would be working with, I made some simple visualizatio
 
 Gym owners will likely receive more spoken reviews than written ones, and they may also receive unlabeled reviews if they includes comments and suggestions box in their gyms. If they record these data for downstream applications, such as topic-modeling, it will be important for them to be able to correctly classify reviews according to the star rating, especially given the decline in the number of reviews after 2016 in the Yelp dataset. The problem of classifying reviews into five categories is [multi-class classification](https://en.wikipedia.org/wiki/Multiclass_classification) problem and is a classic technique of [machine learning](https://en.wikipedia.org/wiki/Machine_learning). Let's see how this works.
 
-The first step in any machine-learning process is to set aside some data that **must** remain untouched while training the model. Only on testing on an out-of-sample test set is it possible to estimate how well the model can generalize to data it has never seen before. I found that 20% of the data occurs after May 28th, 2017, so I split the dataset into a training set comprising of data prior to this date and a test set comprising of data after this date.
+The first step in any machine-learning process is always to set aside some data that **must** remain untouched while training the model. Only on testing on an out-of-sample test set is it possible to estimate how well the model can generalize to data it has never seen before. I found that 20% of the data occurs after May 28th, 2017, so I split the dataset into a training set comprising of data prior to this date and a test set comprising of data after this date.
 
-The next step in text processing is tokenization, or the process of converting sentences into individual words, which make up the features for the classification. For this process, I found that sklearn's [count-vectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html) outperforms [TF-IDF](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html), and that keeping an [n-gram](https://en.wikipedia.org/wiki/N-gram) range of 1 to 3 gives the best performance in terms of speed and accuracy.
+For text processing, the first step is tokenization, or the process of converting sentences into individual words, which make up the features for the classification. For this process, I found that sklearn's [count-vectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html) outperforms [TF-IDF](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html), and that keeping an [n-gram](https://en.wikipedia.org/wiki/N-gram) range of 1 to 3 gives the best performance in terms of speed and accuracy.
 
 ```python
 # Count Vectorizer
 count_vectorizer = CountVectorizer(stop_words='english', ngram_range=(1,3))
 ```
 
-Finally, with the above setup, I can train my model on the [logistic regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) classifier and measure the model accuracy on the test set. To this end, I generated a [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix), which is a table that shows how many items from each class were correctly classified. For example the confusion matrix below shows that 963 5-star reviews were correctly classified, 109 5-star reviews were mis-classified as 4-star reviews, and the rest were mis-classified as 3 or below.
+With the above setup, I can train my model on the [logistic regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) classifier and measure the model accuracy on the test set. To this end, I generated a [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix), which is a table that shows how many items from each class were correctly classified. For example the confusion matrix below shows that 963 5-star reviews were correctly classified, 109 5-star reviews were mis-classified as 4-star reviews, and the rest were mis-classified as 3 or below.
 
 ![confusion-unweighted.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/confusion-unweighted.png?raw=true)
 
-Let's see how well this model performs using the following two metrics: micro-average and macro-average accuracy.
+Let's see how well this model performs on the test set using the following two metrics: micro-average and macro-average accuracy.
 
 ```python
 Micro-Average Test Accuracy:  0.6651558073654391
 Macro-Average Test Accuracy (+/-1):  0.6866352509102764
 ```
 
-The micro-average test accuracy is the total number of correctly classified reviews divided by the total number of reviews for the test set. In this case, 1174 out of 1765 reviews were classified correctly, giving a score of 0.6652. The macro-average test accuracy is the average of the accuracy for each class, within one class. Both of these metrics seem similar, but I will later explain why the macro-average test accuracy can be used to show model improvement.
+The micro-average test accuracy is the total number of correctly classified reviews divided by the total number of reviews. In this case, 1174 out of 1765 reviews were classified correctly, giving a score of 0.6652. The macro-average test accuracy is the average of the accuracy for each class, within one class. Both of these metrics seem similar now, but it will later be apparent why only the macro-average test accuracy can be used to show model improvement.
 
 In this initial model, it is apparent that the classifier is great for 1- and 5-star reviews, but suffers for anything in between. This is very easy to see in the graph below, which shows what fraction of predictions fall in each category for each type of review. For example, looking at the purple curve, approximately 0.9 of 5-star reviews were correctly classified as being 5-stars, and approximately 0.1 of 5-star reviews were mis-classified as 4-star reviews.
 
 ![class-predictions-unweighted.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/class-predictions-unweighted.png?raw=true)
 
-As expected from the initial data, the class imbalance of the dataset plays a huge role the model performance.
+The performance of this classifier is great if the goal was only to separate positive from negative reviews. However, if the goal is to have finer granularity for purposes like sending coupons or advertisements to people who give 2- and 3-star reviews, but not 1-star reviews, then this classifier falls short.
+
+How do we fix this issue?
 
 One way to correct for predictions from logistic regression is to add a weight matrix, where the importance of minority classes is increased according to the new weights. For [multinomial logistic regression](https://en.wikipedia.org/wiki/Multinomial_logistic_regression), scikit-learn recommends having [class weights](https://scikit-learn.org/stable/modules/generated/sklearn.utils.class_weight.compute_class_weight.html) that are inversely proportional to the size of the classes.
 
@@ -151,13 +153,19 @@ Weighted Micro-Average Test Accuracy:  0.6764872521246459
 Weighted Macro-Average Test Accuracy (+/-1):  0.8415133147419817
 ```
 
-Looking at the micro-average test accuracy alone, the improvement might appear at first to be insignificant, but this shows that the macro-average test accuracy is a better metric for measuring the performance of the classifier. As seen in the graph below, except for 3-star reviews, the correct classification now makes up the majority of the predictions for each class.
+Looking at the micro-average test accuracy, the improvement might appear to be insignificant at first, but this shows that the macro-average test accuracy is a better metric for measuring the performance of the classifier. As seen in the graph below, except for 3-star reviews, the correct classification now makes up the majority of the predictions for each class.
 
 ![class-predictions-weighted.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/class-predictions-weighted.png?raw=true)
 
-As a final measure of performance, we can examine the ROC curves for individual classes. (Insert ROC AUC discussion here).
+As a final measure of performance, we can examine the [ROC curves](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) for the individual classes.
+
+A ROC curve plots the false positive rate (FPR) on the x-axis and the true positive rate (TPR) on the y-axis. The curve is generated by considering all thresholds for each classification. For example, a random guess is represented by a diagonal line, since there, FPR and TPR are equal. Models that perform better than a random guess are pushed up toward the top left corner, since this is the space in which the TPR is higher than the FPR.
+
+The ROC curve has an additional [probabilistic interpretation](https://www.alexejgossmann.com/auc/) that the Area-Under-the-Curve (AUC) is the probability that given a random positive-negative pair that the classifier will classify each correctly. For example, given a 2-star review and a 5-star review, the classifier will correctly classify the 2-star review with a probability of 0.8661 and the 5-star review with probability 0.8719.
 
 ![roc-weighted.png](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp/blob/master/yelp/figures/classification/roc-weighted.png?raw=true)
+
+In addition to the individual ROC curves, it is possible to calculate a micro-average and a macro-average ROC curve, using similar [procedures](https://datascience.stackexchange.com/questions/15989/micro-average-vs-macro-average-performance-in-a-multiclass-classification-settin) as with the accuracy score calculations. However, similar to before, the micro-average ROC AUC is an overestimate, because it is skewed by the enormous number of 5-star reviews in the dataset. Hence, the macro-average ROC curve is a better measure of performance, since it is a measure of how well the model will perform given a balanced dataset.
 
 ## **Combining Numerical Features**
 
