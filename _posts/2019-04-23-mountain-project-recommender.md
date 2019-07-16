@@ -3,7 +3,7 @@ layout: post
 title: Predicting Popularity of Rock Climbs
 ---
 
-[Github Repository](https://github.com/harrisonized/predicting-popularity-of-rock-climbs-regression)
+[Github Repository](https://github.com/harrisonized/mountain-project-recommender)
 
 
 
