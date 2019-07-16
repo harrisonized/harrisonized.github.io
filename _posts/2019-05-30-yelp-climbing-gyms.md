@@ -3,7 +3,7 @@ layout: post
 title: Analyzing Yelp Reviews for Climbing Gyms
 ---
 
-[Github Repository](https://github.com/harrisonized/analyzing-yelp-reviews-for-climbing-gyms-nlp)
+[Github Repository](https://github.com/harrisonized/yelp-climbing-gyms)
 
 
 
