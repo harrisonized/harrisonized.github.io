@@ -97,6 +97,8 @@ D) The other features offered by Yelp have a weak correlation with the star rati
 
 ![correlation-bar.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/plotly-figures/correlation-bar.png?raw=true)
 
+
+
 ## **Classifying Reviews on Text**
 
 Gym owners will likely receive more spoken reviews than written ones, and they may also receive unlabeled reviews if they includes comments and suggestions box in their gyms. If they record these data for downstream applications, such as topic-modeling, it will be important for them to be able to correctly classify reviews according to the star rating, especially given the decline in the number of reviews after 2016 in the Yelp dataset. The problem of classifying reviews into five categories is [multi-class classification](https://en.wikipedia.org/wiki/Multiclass_classification) problem and is a classic technique of [machine learning](https://en.wikipedia.org/wiki/Machine_learning). Let's see how this works.
@@ -169,6 +171,8 @@ The ROC curve has an additional [probabilistic interpretation](https://www.alexe
 
 In addition to the individual ROC curves, it is possible to calculate a micro-average and a macro-average ROC curve, using similar [procedures](https://datascience.stackexchange.com/questions/15989/micro-average-vs-macro-average-performance-in-a-multiclass-classification-settin) as with the accuracy score calculations. However, similar to before, the micro-average ROC AUC is an overestimate, because it is skewed by the enormous number of 5-star reviews in the dataset. Hence, the macro-average ROC curve is a better measure of performance, since it is a measure of how well the model will perform given a balanced dataset.
 
+
+
 ## **Including Categorical Features**
 
 Along with the text of the main review, Yelp also provides additional features that may help users determine which reviews to read. For example, other users can vote on whether a review is useful, funny, or cool, and businesses can list whether they allow dogs or if they have bike parking. As an improvement on simply using the review text alone, I wanted to see if by combining these additional features, I could improve my classifier. For this purpose, sklearn's [Feature Union](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.FeatureUnion.html) helps to concatenate features, and sklearn's [Pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html) tool helps to organize the training phase succinctly.
@@ -206,30 +210,90 @@ Weighted Micro-Average Test Accuracy:  0.6719546742209632
 Weighted Macro-Average Test Accuracy (+/-1):  0.84267517676204
 ```
 
-... insignificant. Even though there was a minor improvement, it's hard to justify adding these additional features into the model given that it makes the training stage take a lot longer.
+... insignificant. Even though there was a minor improvement, it's hard to justify adding these additional features into the model given that it increases how long it takes to train the model.
 
-However, that does not mean we should ignore the utility of sklearn's Pipeline. If a gym owner receives a hand-written comment in their comments box and hand-labels it before entering it into a database, this additional hand-labeled feature could be very important for predictions and should be added to the classifier using sklearn's Pipeline.
+Despite that these particular features did not give a significant improvement, I still want to emphasize the power of sklearn's Feature Union and Pipeline tools. If a gym owner receives a hand-written comment in their comments box and hand-labels it before entering it into a database, this additional hand-labeled feature could be very important for predictions and **should** be added to the classifier using sklearn's Pipeline.
+
+
 
 ## **Topic Modeling**
 
-I extracted the important topics for 1- and 5-star reviews.
+After classifying reviews according to their star ratings, I am now ready to derive some business-related insights from those reviews. While I could potentially gain the same insights by randomly the reviews, this is not without problems. First, I do not have all the time in the world to read through 8000 reviews. Second, if I pick random reviews to read, due to the class imbalance of the dataset, I will end up reading too many 5-star reviews and not enough 3-star reviews. Third, even if I were to read through all of the reviews, as a human being it will be difficult for me to figure out which topics are most important. What is difficult for me as a human turns out to be trivial for a machine. The problem of extracting the most important topics from text is [topic modeling](https://en.wikipedia.org/wiki/Topic_model), which is a classic technique of [natural language processing](https://en.wikipedia.org/wiki/Natural_language_processing).
 
-1-Star Reviews:
+The procedure for topic-modeling is simple. Like before, the words of the review text should be transformed into individual features using  [count-vectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html) or [TF-IDF](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html). I found that for topic-modeling, TF-IDF gave better results. I also kept an [n-gram](https://en.wikipedia.org/wiki/N-gram) range of 1 to 3 and removed the standard [stop-words](https://en.wikipedia.org/wiki/Stop_words). This results in a matrix with 8317 rows and 720127 columns, where each row represents an individual review, and each column represents a word or group of words. The entries of such a matrix are the number of times these words appear in the text.
 
-![word-cloud-1_star-0.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/topic-modeling/word-cloud-1_star-0.png?raw=true)
+Using a technique called [non-negative matrix factorization](https://en.wikipedia.org/wiki/Non-negative_matrix_factorization), the algorithm will factor this 8317x 720127 into two matrices depending on the number of topics specified. I chose to factor the matrix into 10 topics, so the algorithm will return two matrices, an 8317x10 matrix and a 10x720127 matrix. By accessing the first few elements of the 10x720127 matrix, one can figure out which topics are the most important.
 
-![word-cloud-1_star-3.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/topic-modeling/word-cloud-1_star-3.png?raw=true)
 
-5-Star Reviews
+
+## **5-Star Reviews**
+
+The following are the two most important topics for 5-star reviews, limited to 100 words or group of words.
+
+```
+Topic  0
+rock, rock climbing, time, climb, belay, fun, day, class, kids, try, wall, walls, friend, definitely, got, pass, did, went, experience, sure, come, shoes, different, pretty, instructor, took, came, easy, didn, lesson, day pass, harness, just, groupon, safety, recommend, super, way, party, make, little, hour, rope, free, wanted, facility, friends, doing, want, use, climbed, hold, birthday, rock climb, indoor rock, belaying, difficulty, old, rock climbing gym, patient, course, ll, indoor rock climbing, group, hours, sore, courses, city, loved, deal, don, said, looking, able, rock city, make sure, time rock, son, intro, going, thanks, think, hands, tie, heights, indoor, let, people, felt, rental, test, decided, levels, lot, rocks, person, chalk, wait, night, bring
+
+Topic  1
+gym, climbing gym, gyms, best, climb, new, people, good, home, friendly, ve, love, just, clean, climbers, gym ve, problems, membership, better, equipment, regular, staff, community, setting, love gym, nice, small, come, open, favorite, home gym, variety, lot, really, isn, weights, climber, friends, la, rock climbing gym, make, bouldering gym, members, bay, makes, san, awesome, gym climbing, far, parking, area, training, touchstone, rock gym, say, gym great, sure, gym area, happy, gym equipment, city, machines, best gym, doesn, boulder, feel, great gym, new gym, regular gym, huge, gym membership, decent, especially, probably, years, best climbing gym, beginners, auto, workout, work, look, gym pretty, cliffs, seriously, busy, best climbing, offers, walls, local, ll, gym really, cool, gym just, enjoy, large, style, different, gym gym, price, offer
+```
+
+For topic 0, from the presence of words such as pass, day pass, lesson, groupon, and birthday, it is possible to infer that these reviews were written by people who were only at the gym for a day. Likewise, reviews in topic 1 was likely written by people who are regular members due to the presence of words such as best, friendly, regular, community, gym area, regular gym, gym membership, etc.
+
+To help visualize these in a nicer way than having a simple list of words, I used the [word_cloud](https://amueller.github.io/word_cloud/index.html) library to generate the following word clouds.
 
 ![word-cloud-5_star-0.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/topic-modeling/word-cloud-5_star-0.png?raw=true)
 
+*Topic 0*
+
 ![word-cloud-5_star-1.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/topic-modeling/word-cloud-5_star-1.png?raw=true)
 
-## **Conclusions**
+*Topic 1*
 
-If you're seeking to open a new climbing gym, here are some do's and don'ts.
 
-Do's: 1. Make the experience of day-pass users enjoyable. 2. Try to increase the membership rate.
 
-Don'ts: 1. Hire rude staff. 2. Throw birthday parties.
+These visualizations give a quick overview of the target populations. If you are a gym owner hoping to attract more 5-star reviews, these are two populations for which to focus on.
+
+
+
+## **1-Star Reviews**
+
+The following are the two most important topics for 1-star reviews, limited to 100 words or group of words. 
+
+```
+Topic  0
+gym, climbing, belay, routes, staff, rope, climb, gyms, rock, ve, climbing gym, just, area, lead, place, don, bouldering, test, holds, route, climber, like, climbers, way, people, time, safety, really, new, ropes, good, worst, set, walls, hold, feel, years, rock climbing, know, wall, better, mesa, partner, member, experience, want, mission, cliffs, technique, lead climbing, tape, rock climbing gym, used, staff member, belaying, mission cliffs, members, doesn, make, climbing gyms, unsafe, seen, love, going, look, pretty, probably, gri, climbs, old, great, rude, tie, dirty, safe, far, maybe, bay, did, climbing years, actually, boulder, belay test, started, went, san, fall, hard, long, kids, harness, weight, need, use, thing, setting, rock gym, bouldering area, work, real
+
+Topic  2
+youth, continue, program continue, comps, program continue host, youth comps nearly, comps nearly impossible, comps nearly, impossible youth, impossible youth team, climbing program continue, climbing program, host youth comps, team continue, host youth, nearly impossible youth, continue host, nearly impossible, continue train, youth climbing program, youth comps, youth team continue, team continue train, youth team, continue host youth, cut youth, cut youth climbing, youth climbing, host, program, train, team, nearly, cut, impossible, climbing, toddler, area, toddler area, park, nice want, beware debit card, membership friendly nice, friendly nice, continue charge, membership friendly, request cancel membership, request cancel, cancel membership friendly, debit card continue, continue charge repeatedly, repeatedly request, repeatedly request cancel, charge repeatedly request, card continue charge, charge repeatedly, beware debit, card continue, friendly nice want, debit card, debit, repeatedly, know expect, little, argumentative, request, really lame toddlers, really lame, expecting climb like, area year, kept asking play, climb like park, like park, like park tiny, useful, useful older, useful older kids, need toddler way, climb little, need toddler, area useful older, climb little area, going class need, going class, climbing structures, park expecting, old kept asking, asking play, asking play weight, lame toddlers, lame toddlers adept, foam blocks climbing, foam blocks, expecting climb, short impossible, area year old, short impossible climb, way pay wish, year old kept, way pay
+```
+
+Topic 0 seems to be generically talking about the facility, for example, holds or rope being old and dirty. Topic 2 is a mix of youth team taking up too much space for competition practice and not enough supervision for toddlers, possibly leading to people wishing to cancel their membership or get a refund. The following word clouds may be somewhat easier to read.
+
+![word-cloud-1_star-0.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/topic-modeling/word-cloud-1_star-0.png?raw=true)
+
+*Topic 0*
+
+![word-cloud-1_star-2.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/topic-modeling/word-cloud-1_star-2.png?raw=true)
+
+*Topic 2*
+
+
+
+## **Conclusion**
+
+By building my own Yelp scraper, I was able to collect reviews on climbing gyms in California. Using multi-class logistic regression, I was able to classify reviews as being 1-, 2-, 3-, 4-, or 5-stars with high accuracy. I was also able to improve the performance of this classifier by giving the minority classes more importance, which improved my out-of-sample test accuracy from 0.687 to 0.842. It may be possible to derive further improvements using sklearn's Feature Union and Pipeline tools and a collection of hand-labeled reviews.
+
+I also used the natural language processing technique of non-negative matrix factorization to extract the important topics for 1- and 5-star reviews and derive some take-home messages for new gym owners looking to improve their gym. These insights may help new gym owners figure out which groups of people to target for deals or how to best maximize their budget to derive the most meaningful improvements to their gyms.
+
+
+
+## **Future Work**
+
+Although my work can deliver insights, there is a lot of room for improvement.
+
+One way I could improve the classifier is to incorporate the use of Google's [Word2Vec](https://www.tensorflow.org/tutorials/representation/word2vec) in order to replace n_grams with word2vec vectors as the primary features. The advantage of this approach is to greatly reduce the dimensionality of the dataset, because similar concepts, such as climbing and "rock climbing" will be bundled together, making the model easier to train and test.
+
+To improve the classifier, I hypothesize that I would have more similarity within topics if I used the star ratings predicted by my classification model rather than the hand-labeled star ratings, although I imagine that the business insights derived from both approaches will be similar.
+
+Thank you for reading, and I hope enjoyed this post!
