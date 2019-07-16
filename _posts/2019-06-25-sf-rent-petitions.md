@@ -3,7 +3,7 @@ layout: post
 title: Predicting Volume of Rent Petitions in San Francisco
 ---
 
-[Github Repository](https://github.com/harrisonized/sf-rent-petitions-timeseries-analysis)
+[Github Repository](https://github.com/harrisonized/sf-rent-petitions)
 
 ### **Introduction**
 
