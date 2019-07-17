@@ -203,7 +203,7 @@ As can be seen above, 518 out of the 801 entries in the test set were correctly 
 
 One important aspect of decision-tree-related algorithms such as random forest is that it's relatively easy to compute the [feature importances](https://scikit-learn.org/stable/modules/ensemble.html#feature-importance-evaluation). This option ranks the features in terms of their predictive power, from most predictive to least, by calculating, on average, how much each feature decreases the [gini coefficient](https://en.wikipedia.org/wiki/Gini_coefficient) across multiple trees. Although this approach may be [prone to error](https://explained.ai/rf-importance/), it can be used to provide some interpretability, as well as a sanity check to see if the classifier is performing as expected.
 
-![feature-importance.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/feature-importance.png?raw=true)
+![feature-importance.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/random-forest-optimized/feature-importance.png?raw=true)
 
 As expected, GPA comes first, followed by GRE Verbal and GRE Subject, which are known in physics to be great predictors of whether one makes it to graduate school. Two features that seemed low were research and papers, but this also makes sense, since these were features derived from the comments section of the dataset, and not everyone who had research or publications necessarily reported on them.
 
