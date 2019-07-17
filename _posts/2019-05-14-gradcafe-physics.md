@@ -23,7 +23,7 @@ The data was scraped by Github user [evansjames](https://github.com/evansrjames/
 
 ## **Data Cleaning**
 
-Although downloading the data is easier than scraping it myself, there is still some work I had to do. I cleaned the data by dropping NaNs, filtered out erroneous data, one-hot-encoded some categorical features, converted numbers from string to float type, and selected on Ph.D. admissions only. Furthermore, I chose to focus on applicants after 2014, since this seems to be when the number of entries on The Grad Cafe reaches its peak, as seen in the figure below.
+Although downloading the data is easier than scraping it myself, there is still some work I had to do. I cleaned the data by dropping NaNs, filtered out erroneous data, one-hot-encoded some categorical features, converted numbers from string to float type, and selected on Ph.D. admissions only. Furthermore, I chose to analyze applications after 2014, since this seems to be when the number of entries on The Grad Cafe reaches its peak, as seen in the figure below.
 
 ![number-of-entries-by-year.png](https://raw.githubusercontent.com/harrisonized/gradcafe-physics/master/figures/eda/number-of-entries-by-year.png)
 
@@ -73,17 +73,17 @@ For students with perfect scores, there is now a higher degree of separation bet
 
 ## **Feature Transforms**
 
-Since I was working with relatively small data (~5000 rows), I felt at liberty to add some additional features by [transforming](https://github.com/harrisonized/gradcafe-physics/blob/master/feature-transforms.ipynb) the existing ones and adding cross terms to hopefully improve separability. I had to be careful with this process, since it was easy to a cause [feature explosion](https://en.wikipedia.org/wiki/Feature_engineering#Feature_explosion), or a proliferation of excess features with no real benefit. The features I generated were the log, square, conversion from a GRE score to a percentage score, and addition of cross terms between GRE scores. This increased the number of features I had from 8 to 26, which also means I had to choose which ones to keep. To test whether these contributed positively to separability, I used simple [logistic regression](https://en.wikipedia.org/wiki/Logistic_regression) as my baseline model, and through trial-and-error tested whether or not the features improved my classification accuracy.
+Since I was working with relatively small data (~5000 rows), I felt at liberty to add some additional features by [transforming](https://github.com/harrisonized/gradcafe-physics/blob/master/feature-transforms.ipynb) the existing ones and adding cross terms to hopefully improve separability. I had to be careful with this process, since it was easy to a cause [feature explosion](https://en.wikipedia.org/wiki/Feature_engineering#Feature_explosion), or a proliferation of excess features with no real benefits. The features I generated were the log, square, conversion of GRE scores to percentiles, and addition of cross terms between GRE scores. This increased the number of features I had from 8 to 26, which also means I had to choose which ones to keep. To test whether these contributed positively to separability, I used simple [logistic regression](https://en.wikipedia.org/wiki/Logistic_regression) as my baseline model, and through trial-and-error tested whether or not the features improved my classification accuracy.
 
 
 
 ## **Feature Selection using Logistic Regression**
 
-[Logistic regression](https://en.wikipedia.org/wiki/Logistic_regression) is a machine learning model that is primarily used for classification. The goal is to predict a binary target, usually 0 or 1. Logistic regression takes numerical and [one-hot-encoded](https://en.wikipedia.org/wiki/One-hot) inputs and returns a probability for the input is to be classified as class 1. By [default](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html), if the probability of being class 1 is greater than 0.5, then logistic regression will classify that entry or row as being class 1. However, it is also an option to tune the threshold to obtain different values of [precision and recall](https://en.wikipedia.org/wiki/Precision_and_recall) depending on the application. For example, for fraud detection, one might want high recall at the cost of having low precision, since the goal is to capture all the fraud cases and not necessarily be certain whether or not the predicted cases of fraud are actually fraud. With these basic concepts in place, let's begin modeling.
+[Logistic regression](https://en.wikipedia.org/wiki/Logistic_regression) is a machine learning model that is primarily used for classification. The goal is to predict a binary target, usually 0 or 1. Logistic regression takes numerical and [one-hot-encoded](https://en.wikipedia.org/wiki/One-hot) inputs and returns a probability for the input is to be classified as class 1. By [default](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html), if the probability of being class 1 is greater than 0.5, then logistic regression will classify that entry or row as being class 1. However, it is also an option to tune the threshold to obtain different values of [precision and recall](https://en.wikipedia.org/wiki/Precision_and_recall) depending on the application. For example, for fraud detection, one might want high recall at the cost of having low precision, since the goal is to capture all the fraud cases and not necessarily be certain whether or not the predicted cases of fraud are actually fraud. Keeping these basic concepts in mind, let's begin modeling.
 
 The first step in any machine-learning process is always to set aside some data that **must** remain untouched while training the model. Only on testing on an out-of-sample test set is it possible to estimate how well the model can generalize to data it has never seen before.
 
-In adherence to best practices, I used sklearn's [train_test_split](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) function to set aside 20% of the data, then of the remaining 80% of the data, I used sklearn's [KFold](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html) function to make a 5-fold cross-validation loop with an 80-20 split. For this particular classification task, I added the additional step of random [upsampling](https://en.wikipedia.org/wiki/Upsampling) within each cross-validation loop so that the classifier is trained on a balanced training set on each loop, giving an unbiased measure of performance.
+In adherence to best practices, I used sklearn's [train_test_split](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) function to set aside 20% of the data, then with the remaining 80% of the data, I used sklearn's [KFold](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html) function to make a 5-fold cross-validation loop with an 80-20 split. For this particular classification task, I added the additional step of random [upsampling](https://en.wikipedia.org/wiki/Upsampling) within each cross-validation loop so that the classifier is trained on a balanced training set on each loop, giving an unbiased measure of performance.
 
 Let's see how the classifier performs on the train and test set using two metrics: the ROC AUC score and the F1 score, which measure slightly different things.
 
@@ -95,7 +95,7 @@ train_f1_score:  0.5488413596176124  +/-  0.02327619560085906
 test_f1_score =  0.5743329097839899
 ```
 
-The ROC AUC stands for the [Receiver Operating Characteristic](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) Area-Under-the-Curve (AUC), and it has a [probabilistic interpretation](https://www.alexejgossmann.com/auc/) that given a random positive-negative pair that the classifier will classify each correctly. In other words, the test score says that given a pair of entries from the test set, in which one student was admitted and one was rejected, the classifier will correctly classify them 62% of the time. Better than a coin flip, but not great either.
+The ROC AUC stands for the [Receiver Operating Characteristic](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) Area-Under-the-Curve (AUC), and it has a [probabilistic interpretation](https://www.alexejgossmann.com/auc/) that given a random positive-negative pair that the classifier will classify each correctly. In other words, the ROC AUC says that given a pair of entries from the test set, in which one student was admitted and one was rejected, the classifier will correctly classify them 62% of the time. Better than a coin flip, but not great either.
 
 What about the [F1 score](https://en.wikipedia.org/wiki/F1_score)? The F1 score is the accuracy score if I set my threshold to balance precision and recall. In other words, if I adjust the threshold higher, then my precision will rise while my recall will fall, and vice versa. Let's see what this looks like in graphical form.
 
@@ -114,12 +114,12 @@ Like the precision-recall curve, the ROC curve is generated by considering all t
 Through trial and error, I found that the following additional features improved my logistic regression model.
 
 ```python
-'GPA_sq'
-'GRE_Writing_pc'
-'GREVxGRES'
+'GPA_sq' # GPA squared
+'GRE_Writing_pc' # GRE Writing score converted to percentile
+'GREVxGRES' # GRE Verbal multiplied with GRE Subject
 ```
 
-By including these three additional features, I managed to squeeze out a minor improvement.
+By including these three additional features, I managed to squeeze out a small amount of improvement.
 
 ```python
 train_roc_auc_score:  0.599475238280368  +/-  0.019688850571677814
@@ -143,7 +143,7 @@ To see if I can do better than Logistic Regression, I compared a number of class
 | [Logistic Regression](https://en.wikipedia.org/wiki/Logistic_regression) | 0.5995  +/-  0.0197 | 0.6297       |
 | [Support Vector Machine](https://en.wikipedia.org/wiki/Support-vector_machine) | 0.6166  +/-  0.008  | 0.6523       |
 | [XGBoost](https://xgboost.readthedocs.io/en/latest/)         | 0.6269  +/-  0.014  | 0.6644       |
-| [Random Forest](https://en.wikipedia.org/wiki/Random_forest) | 0.6623  +/-  0.020  | 0.6764       |
+| [Random Forest](https://en.wikipedia.org/wiki/Random_forest) | 0.6718  +/-  0.0198 | 0.6854       |
 
 As mentioned above, the ROC curve is a great way to see which model performs the best.
 
@@ -169,15 +169,27 @@ By itself, such a large decision tree is prone to overfitting. However, a random
 
 ## **Optimizing Random Forest**
 
-Since random forest performed the best, I took that and did some slight optimization in order to prevent my model from overfitting. 
+To really ensure that my random forest isn't overfitting the data, I decided to prune it on two [hyperparameters](https://en.wikipedia.org/wiki/Hyperparameter_(machine_learning)): the max depth of each tree, then the number of trees.
 
+Optimizing on the max depth of each tree, we see below that the max depth should be limited at 13, because anything above does not improve the test score. This is also where the training score begins to plateau off. If we did not have access to the test set, we could alternatively pick a cutoff using the training set by picking a stopping point based on the lack of improvement beyond a certain threshold.
 
+![max-depth.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/max-depth.png?raw=true)
 
+After optimizing for max depth, I pruned the number of trees. As expected, this was less significant, but it does make the training phase faster if there are fewer trees in the ensemble. The model plateaus after 8 trees.
 
+![number-of-trees.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/number-of-trees.png?raw=true)
 
-Finally, I use random forest with untransformed features to derive the relative importance as a sanity check.
+With a max depth of 13 and a limit of 8 trees in the ensemble, let's see now how our model performs.
 
-My final model is a random forest with an out-of-sample test score (ROC AUC) of 0.698 compared to 0.606 of the baseline Gaussian Naive Bayes model. 
+```python
+train_roc_auc_score:  0.6641286096250937  +/-  0.016094033876368447
+test_roc_auc_score =  0.7039852943015418
+
+train_f1_score:  0.5771324907227473  +/-  0.03737898397715488
+test_f1_score =  0.6058091286307054
+```
+
+This is an improvement upon just using the default random forest options.
 
 
 
