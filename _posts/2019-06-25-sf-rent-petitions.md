@@ -47,11 +47,7 @@ Since I was interested in the count and not any of the individual features, I us
 
 
 
-I found that grouping by month had the right balance between signal and noise that would work well for modeling. This is also an ideal choice for my purposes, since the data for the Unemployment Rate in San Francisco County, shown below, is also monthly.
-
-![unemployment-by-month.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/eda/unemployment-by-month.png?raw=true)
-
-While it would be great to get a daily prediction, the fact is like with any statistical task, that when zoomed in too far, the modeling breaks down. For example, it is near impossible to predict the exact timing of each person entering and exiting Starbucks, but it is relatively easy to predict how many will enter within the range of an hour.
+I found that grouping by month had the right balance between signal and noise that would work well for modeling. While it would be great to get a daily prediction, the fact is like with any statistical task, that when zoomed in too far, the modeling breaks down. For example, it is near impossible to predict the exact timing of each person entering and exiting Starbucks, but it is relatively easy to predict how many will enter within the range of an hour.
 
 
 
@@ -103,7 +99,7 @@ As expected, the neighborhoods that are stationary are in the sections of the ci
 
 ## **Data Preparation**
 
-For the neighborhoods that are grouped as seasonal, first, I used statsmodel's [seasonal decomposition](https://www.statsmodels.org/stable/generated/statsmodels.tsa.seasonal.seasonal_decompose.html) function to remove the seasonal component, so that I'm only dealing with the trend and residual.
+For the neighborhoods that are grouped as time-varying, first, I used statsmodel's [seasonal decomposition](https://www.statsmodels.org/stable/generated/statsmodels.tsa.seasonal.seasonal_decompose.html) function to remove the seasonal component, so that I'm only dealing with the trend and residual.
 
 ```python
 petition_decomp = seasonal_decompose(petition_counts_by_neighborhood_df[seasonal_neighborhoods_list].sum(axis=1), model='additive', extrapolate_trend = True)
@@ -119,9 +115,9 @@ Second, I set aside some data for the test set that will remain untouched while 
 
 ## **Forecasting Using SARIMA**
 
-[SARIMA](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average) is an industry standard for doing time-series analysis. SARIMA stands for Seasonal Auto-Regressive Moving Average, which is a mouthful! Rather than divert this blog post to explain the underlying math, I think [this tutorial by Kostas Hatalis](https://www.datasciencecentral.com/profiles/blogs/tutorial-forecasting-with-seasonal-arima) is an excellent resource. It explains what SARIMA is and provides some good rules-of-thumb on how to pick the correct parameters. For a more detailed explanation on ARIMA models in general, I recommend Chapter 3 of [Shumway and Stoffer](https://www.stat.pitt.edu/stoffer/tsa4/index.html), which is freely available for download.
+[SARIMA](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average) is an industry standard for doing time-series analysis. SARIMA stands for Seasonal Auto-Regressive Moving Average, which is a mouthful! Rather than divert this blog post to explain the underlying math, I refer you to [this tutorial by Kostas Hatalis](https://www.datasciencecentral.com/profiles/blogs/tutorial-forecasting-with-seasonal-arima), which I think is an excellent resource. It explains what SARIMA is and provides some good rules-of-thumb on how to pick the correct parameters. For a more detailed explanation on ARIMA models in general, I recommend Chapter 3 of [Shumway and Stoffer](https://www.stat.pitt.edu/stoffer/tsa4/index.html), which is freely available for download.
 
-The thing to keep in mind is that SARIMA has seven components, typically written as follows:
+From the modeling perspective, SARIMA has seven components, typically written as follows:
 
 ```
 SARIMA(p,d,q)(P,D,Q)[s]
@@ -129,9 +125,9 @@ SARIMA(p,d,q)(P,D,Q)[s]
 
 where each of the components p, d, q, P, D, Q, and s are integers describing different parts of the equation. The success of the SARIMA model will depend on picking the correct parameters. The best model will give the lowest mean average error for the test set.
 
-To pick out initial parameters to try, we need to look at the [autocorrelation](https://en.wikipedia.org/wiki/Autocorrelation) function (ACF) and [partial autocorrelation function](https://en.wikipedia.org/wiki/Partial_autocorrelation_function) (PACF).
+Let's use SARIMA to forecast the trend and the residual. To pick out initial parameters to try, we need to look at the [autocorrelation](https://en.wikipedia.org/wiki/Autocorrelation) function (ACF) and [partial autocorrelation function](https://en.wikipedia.org/wiki/Partial_autocorrelation_function) (PACF), given below.
 
-![acf-pacf.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/acf-pacf.png?raw=true)
+![acf-pacf-baseline.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/acf-pacf-baseline.png?raw=true)
 
 In the plot above, the shaded blue area represents the significance level. Anything outside of the shaded blue is significant.
 
@@ -139,25 +135,16 @@ Looking at the ACF on the top, we can deduce the following:
 
 1. q = 1, the first significant lag
 2. s = 15, the highest significant lag
-3. Q = 0  and P≥1, because the ACF is positive at lag of 15
 4. D = 1, because the seasonal pattern has been removed using seasonal decomposition
+4. d = 0, because the series has no visible trend whatsoever.
 
-In order to figure out the remaining parameters of p and d, we need to look at the PACF on the bottom. However, since the significance level is missing from the PACF above, we need to generate the PACF for the differenced series and look at that instead.
+Finally, looking at the PACF on the bottom, we can deduce that p = 1, the first significant lag.
 
-![acf-pacf-diff.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/acf-pacf-diff.png?raw=true)
-
-
-
-Looking at the PACF on the bottom for the differenced series, we can deduce that:
-
-1. p = 1, the first significant lag,
-2. d = 1, since this is a differenced series.
-
-Collecting our results, this means that the first model we should try is a SARIMA(1, 1, 1)(2, 1, 0)[15].
+Collecting our results, this means that the first model we should try is a SARIMA(1, 0, 1)(P, 1, Q)[15], where we grid-search over the space P+Q≤2. After a short grid-search, I found that P=2 and Q=0 gives the best results.
 
 ```python
 mod = sm.tsa.statespace.SARIMAX(petition_train_df[['Datetime', 'Adj. Signal']].set_index("Datetime"),
-                                order=(1, 1, 1),
+                                order=(1, 0, 1),
                                 seasonal_order=(2, 1, 0, 15),
                                 enforce_stationarity=False,
                                 enforce_invertibility=False,
@@ -165,25 +152,58 @@ mod = sm.tsa.statespace.SARIMAX(petition_train_df[['Datetime', 'Adj. Signal']].s
 results = mod.fit()
 ```
 
-![sarima-baseline-model.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/sarima-baseline-model.png?raw=true)
+![sarima-baseline.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/sarima-baseline.png?raw=true)
 
-A short grid search on the parameters p, q, and s reveals that this is indeed the best model. However, like with SARIMA models in general,it's pretty apparent from the graph that the predictions are lagging behind the actual data. This is especially apparent in the training set, but you can also see this effect in the test set as well.
+The [mean absolute error](https://en.wikipedia.org/wiki/Mean_absolute_error) (MAE) are 4.9 for 3 months, 11.3 for 1 year, and 14.7 for 5 years. This is pretty good. Another short grid search on the parameters p, q, and s reveals that this is indeed the best model. However, for SARIMA models in general, it's pretty apparent from the graph that even though the MAE is low, the predictions are lagging behind the actual data. Furthermore, the 95% confidence interval is pretty large.
 
-How can we fix this issue?
+How can we fix these issues?
 
-One way is to model on the trend alone, and then add back in the seasonal component. Unfortunately, we will not be able to add back the residual, but if we can get rid of the lag, maybe this is okay. After grid-searching over parameters, I found that a SARIMA(2, 1, 2)(0, 1, 2)[12] gave me the lowest MAE for a 3-month and 5-year prediction.
+One way is to model on the trend alone, and then add back in the seasonal component. Using this approach, we will not be able to add back the residual, but if we can get rid of the lag, maybe this is okay.
 
-![sarima-model-on-trend.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/sarima-model-on-trend.png?raw=true)
+Like the approach above, I generated the ACF and PACF for the trend.
 
+![acf-pacf-trend.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/acf-pacf-trend.png?raw=true)
 
+Looking at the ACF on the top, we can deduce the following:
 
+1. q = 1, the first significant lag
+2. s = 16, the highest significant lag (different from above)
+3. D = 1, because the seasonal pattern has been removed using seasonal decomposition
+4. d = 1, because the PACF seems to have a trend (even if it's a weak one).
 
+Finally, looking at the PACF on the bottom, we see that the first significant lag is at 3 or 4, so we should try both values for p.
+
+Collecting our results, this means that the first model we should try is a SARIMA(4, 0, 1)(P, 1, Q)[15], where we grid-search over the space P+Q≤2. After a short grid-search, I found that p=4, P=1 and Q=1 gives the best results.
+
+```python
+mod = sm.tsa.statespace.SARIMAX(petition_train_df[['Datetime', 'Adj. Trend']].set_index("Datetime"),
+                                order=(4, 0, 1),
+                                seasonal_order=(1, 1, 1, 16),
+                                enforce_stationarity=False,
+                                enforce_invertibility=False,
+                               freq = 'M')
+results = mod.fit()
+```
+
+Here's what the predictor is actually doing.
+
+![sarima-trend-only.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/sarima-trend-only.png?raw=true)
+
+After adding back the seasonality and residuals, we get the following:
+
+![sarima-trend-with-seasonality.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/sarima-trend-with-seasonality.png?raw=true)
+
+The confidence intervals are now a lot smaller and the chronic lag in predictions seems to be eliminated. The MAE are 7.3 for 3 months, 10.9 for 1 year, 12.4 for 5 years. This model suffers for short-term predictions because it does not take residuals into account, but it is a better overall predictor for the long term.
 
 
 
 ## **Forecasting using Linear Regression**
 
-I also found that using linear regression on the unemployment rate data through [FRED Economic Research](https://fred.stlouisfed.org/series/CASANF0URN) enabled me to get similar results as the SARIMA model.
+One thing I noticed when doing this project was that the number of rent petitions has a similar trend as the unemployment rate in San Francisco, which is plotted below.
+
+![unemployment-rate-predictor.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/unemployment-rate-predictor.png?raw=true)
+
+In fact, the trends in the data seem so uncannily similar that I felt there might be a cause-and-effect type scenario here. 
 
 
 
@@ -193,26 +213,28 @@ I also found that using linear regression on the unemployment rate data through 
 
 
 
-
-
 ![lr-on-rent-petition-vs-unemployment.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/lr-on-rent-petition-vs-unemployment.png?raw=true)
 
 
 
-Finally, here is the model that results from the above work.
+Finally, here is the resulting model.
 
 ![lr-on-time-lagged-unemployment-data.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/lr-on-time-lagged-unemployment-data.png?raw=true)
+
+The MAE are 5.1 for 3 months, and 13.6 for 5 years. This is nearly as good as the first SARIMA model for short-term prediction and even better for long-term prediction.
+
+
 
 
 
 ## **Results**
 
-The following table summarizes the results of the modeling.
+The following table summarizes the results of the modeling and the advantages of using each approach.
 
 | Model                             | Benefits                    | MAE<br />(3 Months) | MAE<br />(5 Years) |
 | :-------------------------------- | --------------------------- | ------------------- | ------------------ |
-| Baseline Sarima                   | Easy to implement           | 5.7                 | 18.4               |
-| Sarima on Trend                   | Most accurate               | 7.8                 | 12.3               |
+| Sarima Baseline                   | Best short-term predictor   | 4.9                 | 14.7               |
+| Sarima on Trend                   | Best long-term predictor    | 7.3                 | 12.4               |
 | Linear Regression on Unemployment | Fastest, most interpretable | 5.1                 | 13.6               |
 
 
