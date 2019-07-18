@@ -177,7 +177,7 @@ Looking at the ACF on the top, we can deduce the following:
 1. q = 1, the first significant lag
 2. s = 16, the highest significant lag (different from above)
 3. D = 1, because the seasonal pattern has been removed using seasonal decomposition
-4. d = 1, because the PACF seems to have a trend.
+4. d = 0, because the series has no visible trend whatsoever.
 
 Finally, looking at the PACF on the bottom, we see that the first significant lag is at 3 or 4, so we should try both values for p.
 
