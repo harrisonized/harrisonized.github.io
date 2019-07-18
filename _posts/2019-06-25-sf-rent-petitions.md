@@ -15,13 +15,13 @@ Being able to predict the volume of rent petitions could be useful, since if you
 
 ## **Data Acquisition**
 
-In addition to the [Petitions to the Rent Board](https://data.sfgov.org/Housing-and-Buildings/Petitions-to-the-Rent-Board/6swy-cmkq) dataset, I also downloaded data from the [Federal Reserve Bank of St. Louis](https://research.stlouisfed.org/) on the [Unemployment Rate in San Francisco County](https://fred.stlouisfed.org/series/CASANF0URN).
+In addition to the [Petitions to the Rent Board](https://data.sfgov.org/Housing-and-Buildings/Petitions-to-the-Rent-Board/6swy-cmkq) dataset, I downloaded data on the [Unemployment Rate in San Francisco County](https://fred.stlouisfed.org/series/CASANF0URN) from the Federal Reserve Bank of St. Louis.
 
 
 
 ## Data Cleaning
 
-Although the data is freely available, it was by no means clean, and there was still some work that went into the cleaning process. The main sources of error in the data were unusable zip codes, incorrect neighborhood assignments for given zip codes, and duplicate entries.
+Although the data is freely available, there was still some work that went into the cleaning process. The main sources of error in the data were unusable zip codes, incorrect neighborhood assignments for given zip codes, and duplicate entries.
 
 Duplicate entries are when single addresses submit multiple petitions on the same day. For example, on April 30th, 2015, a property at 600 Block of Commercial Street submitted 78 petitions. I merged such entries into single rows and kept track of the number of occurrences and the unique petition IDs, just in case I needed to access them in future work.
 
@@ -73,13 +73,13 @@ The following figure shows that the trend for the Mission District is very simil
 
 
 
-Just as an example, the following is a neighborhood that does not have much trend at all, which I will call stationary.
+Just as an example, the following is a neighborhood that does not vary much over time; I labeled neighborhoods like this one as stationary.
 
 ![petitions-for-financial-district-south-beach.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/neighborhood/petitions-for-financial-district-south-beach.png?raw=true)
 
 
 
-Since the Mission District is a main component of the overall trend, I found that the correlation with the Mission District could be used to group together neighborhoods that have a significant time-varying component. In the following bar plot, I labeled any neighborhoods that had significant correlation with the mission district as blue.
+Since the Mission District is a main component of the overall trend, I found that the correlation with the Mission District could be used to group together neighborhoods that are time-varying. In the following bar plot, I labeled any neighborhoods that had significant correlation with the mission district as blue.
 
 
 
@@ -93,7 +93,7 @@ Let's see what this looks like on a geographic level.
 
 ![time-varying-vs-stationary.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/tableau/time-varying-vs-stationary.png?raw=true)
 
-As expected, the neighborhoods that are stationary are in the sections of the city where renting is relatively rare due to the abundance of businesses and lack of homes. With the neighborhoods reasonably clustered, I am ready to begin [forecasting](https://en.wikipedia.org/wiki/Forecasting). The technique of [time-series analysis](https://en.wikipedia.org/wiki/Time_series) forms the final component of my Data Science portfolio.
+As expected, the neighborhoods that are stationary are in the sections of the city where renting is relatively rare due to the abundance of businesses and lack of homes. With the neighborhoods reasonably clustered, I am ready to begin [forecasting](https://en.wikipedia.org/wiki/Forecasting). The technique of [time-series analysis](https://en.wikipedia.org/wiki/Time_series) is the final component of my Data Science portfolio, which I presented on [Career Day](https://www.eventbrite.com/e/find-your-next-data-scientist-in-san-francisco-at-metis-career-day-for-employers-tickets-62002954506) at [Metis](https://www.thisismetis.com/), San Francisco.
 
 
 
@@ -140,7 +140,13 @@ Looking at the ACF on the top, we can deduce the following:
 
 Finally, looking at the PACF on the bottom, we can deduce that p = 1, the first significant lag.
 
-Collecting our results, this means that the first model we should try is a SARIMA(1, 0, 1)(P, 1, Q)[15], where we grid-search over the space P+Q≤2. After a short grid-search, I found that P=2 and Q=0 gives the best results.
+Collecting the results, this means that the first model to try is
+
+```
+SARIMA(1, 0, 1)(P, 1, Q)[15]
+```
+
+where I search over the space P+Q≤2 and pick the best one. I found that P=2 and Q=0 gives the best results.
 
 ```python
 mod = sm.tsa.statespace.SARIMAX(petition_train_df[['Datetime', 'Adj. Signal']].set_index("Datetime"),
@@ -154,7 +160,7 @@ results = mod.fit()
 
 ![sarima-baseline.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/sarima-baseline.png?raw=true)
 
-The [mean absolute error](https://en.wikipedia.org/wiki/Mean_absolute_error) (MAE) are 4.9 for 3 months, 11.3 for 1 year, and 14.7 for 5 years. This is pretty good. Another short grid search on the parameters p, q, and s reveals that this is indeed the best model. However, for SARIMA models in general, it's pretty apparent from the graph that even though the MAE is low, the predictions are lagging behind the actual data. Furthermore, the 95% confidence interval is pretty large.
+The [mean absolute error](https://en.wikipedia.org/wiki/Mean_absolute_error) (MAE) are 4.9 for 3 months, 11.3 for 1 year, and 14.7 for 5 years. This is pretty good, and another short grid-search on the parameters p, q, and s reveals that this is indeed the best model. However, for SARIMA models in general, it's pretty apparent from the graph that even though the MAE is low, the predictions are lagging behind the actual data. Furthermore, the 95% confidence interval is pretty large.
 
 How can we fix these issues?
 
@@ -169,11 +175,17 @@ Looking at the ACF on the top, we can deduce the following:
 1. q = 1, the first significant lag
 2. s = 16, the highest significant lag (different from above)
 3. D = 1, because the seasonal pattern has been removed using seasonal decomposition
-4. d = 1, because the PACF seems to have a trend (even if it's a weak one).
+4. d = 1, because the PACF seems to have a trend.
 
 Finally, looking at the PACF on the bottom, we see that the first significant lag is at 3 or 4, so we should try both values for p.
 
-Collecting our results, this means that the first model we should try is a SARIMA(4, 0, 1)(P, 1, Q)[15], where we grid-search over the space P+Q≤2. After a short grid-search, I found that p=4, P=1 and Q=1 gives the best results.
+Collecting the results, this means the model to try should be:
+
+```
+SARIMA(p, 0, 1)(P, 1, Q)[16]
+```
+
+where I search over values of P and Q such that P+Q≤2. I found that p=4 predicts better than p=3 and that P=1 and Q=1 gives the best results.
 
 ```python
 mod = sm.tsa.statespace.SARIMAX(petition_train_df[['Datetime', 'Adj. Trend']].set_index("Datetime"),
@@ -185,7 +197,7 @@ mod = sm.tsa.statespace.SARIMAX(petition_train_df[['Datetime', 'Adj. Trend']].se
 results = mod.fit()
 ```
 
-Here's what the predictor is actually doing.
+Here's what the model predicts.
 
 ![sarima-trend-only.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/sarima-trend-only.png?raw=true)
 
@@ -193,7 +205,7 @@ After adding back the seasonality and residuals, we get the following:
 
 ![sarima-trend-with-seasonality.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/sarima-trend-with-seasonality.png?raw=true)
 
-The confidence intervals are now a lot smaller and the chronic lag in predictions seems to be eliminated. The MAE are 7.3 for 3 months, 10.9 for 1 year, 12.4 for 5 years. This model suffers for short-term predictions because it does not take residuals into account, but it is a better overall predictor for the long term.
+The MAE are 7.3 for 3 months, 10.9 for 1 year, 12.4 for 5 years, and a grid-search over p, q, and s shows that this model is as good as it gets for this kind of model. The confidence intervals are now a lot smaller and the chronic lag in predictions seems to be eliminated. This model suffers for short-term predictions because it does not take residuals into account, but it is a better overall predictor in the long term.
 
 
 
@@ -203,27 +215,28 @@ One thing I noticed when doing this project was that the number of rent petition
 
 ![unemployment-rate-predictor.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/unemployment-rate-predictor.png?raw=true)
 
-In fact, the trends in the data seem so uncannily similar that I felt there might be a cause-and-effect type scenario here. 
-
-
+In fact, the trends in the data seem so uncannily similar that I felt there might be a cause-and-effect type scenario here. If that's true, then it should be theoretically possible to predict to a high-degree of accuracy what the number of petitions is based on the unemployment rate. First, let's see how much the petitions data lags behind the unemployment rate.
 
 ![correlation-vs-lag.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/correlation-vs-lag.png?raw=true)
 
+Based on this graph, we should test a 3-month, 5-month, and 6-month lag, because they have the highest correlation coefficients. After testing all three, I found that a 3-month lag was the best predictor. To generate the coefficients for this one-feature one-target model, I used sklearn's [KFold](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html) function to make a 5-fold cross-validation loop with an 80-20 split so that I could obtain the training score and validate on the test set. 
 
+For linear regression, the R² value is the right metric for evaluating how well the model performs, because when R² is between 0 and 1, it can be interpreted as the fraction of the data that is explained by the model. For example, if R² = 0.30, then my model explains 30% of the variation in my data. The train and test scores are given below.
 
+```python
+train_r2_score:  0.3895005050301806  +/-  0.09232391539274709
+test_r2_score:  0.3771517602333726
+```
 
+Although the R² value may appear low, the following graph of the model shows that it is actually pretty reasonable.
 
 ![lr-on-rent-petition-vs-unemployment.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/lr-on-rent-petition-vs-unemployment.png?raw=true)
 
+By using the linear regression to transform the unemployment rate into a predicted number of rent petitions, I obtain the following model.
 
+![predicted-3-month-lag.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/lr/predicted-3-month-lag.png?raw=true)
 
-Finally, here is the resulting model.
-
-![lr-on-time-lagged-unemployment-data.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/lr-on-time-lagged-unemployment-data.png?raw=true)
-
-The MAE are 5.1 for 3 months, and 13.6 for 5 years. This is nearly as good as the first SARIMA model for short-term prediction and even better for long-term prediction.
-
-
+The MAE are 5.1 for 3 months, 10.3 for 1 year, and 13.6 for 5 years. This is nearly as good as the first SARIMA model for short-term prediction and even better for long-term prediction. This would be the preferred model if instantaneous speed is required, because the model takes nearly no time to train.
 
 
 
@@ -231,14 +244,18 @@ The MAE are 5.1 for 3 months, and 13.6 for 5 years. This is nearly as good as th
 
 The following table summarizes the results of the modeling and the advantages of using each approach.
 
-| Model                             | Benefits                    | MAE<br />(3 Months) | MAE<br />(5 Years) |
-| :-------------------------------- | --------------------------- | ------------------- | ------------------ |
-| Sarima Baseline                   | Best short-term predictor   | 4.9                 | 14.7               |
-| Sarima on Trend                   | Best long-term predictor    | 7.3                 | 12.4               |
-| Linear Regression on Unemployment | Fastest, most interpretable | 5.1                 | 13.6               |
+| Model                             | Benefits                       | MAE<br />(3 months) | MAE<br />(1 year) | MAE<br />(5 years) |
+| :-------------------------------- | ------------------------------ | ------------------- | ----------------- | ------------------ |
+| SARIMA Baseline                   | Best short-term predictor      | 4.9                 | 11.3              | 14.7               |
+| SARIMA on Trend                   | Best long-term predictor       | 7.3                 | 10.9              | 12.4               |
+| Linear Regression on Unemployment | Fastest and most interpretable | 5.1                 | 10.3              | 13.6               |
 
 
 
 ## **Conclusions**
 
-*Add conclusion section
+I made three different forecasting models to predict the number of rent petitions in San Francisco, each having their pros and cons. For the most accurate short-term prediction, SARIMA is hard to out-perform when done correctly. For long-term predictions, SARIMA also works well on the trend alone. For the fastest model, if the data is available beforehand, using a predictive feature such as unemployment rate is the best method, with the additional bonus of the model being highly interpretable.
+
+These forecasting techniques augment my toolbox of data science techniques and can generalize to any kind of data involving time-series.
+
+I hope you enjoyed this tutorial, and happy predicting!
