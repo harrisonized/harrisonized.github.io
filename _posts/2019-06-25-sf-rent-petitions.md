@@ -256,8 +256,8 @@ The following table summarizes the results of the modeling and the advantages of
 
 ## **Conclusions**
 
-I made three different forecasting models to predict the number of rent petitions in San Francisco, each having their pros and cons. For the most accurate short-term prediction, SARIMA is hard to out-perform when done correctly. For long-term predictions, SARIMA also works well on the trend alone. For the fastest model, if the data is available beforehand, using a predictive feature such as unemployment rate is the best method, with the additional bonus of the model being highly interpretable.
+I made three different forecasting models to predict the number of rent petitions in San Francisco, each having their pros and cons. For the most accurate short-term prediction, SARIMA is hard to out-perform when done correctly. For long-term predictions, SARIMA also works well on the trend alone. For the fastest model, if the data is available beforehand, using a predictive feature such as unemployment rate is the best method and has the added bonus of the model being highly interpretable.
 
-These forecasting techniques augment my toolbox of data science techniques and can generalize to any kind of data involving time-series.
+The forecasting techniques presented here are invaluable to my toolbox of data science techniques and can generalize to any kind of data involving time-series.
 
 I hope you enjoyed this tutorial, and happy predicting!
