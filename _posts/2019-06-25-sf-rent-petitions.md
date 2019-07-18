@@ -215,11 +215,11 @@ The MAE are 7.3 for 3 months, 10.9 for 1 year, 12.4 for 5 years, and a grid-sear
 
 One thing I noticed when doing this project was that the number of rent petitions has a similar trend as the unemployment rate in San Francisco, which is plotted below.
 
-![unemployment-rate-predictor.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/unemployment-rate-predictor.png?raw=true)
+![petition-unemployment.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/lr/petition-unemployment.png?raw=true)
 
 In fact, the trends in the data seem so uncannily similar that I felt there might be a cause-and-effect type scenario here. If that's true, then it should be theoretically possible to predict to a high-degree of accuracy what the number of petitions is based on the unemployment rate. First, let's see how much the petitions data lags behind the unemployment rate.
 
-![correlation-vs-lag.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/correlation-vs-lag.png?raw=true)
+![correlation-vs-lag.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/lr/correlation-vs-lag.png?raw=true)
 
 Based on this graph, we should test a 3-month, 5-month, and 6-month lag, because they have the highest correlation coefficients. After testing all three, I found that a 3-month lag was the best predictor. To generate the coefficients for this one-feature one-target model, I used sklearn's [KFold](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html) function to make a 5-fold cross-validation loop with an 80-20 split so that I could obtain the training score and validate on the test set. 
 
