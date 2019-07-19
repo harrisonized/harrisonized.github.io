@@ -91,7 +91,7 @@ After collecting the neighborhoods in these two groups, I replotted the data and
 
 ![time-varying-vs-stationary-neighborhoods.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/neighborhood-correlation/time-varying-vs-stationary-neighborhoods.png?raw=true)
 
-Let's see what this looks like on a geographic level.
+Let's see what this looks like from a geographic standpoint.
 
 ![time-varying-vs-stationary.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/tableau/time-varying-vs-stationary.png?raw=true)
 
@@ -232,7 +232,7 @@ test_r2_score:  0.3771517602333726
 
 Although the R² value may appear low, the following graph of the model shows that it is actually pretty reasonable.
 
-![lr-on-rent-petition-vs-unemployment.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/lr-on-rent-petition-vs-unemployment.png?raw=true)
+![lr-3-months.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/lr/lr-3-months.png?raw=true)
 
 By using the linear regression to transform the unemployment rate into a predicted number of rent petitions, I obtain the following model.
 
@@ -256,8 +256,8 @@ The following table summarizes the results of the modeling and the advantages of
 
 ## **Conclusions**
 
-I made three different forecasting models to predict the number of rent petitions in San Francisco, each having their pros and cons. For the most accurate short-term prediction, SARIMA is hard to out-perform when done correctly. For long-term predictions, SARIMA also works well on the trend alone. For the fastest model, if the data is available beforehand, using a predictive feature such as unemployment rate is the best method and has the added bonus of the model being highly interpretable.
+I made three different forecasting models to predict the number of rent petitions in San Francisco, each having their pros and cons. For the most accurate short-term prediction, SARIMA on the trend and residuals works the best. For long-term predictions, SARIMA on trend only works the best. For the fastest data-driven model, if the data is available beforehand, using a predictive feature such as unemployment rate is the best, and this model has the added bonus of being highly interpretable.
 
-The forecasting techniques presented here are invaluable to my toolbox of data science techniques and can generalize to any kind of data involving time-series.
+The forecasting techniques presented here are invaluable tools in my collection of data science techniques and can generalize to any kind of data involving time-series.
 
 I hope you enjoyed this tutorial, and happy predicting!
