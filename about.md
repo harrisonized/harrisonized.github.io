@@ -3,10 +3,8 @@ layout: page
 title: About Harrison
 ---
 
-Welcome to my blog!
+I studied at the University of California, San Diego, where I double-majored in Physics and Neuroscience. After working as a researcher in RNA biology and immunology, I studied at Metis to become a data scientist. The purpose of this blog is to showcase the data projects I have completed. If you are currently a data science student, please feel free to reproduce any part of my projects, including file organization, code, or explanations.
 
-I come from humble beginnings at the University of California, San Diego, where I double-majored in Physics and Neuroscience. Prior to becoming a data scientist, I worked as a researcher in biology for five years, gaining expertise in the fields of RNA Biology and Immunology.
+As a data scientist, I believe my greatest asset is my multidisciplinary background, because this has enabled me to see scientific problems or engineering challenges from multiple angles to find the best solution. Furthermore, having been in specialized research for so long, I have developed skills in teaching technical topics to non-technical people.
 
-I think my greatest asset is my multidisciplinary background, because it enables me to see scientific problems from a vantage point that is distinct from my colleagues', and this sometimes enables me to come up with the best approaches to solve them. Also, because of the specialized nature of my research, I have developed the skills necessary to explain complicated topics to a more non-technical audience in a way that conveys the main point while still preserving the details.
-
-Please feel free to explore the rest of my [blog](https://harrisonized.github.io/archive) and [LinkedIn](https://www.linkedin.com/in/harrisonized), and please [email me](mailto:harrison.c.wang@gmail.com) with any questions. Happy reading!
+Please feel free to explore the rest of my [blog](https://harrisonized.github.io/archive) and [LinkedIn](https://www.linkedin.com/in/harrisonized), and [email me](mailto:harrison.c.wang@gmail.com) with any questions. Happy reading!
