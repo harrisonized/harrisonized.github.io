@@ -40,7 +40,7 @@ To visualize and understand the data that I had, I used the following one-line-w
 Generating a pair plot enables me to see how the features relate to each other and determine whether or not I needed to transform any of them for the final modeling. From the pairplot, it is apparent that Avg Stars, Length, and Grade have a non-linear relationship with the target, indicating that transformations are needed for these features in particular.
 
 ```python
-sns.pairplot(bishop_proc_df[features_target_list])
+sns.pairplot(bishop_df[features_target_list])
 ```
 
 ![baseline-pairplot.png](https://raw.githubusercontent.com/harrisonized/mountain-project-recommender/master/figures/bishop/eda/baseline-pairplot.png?raw=true)
@@ -51,7 +51,7 @@ I also generated a heat map to check for co-linearity.
 
 ```python
 # Plot heatmap for baseline case.
-plot_heat_map(bishop_proc_df.loc[:,['StarRatings', 'Ticks', 'Avg Stars', 'Length', 'Grade', 'OnToDoLists']])
+plot_heat_map(bishop_df.loc[:,['StarRatings', 'Ticks', 'Avg Stars', 'Length', 'Grade', 'OnToDoLists']])
 ax.set_title('Correlation Heatmap for True Baseline Case', fontsize = 18)
 ```
 
@@ -219,8 +219,8 @@ The last tool in the bag is [Poisson regression](https://en.wikipedia.org/wiki/P
 
 ```python
 # Poisson Regression
-r2_cv_score:  0.8067126232705204  +/-  0.0936183695150618
-r2_test_score:  0.8212121466062641
+val_r2_score:  0.8067126232705204  +/-  0.0936183695150618
+test_r2_score:  0.8212121466062641
 ```
 
 This is by far the best model. Both the in-sample cross-validation score and the out-of-sample test score are extremely high.
