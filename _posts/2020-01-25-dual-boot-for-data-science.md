@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to Prepare Your Windows Computer to do Data Science
+title: How to Prepare Your Windows Computer for Data Science
 ---
 
 
