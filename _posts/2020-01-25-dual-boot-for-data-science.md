@@ -90,7 +90,7 @@ Before installing Ubuntu, there are a few things you need to do in your Windows 
 
    > Solution 2: disable system files
    >
-   > To fix this Disk Management error not enough space, you need to disable the system files as many as you can at this very moment. 1. Disable System Protection in Control Panel\System and Security\System\System Protection.
+   > 1. To fix this Disk Management error not enough space, you need to disable the system files as many as you can at this very moment. 1. Disable System Protection in Control Panel\System and Security\System\System Protection.
    >
    > 2. Run Disk Defragment. Type in "disk defragmenter" in the search box, and the defragment utility should show at the top of the search results.
    >
