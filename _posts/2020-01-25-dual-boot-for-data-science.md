@@ -33,13 +33,9 @@ Before we begin, I want to make some disclaimers:
 
 Hopefully this has changed, but before I started the bootcamp, the Metis staff was heavily pushing for students to purchase a Macbook. In fact, as of today, it is still listed on their website in the [Metis faq](https://www.thisismetis.com/faq#bq-14):
 
-```
-What do I need to bring to the bootcamp?
-
-You will need your computer, your brain, and a readiness to learn. Your computer needs to run OS X and have at least 4GB RAM, 2GHz, and a 100 GB HD. Alternatively, if you are a Windows user and your computer is fairly powerful, you could run a Linux Virtual Machine inside your normal Windows install. This requires some configuration.
-```
-
- 
+> What do I need to bring to the bootcamp?
+>
+> You will need your computer, your brain, and a readiness to learn. Your computer needs to run OS X and have at least 4GB RAM, 2GHz, and a 100 GB HD. Alternatively, if you are a Windows user and your computer is fairly powerful, you could run a Linux Virtual Machine inside your normal Windows install. This requires some configuration.
 
 There are two reasons that I'll give now on why, if you do not already have a Macbook, that you should **NOT** go out and buy one. 
 
@@ -92,21 +88,19 @@ Before installing Ubuntu, there are a few things you need to do in your Windows 
 
 4. **Shrink the disk.** After confirming that your disk is FULLY defragmented, go to the Disk Management tool and try to shrink your disk to make space for Ubuntu. I say "try", because if you have issues shrinking the volume, that means you have some unmoveable hidden-files that need to be deleted. Follow Solution 2 in this [guide](https://www.disk-partition.com/articles/shrink-volume-not-enough-space-4348.html), which I reproduce below:
 
-   ```
-   Solution 2: disable system files
-   
-   To fix this Disk Management error not enough space, you need to disable the system files as many as you can at this very moment. 1. Disable System Protection in Control Panel\System and Security\System\System Protection.
-   
-   2. Run Disk Defragment. Type in "disk defragmenter" in the search box, and the defragment utility should show at the top of the search results.
-   
-   3. Disable Hibernation mode by run the command “powercfg /hibernate off “in the Command Prompt. In Windows 8/8.1 or Windows 10, the Hibernation mode is disabled as default.
-   
-   4. Disable the kernel memory dump. In the Advanced Settings, go to Settings under Startup and Recovery, and then switch the drop-down menu under Write debugging information to “None”.
-   
-   5. Disable page files. In the same System, go to Advanced System Settings\Settings under Performance\Advanced\Change, uncheck the option Automatically manage paging file size for all drives, and check the option No Paging File. Restart your computer, and then delete your c:\pagefile.sys file.
-   
-   6. Run the Disk Cleanup. Open Disk Cleanup at the Properties of the partition you want to clean up. Then click Clean up system files to remove the hibernation file and all restore points.
-   ```
+   > Solution 2: disable system files
+   >
+   > To fix this Disk Management error not enough space, you need to disable the system files as many as you can at this very moment. 1. Disable System Protection in Control Panel\System and Security\System\System Protection.
+   >
+   > 2. Run Disk Defragment. Type in "disk defragmenter" in the search box, and the defragment utility should show at the top of the search results.
+   >
+   > 3. Disable Hibernation mode by run the command “powercfg /hibernate off “in the Command Prompt. In Windows 8/8.1 or Windows 10, the Hibernation mode is disabled as default.
+   >
+   > 4. Disable the kernel memory dump. In the Advanced Settings, go to Settings under Startup and Recovery, and then switch the drop-down menu under Write debugging information to “None”.
+   >
+   > 5. Disable page files. In the same System, go to Advanced System Settings\Settings under Performance\Advanced\Change, uncheck the option Automatically manage paging file size for all drives, and check the option No Paging File. Restart your computer, and then delete your c:\pagefile.sys file.
+   >
+   > 6. Run the Disk Cleanup. Open Disk Cleanup at the Properties of the partition you want to clean up. Then click Clean up system files to remove the hibernation file and all restore points.
 
    I was able to move those files without downloading the external software. In particular, moving the pagefile.sys is what fixed the issue for me.
 
