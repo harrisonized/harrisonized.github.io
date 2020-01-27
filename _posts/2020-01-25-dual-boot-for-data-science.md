@@ -1,6 +1,7 @@
 ---
 layout: post
 title: How to Prepare Your Windows Computer for Data Science
+
 ---
 
 
@@ -623,9 +624,9 @@ If everything works, when you run nvidia-smi, you should see something that rese
    ```
    # Install the GPG key
    wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-
+   
    # Ensure apt is set up to work with https sources
-sudo apt-get install apt-transport-https
+   sudo apt-get install apt-transport-https
    
    # Select the channel to use: Stable
    echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
@@ -634,7 +635,7 @@ sudo apt-get install apt-transport-https
    sudo apt-get update
    sudo apt-get install sublime-text
    ```
-   
+
 5. [Pycharm](https://www.jetbrains.com/help/pycharm/installation-guide.html#) I don't personally use this, but you might like it.
 
    ```
@@ -1001,7 +1002,7 @@ I am including this section, because I found the explanation in the Metis prewor
 Git has three main purposes:
 
 1. It is a version control tool.
-3. It allows you to work on the same coding projects with other developers.
+2. It allows you to work on the same coding projects with other developers.
 3. It gives you the ability to showcase your work on Github (don't be shy!).
 
 Note: Git is the command-line tool used to keep track of version information. Github is the website on which you can upload your git repositories. Git is NOT Github. You can use Git without Github. 
@@ -1019,100 +1020,112 @@ For example, I like to keep a folder in my home directory called "github", where
 
 In general, I would recommend having the folder name be the same as the repository name. For example, on my computer, the "medical-notes-kaggle" folder is linked to the [medical-notes-kaggle](https://github.com/harrisonized/medical-notes-kaggle) repository. If you think of better name for your project, you can always change it, but be sure to change it both locally and on github to prevent confusion. If you click on the repository, you will find a data folder and a figures folder. Also, all my python notebooks are in the main directory along with a README.md file that describes what I want to accomplish with this project and a .gitignore file that prevents my repository from being cluttered with useless files. In general, you will want to split up data this way, but your project may have other folders, for example, multiple folders inside the data folder if your data came from multiple sources.
 
-The following is a tutorial on how to setup a git repository and connect it to github. Open your command line and create a folder called github in your home.
+The following is a tutorial on how to setup a git repository and later connect it to github.
 
-```
-cd
-mkdir github
-```
+**Git Basics**
 
-If you open your Finder, you'll see that a folder called "github" has been created. Also, if you type in "ls", you will see a list of all the folders in your home directory, including "github".
+1. Open your command line and create a folder called github in your home.
 
-Next, cd (change directory) into github, create a test repository, and cd into that: 
+   ```
+   cd
+   mkdir github
+   ```
+   
+   If you open your Finder, you'll see that a folder called "github" has been created. Also, if you type in "ls", you will see a list of all the folders in your home directory, including "github".
+   
+2. cd (change directory) into github, create a test repository, and cd into that:
 
-```
-cd github
-mkdir test-repository
-cd test-repository
-```
+   ```
+   cd github
+   mkdir test-repository
+   cd test-repository
+   ```
 
-Now initialize a git repository:
+3. Initialize a git repository:
 
-```
-git init
-```
+   ```
+   git init
+   ```
 
-You should see the following output:
+   You should see the following output:
 
-```
-Initialized empty Git repository in /home/harrisonized/github/test-repository/.git/
-```
+   ```
+   Initialized empty Git repository in /home/harrisonized/github/test-repository/.git/
+   ```
 
-Now if you go to your Finder window and unhide the hidden files (menu button on the top right), you'll see a folder appear called .git. All of the version control information resides in this folder. If you delete this folder, you will also lose your version control information.
+   Now if you go to your Finder window and unhide the hidden files (menu button on the top right), you'll see a folder appear called .git. All of the version control information resides in this folder. If you delete this folder, you will also lose your version control information.
 
-Let's make a test file. Open gedit, then save it as test-file.txt in your test-repository with the following text:
+4. Make a test file. Open gedit, then save it as test-file.txt in your test-repository with the following text:
 
-```
-test-1
-```
+   ```
+   test-1
+   ```
 
-If you type the following command, you will see that git recognizes that you added a file to your test-repository folder.
+   Now if you type the following command, you will see that git recognizes that you added a file to your test-repository folder.
 
-```
-git status
-```
+   ```
+   git status
+   ```
 
-Use the following command to commit all the changes:
+5. Use the following command to commit all the changes:
 
-```
-git add *
-git commit -m "added test-file.txt with the line test-1"
-```
+   ```
+   git add *
+   git commit -m "added test-file.txt with the line test-1"
+   ```
 
-Now if you check your git log, you will see the commit information there:
+   If you check your git log, you will see the commit information there:
 
-```
-git log
-```
+   ```
+   git log
+   ```
 
-Now open your test-file.txt file and add another line that says "test-2", so that the file looks like:
+6. Edit the test-file.txt file and add another line that says "test-2", so the file looks like:
 
-```
-test-1
-test-2
-```
+   ```
+   test-1
+   test-2
+   ```
 
-Commit the change:
+7. Commit the change:
 
-```
-git status
-git add *
-git commit -m "added test-2 to test-file.txt"
-```
+   ```
+   git status
+   git add *
+   git commit -m "added test-2 to test-file.txt"
+   ```
 
-Now if you check your git log, again you will see two commits. Now, let's unstage the previous commit:
+   Now if you check your git log, again you will see two commits.
 
-```
-git reset HEAD^
-```
+8. To unstage the last commit, use the following command:
 
-If you now check your git log, you'll find that the last commit has been unstaged, but it did not change your files. , let's recommit this unstaged commit, to demonstrate.
+   ```
+   git reset HEAD^
+   ```
 
-```
-git add *
-git commit -m "re-added test-2 to test-file.txt"
-```
+   If you now check your git log, you'll find that the last commit has been unstaged, but it did not change your files.
 
-Now your git log should show this new commit. To reset to the beginning of your previous commit, you'll first need to unstage your commit, then you'll have to tell git to undo the changes.
+9. To demonstrate how to revert to the beginning of the previous version, let's first recommit this unstaged commit:
 
-```
-git reset HEAD^
-git reset --hard HEAD
-```
+   ```
+   git add *
+   git commit -m "re-added test-2 to test-file.txt"
+   ```
 
-If you check the file now, the line with test-2 is gone, and now git log does not include any information about your second commit!
+   Now your git log should show this new commit.
 
-One more thing you want to have for each project is to have Git ignore certain files. For example, here are three file types you may want to ignore: 
+10. To reset to the beginning of your previous commit, you'll first need to unstage your commit, then you'll have to tell git to undo the changes.
+
+    ```
+    git reset HEAD^
+    git reset --hard HEAD
+    ```
+
+    If you check the file now, the line with test-2 is gone, and now git log does not include any information about your second commit!
+
+**Git Ignore**
+
+One more thing you might want to have for each project is to have Git ignore certain files. For example, here are three file types you may want to ignore: 
 
 1. [.ipynb_checkpoints files](https://stackoverflow.com/questions/36306017/should-ipynb-checkpoints-be-stored-in-git) that Jupyter creates each time you save using CTRL+S
 2. [.~lock files](https://ask.libreoffice.org/en/question/167274/what-is-the-purpose-of-the-lock-file/) that are created by LibreOffice to prevent files from being edited when they're open
@@ -1141,11 +1154,21 @@ Now if you check git status, you'll find that file-to-ignore.txt is not listed. 
 __pycache__
 ```
 
+
+
+**Connecting to Github**
+
 To connect your Git repository to Github, do the following. First, log into Github, then in the Repositories tab, click the Green button that says "New". Make a repository called "test-repository", and do not initialize with a README file. (You may also want to make this repository private.) Create the repository, then copy the URL given in the next page. Go to your terminal and run the following commands:
 
 ```
 git remote add origin https://github.com/harrisonized/test-repository.git
 git push -u origin master
+```
+
+By the way, if you want to [store your credentials](https://git-scm.com/book/en/v2/Git-Tools-Credential-Storage), use the following to keep it for 15 minutes.
+
+```
+git config --global credential.helper 'cache --timeout=900'
 ```
 
 To check where link the remote repository is located, run:
@@ -1204,7 +1227,7 @@ conda activate starter
 conda update conda
 ```
 
-If this goes through, you're ready to go to the next step. Click [here](https://harrisonized.github.io/environment-files/pinned) to download a file called pinned, and move the file into the following folder:
+Click [here](https://harrisonized.github.io/environment-files/pinned) to download a file called pinned, and move the file into the following folder:
 
 ```
 anaconda3/envs/starter/conda-meta
@@ -1257,10 +1280,129 @@ If this goes through, you got lucky. If not, it shows why knowing the history of
 
 ## [Bonus] Connect to PostgreSQL in Jupyter Notebook using SQLAlchemy
 
-TBA
+This will only work if you have the password that you set on the server, or if you edited your pg_hba.conf file to trust IPv6 local connections (see above).
+
+First, go into your local Postgres server using the following commands in the terminal:
+
+```
+sudo su -l postgres
+psql
+```
+
+If this goes through, you should see:
+
+```
+postgres=#
+```
+
+Create a database called test_database (do NOT make databases with dashes)
+
+```sql
+CREATE DATABASE test_database;
+```
+
+Check that it's there:
+
+```sql
+\l
+```
+
+Now connect to it:
+
+```sql
+\c test_database
+```
+
+Create a new table:
+
+```sql
+CREATE TABLE test_table(
+  id_ SERIAL PRIMARY KEY,
+  item TEXT,
+  price FLOAT)
+;
+```
+
+And populate it:
+
+```sql
+INSERT INTO test_table(
+  item,
+  price)
+VALUES ('bubble gum', 1.0)
+;
+
+INSERT INTO test_table(
+  item,
+  price)
+VALUES ('candy', 4.5)
+;
+```
+
+Check that this data is there:
+
+```sql
+SELECT *
+FROM test_table;
+```
+
+Now we would like to connect to it using Jupyter notebook. Activate your starter environment, then create a jupyter notebook and enter the following commands. You can read more about the connection arguments [here](https://docs.sqlalchemy.org/en/13/core/engines.html).
+
+```python
+import pandas.io.sql as pd_sql
+connection_str = f'postgres://postgres:{None}@localhost:5432/test_database'
+test_table_df = pd_sql.read_sql("SELECT * FROM test_table;", connection_str)
+test_table_df
+```
+
+If it works, you should now see the data you entered into the database earlier.
+
+```python
+from sqlalchemy import create_engine
+from sqlalchemy.types import Text, Float
+engine = create_engine(connection_str)
+
+dtype_dict = {'invoice_no': Text,
+              'stock_code': Float,}
+test_table_df.to_sql('test_table_copy', engine, dtype=dtype_dict, index=False)
+```
+
+Check that it worked:
+
+```python
+test_table_copy_df = pd_sql.read_sql("SELECT * FROM test_table_copy;", connection_str
+test_table_copy_df
+```
+
+Lastly, if you're done with your project and want to get rid of your database, go sudo su into your postgres server in your terminal and drop the database:
+
+```sql
+DROP DATABASE test_database;
+```
+
+If you see the following message:
+
+```sql
+ERROR:  database "test_database" is being accessed by other users
+DETAIL:  There is 1 other session using the database.
+```
+
+Then what you should do is restart the postgres server to kick off everyone. To do this, open a new terminal and type in:
+
+```sql
+sudo service postgresql restart
+```
+
+Now when you log back in, you'll have no issues dropping the database.
+
+Don't forget to [reclaim the free space](https://www.postgresql.org/docs/9.1/sql-vacuum.html) on your hard drive:
+
+```sql
+VACUUM FULL;
+```
 
 
 
-## Congrats!
+## Congratulations!
 
-Congratulations for making it to the end! Give yourself a pat on the back, and I hope you enjoy your journey through data science and python programming!
+Truly congrats for having the persistence to make it to the end! Give yourself a pat on the back. You are now far more prepared than I was when I entered the bootcamp, and I do hope you enjoy your journey through data science and python programming. Cheers!
