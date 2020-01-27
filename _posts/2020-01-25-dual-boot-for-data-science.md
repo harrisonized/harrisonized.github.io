@@ -1303,13 +1303,13 @@ CREATE DATABASE test_database;
 
 Check that it's there:
 
-```sql
+```
 \l
 ```
 
 Now connect to it:
 
-```sql
+```
 \c test_database
 ```
 
