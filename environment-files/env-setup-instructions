@@ -1,0 +1,69 @@
+# Update base conda version
+conda update -n base -c defaults conda
+
+# Create environment
+conda env create -f environment-seed.yml
+conda activate starter
+conda update conda
+
+-----
+Copy and paste the pinned file into the following folder:
+anaconda3/envs/starter/conda-meta
+
+This will fix the package version of the specified packages.
+-----
+
+# Graphviz
+sudo apt-get install python3-dev graphviz libgraphviz-dev pkg-config
+pip install pygraphviz
+pip install eralchemy
+pip install simpy==3.0.11
+
+# Other plotly related tools
+pip install squarify==0.4.3
+conda install -c conda-forge umap-learn
+pip install git+https://github.com/lmcinnes/umap.git@0.4dev
+conda install datashader
+conda install -c plotly plotly-orca psutil requests
+sudo apt-get install libcanberra-gtk-module
+
+# Dash
+conda install -c conda-forge dash
+
+# Final update
+conda update --all
+
+
+
+=====
+Troubleshooting
+=====
+
+For packages that don't work, remove the build number.
+Delete the packages that still don't work after removing the build number.
+
+Conda packages to delete:
+appnope=0.1.0
+cctools=895
+clang_osx-64=4.0.1
+clang==4.0.1=1
+clangxx_osx-64=4.0.1
+clangxx=4.0.1
+compiler-rt=4.0.1
+gfortran_osx-64=4.8.5
+ld64=274.2
+libcxx=4.0.1
+libcxxabi=4.0.1
+libgfortran=3.0.1
+llvm-lto-tapi=4.0.1
+llvm-openmp=4.0.1
+llvm=4.0.1
+python.app=2
+
+
+
+Pip packages to download separately (included above)
+pygraphviz==1.5
+eralchemy==1.2.10
+simpy==3.0.11
+squarify==0.4.3
