@@ -17,6 +17,7 @@ What you will find in this guide are as follows:
 4. Optional: How to adjust touchpad sensitivity
 5. Optional: How to set up hibernation mode
 6. Optional: How to set up your Windows compartment (in case you ever want to use that)
+7. Bonus: Things you should setup before the bootcamp (Github, Conda, and PostgreSQL)
 
 Even if you're an advanced user, maybe you'll find some useful information here. Or, if you're an expert, reach out and let me know if something could be done better.
 
@@ -558,7 +559,7 @@ If everything works, when you run nvidia-smi, you should see something that rese
       conda create --name new_env
       ```
 
-      and instead of "new_env", name it something else that's more descriptive.
+      and instead of "new_env", name it something else that's more descriptive. Also, at end of this guide, I include a bonus section to help you create an environment that I use for development.
 
    5. Check that jupyter notebook works.
 
@@ -988,6 +989,275 @@ If you want most of the same functionalities that you would get in Windows, here
     Make sure you save your password somewhere or make it easy to remember. The password is required for Windows, whereas it can be bypassed in Linux.
 
 13. [Tableau Public](https://public.tableau.com/en-us/s/). I actually prefer [Plotly](https://plot.ly/python/) to Tableau, but you can't deny that you can make some really advanced plots for very little work in Tableau.
+
+
+
+## [Bonus] Set Up a Github Repository
+
+If you do not already have a Github account, please go [here](https://github.com/) and set one up.
+
+I am including this section, because I found the explanation in the Metis prework to be more confusing than helpful. If you already know how to use Git and Github, please skip this section.
+
+Git has three main purposes:
+
+1. It is a version control tool.
+3. It allows you to work on the same coding projects with other developers.
+3. It gives you the ability to showcase your work on Github (don't be shy!).
+
+Note: Git is the command-line tool used to keep track of version information. Github is the website on which you can upload your git repositories. Git is NOT Github. You can use Git without Github. 
+
+Your Github repositories will be your portfolio. You can be sure people will look at it, because as a bootcamp graduate, you will not have track record or multiple references who can vouch for your abilities. Hence, this will is one of the main ways that an employer can quickly judge whether or not you know what you're doing before you make it to the on-site interview.
+
+File organization is incredibly important. A well-organized project should be organized in a way that makes it easy for a random stranger to quickly get a sense of what they might expect to find in each file. In essence, file organization is about choosing reasonably descriptive folder and file names and organizing those files in a logical way. File organization is also important for yourself, because for example, if you just throw everything on desktop, it will quickly become cluttered with things like useless CSV files, PDFs that you never read, and other random files mixed in with your data projects.
+
+For example, I like to keep a folder in my home directory called "github", where all of my data projects reside. Each folder within github describes a project that I've done. For example, the "medical-notes-kaggle" folder is a reasonably descriptive name for that project. For naming conventions, I would recommend reading [this description](https://github.com/bartvandebiezen/file-name-conventions) and watching [this video](https://www.youtube.com/watch?v=AQcSFsQyct8). To summarize the general guidelines:
+
+1. Use lowercase most of the time. For example: do **NOT** name your project My_Project
+2. Use dashes in place of spaces. For example, my-project
+3. Use underscores when you want to join words that belong together. For example: san_francisco
+4. Keep foldernames short, aim for three words or less
+
+In general, I would recommend having the folder name be the same as the repository name. For example, on my computer, the "medical-notes-kaggle" folder is linked to the [medical-notes-kaggle](https://github.com/harrisonized/medical-notes-kaggle) repository. If you think of better name for your project, you can always change it, but be sure to change it both locally and on github to prevent confusion. If you click on the repository, you will find a data folder and a figures folder. Also, all my python notebooks are in the main directory along with a README.md file that describes what I want to accomplish with this project and a .gitignore file that prevents my repository from being cluttered with useless files. In general, you will want to split up data this way, but your project may have other folders, for example, multiple folders inside the data folder if your data came from multiple sources.
+
+The following is a tutorial on how to setup a git repository and connect it to github. Open your command line and create a folder called github in your home.
+
+```
+cd
+mkdir github
+```
+
+If you open your Finder, you'll see that a folder called "github" has been created. Also, if you type in "ls", you will see a list of all the folders in your home directory, including "github".
+
+Next, cd (change directory) into github, create a test repository, and cd into that: 
+
+```
+cd github
+mkdir test-repository
+cd test-repository
+```
+
+Now initialize a git repository:
+
+```
+git init
+```
+
+You should see the following output:
+
+```
+Initialized empty Git repository in /home/harrisonized/github/test-repository/.git/
+```
+
+Now if you go to your Finder window and unhide the hidden files (menu button on the top right), you'll see a folder appear called .git. All of the version control information resides in this folder. If you delete this folder, you will also lose your version control information.
+
+Let's make a test file. Open gedit, then save it as test-file.txt in your test-repository with the following text:
+
+```
+test-1
+```
+
+If you type the following command, you will see that git recognizes that you added a file to your test-repository folder.
+
+```
+git status
+```
+
+Use the following command to commit all the changes:
+
+```
+git add *
+git commit -m "added test-file.txt with the line test-1"
+```
+
+Now if you check your git log, you will see the commit information there:
+
+```
+git log
+```
+
+Now open your test-file.txt file and add another line that says "test-2", so that the file looks like:
+
+```
+test-1
+test-2
+```
+
+Commit the change:
+
+```
+git status
+git add *
+git commit -m "added test-2 to test-file.txt"
+```
+
+Now if you check your git log, again you will see two commits. Now, let's unstage the previous commit:
+
+```
+git reset HEAD^
+```
+
+If you now check your git log, you'll find that the last commit has been unstaged, but it did not change your files. , let's recommit this unstaged commit, to demonstrate.
+
+```
+git add *
+git commit -m "re-added test-2 to test-file.txt"
+```
+
+Now your git log should show this new commit. To reset to the beginning of your previous commit, you'll first need to unstage your commit, then you'll have to tell git to undo the changes.
+
+```
+git reset HEAD^
+git reset --hard HEAD
+```
+
+If you check the file now, the line with test-2 is gone, and now git log does not include any information about your second commit!
+
+One more thing you want to have for each project is to have Git ignore certain files. For example, here are three file types you may want to ignore: 
+
+1. [.ipynb_checkpoints files](https://stackoverflow.com/questions/36306017/should-ipynb-checkpoints-be-stored-in-git) that Jupyter creates each time you save using CTRL+S
+2. [.~lock files](https://ask.libreoffice.org/en/question/167274/what-is-the-purpose-of-the-lock-file/) that are created by LibreOffice to prevent files from being edited when they're open
+3. [.DS_Store files](https://apple.stackexchange.com/questions/69467/consequences-of-deleting-ds-store) from any projects that came from macOS.
+4. [Files larger than 100 MB](https://help.github.com/en/github/managing-large-files/working-with-large-files), which is the push limit for Github. Your data files are usually going to be larger than this (on the order of 1 GB), so you may want to ignore them. Also, if you're handling sensitive data, you definitely want to ignore them to prevent them from being hosted on the internet for all to see.
+
+To demonstrate ignoring files, create another text file called "file-to-ignore.txt" with some random text:
+
+```
+asdf
+```
+
+Now create a file called .gitignore (without the .txt), the add the filename of the file you want to ignore.
+
+```
+file-to-ignore.txt
+```
+
+Now if you check git status, you'll find that file-to-ignore.txt is not listed. Here's a [pretty good tutorial](https://www.atlassian.com/git/tutorials/saving-changes/gitignore) on the basics of .gitignore. In general, I usually just add the same .gitignore file to all my projects:
+
+```
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+.~lock*
+.DS_Store
+__pycache__
+```
+
+To connect your Git repository to Github, do the following. First, log into Github, then in the Repositories tab, click the Green button that says "New". Make a repository called "test-repository", and do not initialize with a README file. (You may also want to make this repository private.) Create the repository, then copy the URL given in the next page. Go to your terminal and run the following commands:
+
+```
+git remote add origin https://github.com/harrisonized/test-repository.git
+git push -u origin master
+```
+
+To check where link the remote repository is located, run:
+
+```
+git remote -v
+```
+
+If you ever change the repository name, for example, from test-repository to new-test-repository, then you can change it with the following command:
+
+```
+git remote set-url origin https://github.com/harrisonized/new-test-repository.git
+```
+
+Make sure to also change the folder name to prevent confusion.
+
+When you do your data projects, always make your project a self-contained git repository. When you get to a point where you feel it's worth saving (which is generally once or twice a day), commit the change, then push it to Github. This will ensure that when people view your project, they can see how much effort you put into it, ie. if you only make one large commit at the end, people won't know what you did. Make sure the git commit messages really capture what you completed in each commit.
+
+Lastly, earlier I mentioned that you could use github to work with other people on the same projects. To do this, you'll need to create a git branch. That will be beyond the scope of this guide, since you'll need a friend to test out this feature, but I found [this guide](https://stackabuse.com/git-merge-branch-into-master/) to be helpful. The first project at Metis (at least when I was a student) was a group project, so being able to have a single git repository where your classmates can share code with you will give you a leg up.
+
+
+
+## [Bonus] Set Up Your Conda Environment
+
+In order to recreate a pre-existing conda environment, Conda has a [feature](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file) that allows you to create an environment file from an .yml file, which is a text file that lists all of the packages and version and build information from a given environment. For example, here's a line from an environment.yml file that I have:
+
+```
+numpy=1.16.4=py36h95a1406_0
+```
+
+numpy is the package name, 1.16.4 is the version information, and py36h95a1406_0 is the build number.
+
+The .yml file can be created by using the following command with the desired environment activated. I would name it something other than environment.yml, as you can easily get confused when you have multiple environments.
+
+```
+conda env export > environment.yml
+```
+
+Something to watch out for is that when you export an environment that has been in use for a long time, conda may run into issues trying to solve version conflicts and abort the operation altogether or otherwise install as many packages as it can while ignoring many of them. Therefore, the only way I've found to reliably reproduce environments is if we had the ORIGINAL environment.yml file and the history and executed the commands in the exact same order.
+
+To help you get started, I'll include instructions here on how to create the environment I use for basic data analysis work. Note that this environment is pretty bloated, you definitely don't need all these packages, but it may be useful during your bootcamp if you weren't starting from scratch.
+
+Click [here](https://harrisonized.github.io/environment-files/environment-seed.yml) to download the environment-seed.yml file for the starter environment.
+
+Now move the environment-seed.yml file into home, then update your base conda version:
+
+```
+conda update -n base -c defaults conda
+```
+
+Now create the environment. This may not always work. If it doesn't work, conda will tell you which packages can't be found. For those packages, remove the build number and try again. If the packages still can't be found, for example, if there are some macOS packages that were installed using homebrew, delete them.
+
+```
+conda env create -f environment-seed.yml
+conda activate starter
+conda update conda
+```
+
+If this goes through, you're ready to go to the next step. Click [here](https://harrisonized.github.io/environment-files/pinned) to download a file called pinned, and move the file into the following folder:
+
+```
+anaconda3/envs/starter/conda-meta
+```
+
+This will fix the package version of the specified packages and prevent them from changing during conda updates.
+
+Next, install the following packages:
+
+```
+# Graphviz
+sudo apt-get install python3-dev graphviz libgraphviz-dev pkg-config
+pip install pygraphviz
+pip install eralchemy
+pip install simpy==3.0.11
+
+# Other plotly related tools
+pip install squarify==0.4.3
+conda install -c conda-forge umap-learn
+pip install git+https://github.com/lmcinnes/umap.git@0.4dev
+conda install datashader
+conda install -c plotly plotly-orca psutil requests
+sudo apt-get install libcanberra-gtk-module
+
+# Dash
+conda install -c conda-forge dash
+
+# Final update
+conda update --all
+```
+
+Now if you check the the "history" file in the conda-meta folder (the same folder as "pinned"), you'll see all the conda installs in the history. However, the pip installs will not be there. For this reason, I would highly recommend keeping a text file in which you keep track of all the updates to your environment. This is something I wish I had done during the bootcamp, as I installed many different packages from many different places and now have no idea how that environment got to that point.
+
+Finally, if you want to see that your environment can't be reproduced by simply doing an export followed by an import, try to export your environment and then create another environment using the .yml file you created.
+
+```
+conda activate starter
+conda env export > new-env.yml
+```
+
+Edit the name of the environment to 'new'. Then
+
+```
+conda env create -f new-env.yml
+```
+
+If this goes through, you got lucky. If not, it shows why knowing the history of the environment is important.
+
+
+
+## [Bonus] Connect to PostgreSQL in Jupyter Notebook using SQLAlchemy
+
+TBA
 
 
 
