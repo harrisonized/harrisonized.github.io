@@ -1,7 +1,6 @@
 ---
 layout: post
-title: How to Prepare Your Windows Computer for Data Science
-
+title: How to Prepare Your Computer for Data Science
 ---
 
 
@@ -10,22 +9,25 @@ title: How to Prepare Your Windows Computer for Data Science
 
 I am writing this guide with the beginner data science bootcamp student in mind. It has only been a short while since I completed the [Metis Data Science Bootcamp](https://www.thisismetis.com/data-science-bootcamps) and successfully pivoted my career, and one thing I felt would have significantly improved my bootcamp experience was if there was a guide available to show me how to set up my computer before the bootcamp started. I'll never forget the many days of frustration in which I was stuck on a software issue during class and then had to play catch-up afterward.
 
+I wrote this guide mainly for Windows users, but if you're an Apple user, I'd like to help you too. Skip to the section titled "[Bonus] Setting Up Your Macbook".
+
 What you will find in this guide are as follows:
 
 1. How to set up your Ubuntu dual boot
 2. How to enable the NVIDIA driver and download CUDA
-3. Which programs you'll want to download
+3. Programs to download
 4. Optional: How to adjust touchpad sensitivity
 5. Optional: How to set up hibernation mode
-6. Optional: How to set up your Windows compartment (in case you ever want to use that)
-7. Bonus: Things you should setup before the bootcamp (Github, Conda, and PostgreSQL)
+6. Optional: Setting up your Windows compartment (if you ever want to use that)
+7. Bonus: Setting up your Macbook
+8. Bonus: Things you should become familiar with before the bootcamp (Github, Conda, and PostgreSQL)
 
 Even if you're an advanced user, maybe you'll find some useful information here. Or, if you're an expert, reach out and let me know if something could be done better.
 
 Before we begin, I want to make some disclaimers:
 
-1. All of this information is available for free online, and I did not come up with or invent any of it. Therefore, if you run into issues, my ability to help you is limited. Nevertheless, I still believe it adds value to have all of this information in one place. If anything, it will save you the trouble of Googling.
-2. What I'm trying to accomplish here is NOT to tell you "the best way" to set up your machine. This guide details how I set up my own machine, and it currently works to my satisfaction. There are still things I haven't quite figured out yet, like what settings to adjust on my touchpad, or how to prevent crashes. But when I figure these things out, I'll update the guide.
+1. All of this information is freely available online, and I did not come up with or invent any of it. Therefore, if you run into issues, my ability to help you is limited. Nevertheless, I still believe it adds value to have all of this information in one place. If anything, it will save you the trouble of Googling.
+2. What I'm trying to accomplish here is NOT to tell you "the best way" to set up your machine. This guide details how I set up my own machine, and it currently works to my satisfaction. There are still things I haven't quite figured out yet, for example, my touchpad is still too sensitive. But when I figure these things out, I'll update the guide.
 
 
 
@@ -39,16 +41,23 @@ Hopefully this has changed, but before I started the bootcamp, the Metis staff w
 >
 > You will need your computer, your brain, and a readiness to learn. Your computer needs to run OS X and have at least 4GB RAM, 2GHz, and a 100 GB HD. Alternatively, if you are a Windows user and your computer is fairly powerful, you could run a Linux Virtual Machine inside your normal Windows install. This requires some configuration.
 
-There are two reasons that I'll give now on why, if you do not already have a Macbook, that you should **NOT** go out and buy one. 
+I believe the reason is that the reason is that Apple laptops are much easier to setup. If you already have a Macbook, please do not go out and buy a Windows machine, simply skip to the section titled "[Bonus] Setting Up Your Macbook". Otherwise, there are two main reasons why you should **NOT** go out and buy a Macbook:
 
-1.  I made it through the entire bootcamp using a [Lenovo G410](https://www.cnet.com/products/lenovo-g410-59410765-black-intel-core-i5-4200m-2-50ghz-1600mhz-3mb/) that I purchased in early 2014, which made it over 5 years old when I started. What this means is that any old laptop will be sufficient for you to complete the bootcamp, even if your laptop might take a little longer to run your code. Having a slower laptop should not impede your ability to learn data science!
-2.  If you want to eventually be able to run your machine learning models in your GPU, you will be interested to know that for some mysterious reason, [Apple decided to drop support for NVIDIA](https://appleinsider.com/articles/19/01/18/apples-management-doesnt-want-nvidia-support-in-macos-and-thats-a-bad-sign-for-the-mac-pro). This means you will not have [CUDA](https://developer.nvidia.com/cuda-downloads), because your shiny new macbook will not have an NVIDIA graphics card. Also, in November 2019, [NVIDIA decided to drop macOS support](https://gizmodo.com/apple-and-nvidia-are-over-1840015246). In other words, it's unlikely any future models of Macbook Pros will ever have NVIDIA graphics cards.
+1. Any old laptop with sufficient specs will be good enough for you to complete the bootcamp. I made it through the entire bootcamp using a [Lenovo G410](https://www.cnet.com/products/lenovo-g410-59410765-black-intel-core-i5-4200m-2-50ghz-1600mhz-3mb/) that I purchased in early 2014, which made it over 5 years old when I started. Even if your laptop might take a little longer to run, having a slower laptop should not impede your ability to learn data science.
+
+2. If you want to eventually be able to run your machine learning models in your GPU, you will be interested to know that for some mysterious reason, [Apple decided to drop support for NVIDIA](https://appleinsider.com/articles/19/01/18/apples-management-doesnt-want-nvidia-support-in-macos-and-thats-a-bad-sign-for-the-mac-pro). This means you will not have [CUDA](https://developer.nvidia.com/cuda-downloads), because your shiny new macbook will not have an NVIDIA graphics card. Also, in November 2019, [NVIDIA decided to drop macOS support](https://gizmodo.com/apple-and-nvidia-are-over-1840015246). In other words, it's unlikely any future models of Macbook Pros will ever have NVIDIA graphics cards. Currently, as of February 2020, [here is what Anaconda says](https://docs.anaconda.com/anaconda/user-guide/tasks/gpu-packages/) on this issue:
+
+   > The best performance and user experience for CUDA is on Linux systems. Windows is also supported. No Apple computers have been released with an NVIDIA GPU since 2014, so they generally lack the memory for machine learning applications and only have support for Numba on the GPU.
+
+   So there you have it. However, this doesn't mean that parallel computing won't be available to you in the future. From what what I understand, [PyOpenCl](https://pypi.org/project/pyopencl/) is an open-source project that aims to do most of what CUDA does, so there's still hope. You just might be waiting for a long time.
+
+By the way, from time to time, I hear arguments about "Linux vs. Apple" or the related arguments "Windows sucks!" or "Apple sucks!". I would encourage you not to partake in these kinds of discussions, because not only are they fruitless time-wasters, you would be well-served in becoming comfortable working with whatever system comes your way. So far in my career, my company laptops have only ever been Macbook Pros. They seem very ubiquitous in industry, so imagine how it would make me look if I walked into an interview and openly announced, "I only use Ubuntu, because Apple is too expensive!" Just because you prefer one over another is no reason to downtalk the other brand. Just acknowledge that all of these systems have their pros and cons and do your best to keep an open mind.
 
 
 
 ## What laptop should I get then?
 
-With the disadvantages of Apple stated above, as well as the generally inflated costs of Apple laptops (Windows is always cheaper for the same specs), if you already have a Windows computer, stick with it. Otherwise, you could purchase one with heavily ramped up specs for the same cost as a Macbook. In my case, I recently had the luxury to purchase a better laptop, and I settled on the [MSI GE65 Raider 9SF](https://www.msi.com/Laptop/GE65-RAIDER-9SX/Specification). [Costco is currently having a sale](https://www.costco.com/msi-ge65-raider-gaming-laptop---9th-gen-intel-core-i7-9750h---geforce-rtx-2070---240hz-1080p-display.product.100510949.html) on this particular laptop for just under 2K including taxes, with the following specs:
+With the disadvantages of Apple stated above, as well as the generally inflated costs of Apple laptops (Windows is always cheaper for the same specs), if you already have a Windows computer, stick with it. Otherwise, you could purchase one with heavily ramped up specs for the same cost as a Macbook. In my case, I recently had the luxury to purchase a better laptop, and I settled on the [MSI GE65 Raider 9SF](https://www.msi.com/Laptop/GE65-RAIDER-9SX/Specification). [Costco was having a sale just before the time of this writing](https://www.costco.com/msi-ge65-raider-gaming-laptop---9th-gen-intel-core-i7-9750h---geforce-rtx-2070---240hz-1080p-display.product.100510949.html) on this particular laptop for $1750 before sales tax, with the following specs:
 
 9th-Gen Intel Core i7-9750H Processor 2.6GHz
 32GB DDR4 2666MHz RAM
@@ -65,7 +74,7 @@ If you're out in the market for a new laptop, you'll want to read [this guide by
 
 
 
-## Preparing Your Windows Machine
+## Preparing Your Windows Machine with Dual Boot Ubuntu
 
 The main inspiration for my setup guide comes from the following guides written by Donald Kinghorn:
 
@@ -114,7 +123,7 @@ Before installing Ubuntu, there are a few things you need to do in your Windows 
 
 Congrats for making it this far. Hopefully the above steps went relatively smoothly, but if not, give yourself an extra pat on the back for making it this far.
 
-For this next part, I would recommend doing it in the comfort of your own home, not from a coffee shop or public place. You should expect this entire process to take a couple hours, just because troubleshooting always takes a while, and take copious notes. Make sure to document exactly what you did, because you will definitely NOT remember all the steps. I'm writing this guide a few days after I did this entire process, and I'm already amazed at how foreign some of my notes look to me today.
+For this next part, I would recommend doing it in the comfort of your own home, not from a coffee shop or public place. You should expect this entire process to take a couple hours, just because troubleshooting always takes a while. Also, be sure take copious notes. Document exactly what you did, because you will definitely NOT remember all the steps. I'm already amazed at how foreign some of my notes look today, and it has only been a few days since I completed this entire process.
 
 At this stage, it would be really helpful if you had an extra phone or computer so that you can view these instructions and the resources linked here. In particular, I found it particularly helpful to have these guides by Donald Kinghorn:
 
@@ -123,7 +132,7 @@ At this stage, it would be really helpful if you had an extra phone or computer 
 
 
 
-1. **Connect your laptop to power and the internet.** Plug in your laptop, as you won't know exactly how much battery you have left during the installation. Also, when you reach the "Configure the network" stage, you'll want to be connected to your router through an ethernet cord so that your computer can read the network information. You could also do this manually, although I'm not sure how to help you there.
+1. **Connect your laptop to power and the Internet.** Plug in your laptop, as you won't know exactly how much battery you have left during the installation. Also, when you reach the "Configure the network" stage, you'll want to be connected to your router through an ethernet cord so that your computer can read the network information. You could also do this manually, although I'm not sure how to help you there.
 
 2. **Boot from disk.** In order to do this, shut down your computer. Plug in your bootable Ubuntu USB stick with the alternative server image. Then, press the power button to turn on your computer, but in the split-second after you turn on your computer, press your boot menu key, which is typically a F-key. Here is a [fairly comprehensive list](https://www.windowspasswordsreset.com/windows-password-reset-guide/how-to-set-computer-to-boot-from-usb-drive.html) of boot keys by brand. Lenovo is F12 and MSI is F11. Yours might be different, but if you don't feel like looking it up, just go through the buttons until you find it.
 
@@ -315,6 +324,8 @@ I followed these guides by Donald Kinghorn:
 
 I installed both versions on my machine, first 9.2 and then 10.2. The instructions for each one are somewhat different.
 
+You may be asking: is this necessary? I'm only ever going to be working with Python machine learning frameworks and using Anaconda to accomplish this. Strictly speaking, no. However, this process was very simple and took < 10 minutes each, and if you do install this before you install conda, you can be assured that conda will install correctly as well.
+
 
 
 For 9.2, use the download link [here](https://developer.nvidia.com/cuda-92-download-archive?target_os=Linux&target_arch=x86_64&target_distro=Ubuntu&target_version=1604&target_type=runfilelocal). Confirm that the following options are selected:
@@ -486,9 +497,11 @@ ls # (there should be 165 items in this folder if this worked correctly)
 
 When you run the nbody program, you should see a simulation in a new window.
 
+Also, after I downloaded conda (below), it replaced my cuda10.2 with 10.1.
 
 
-If everything works, when you run nvidia-smi, you should see something that resembles the following output:
+
+If everything works, when you run nvidia-smi, you should see something that resembles the following output with the CUDA information in the top right:
 
 ```
 +-----------------------------------------------------------------------------+
@@ -513,9 +526,11 @@ If everything works, when you run nvidia-smi, you should see something that rese
 +-----------------------------------------------------------------------------+
 ```
 
+Also, since this is an installation guide only, for more advanced usage, I will refer you to [this blog](https://medium.com/analytics-vidhya/how-to-set-up-tensorflow-gpu-on-ubuntu-18-04-lts-7a09ffd5f30f), which explains how to install other packages you'll need to set up a convolutional neural net.
 
 
-## Which Programs You'll Want
+
+## Programs to Download
 
 1. [Anaconda](https://protostar.space/why-you-need-python-environments-and-how-to-manage-them-with-conda), which is a Python package manager. You'll need this in order to manage which Python libraries you'll be using, since Python packages depend on each other and not all the packages you will ever use will be compatible with each other. 
 
@@ -584,11 +599,13 @@ If everything works, when you run nvidia-smi, you should see something that rese
       MimeType=text/x-python;
       ```
 
-      Save it in the desktop as "Anaconda.desktop".
+      Save it on the desktop as "Anaconda.desktop".
+      
+   7. See the section titled "[Bonus] Set Up Your Conda Environment" for instructions on setting up a basic data analysis environment called Starter.
 
 2. [Slack Desktop version](https://slack.com/downloads/linux) (NOT the app version). Download the .deb file and double-click it to install.
 
-3. [Typora](https://support.typora.io/Typora-on-Linux/), which is used to read markdown files like this one. I've reproduced the instructions below for your convenience.
+3. [Typora](https://support.typora.io/Typora-on-Linux/), which is used to read markdown files. I've reproduced the instructions below for your convenience.
 
    ```
    # sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
@@ -676,10 +693,35 @@ If everything works, when you run nvidia-smi, you should see something that rese
    sudo su -l postgres
    psql
    ```
-
-
-
-
+   
+   If you did not install it through tasksel or for already have Ubuntu and chose to skip to this step, you can still install Postgres by following the instructions listed [here](https://wiki.postgresql.org/wiki/Apt), reproduced below for your convenience:
+   
+   First, import the repository key. 
+   
+   ```
+   sudo apt-get install curl ca-certificates gnupg
+   curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+   ```
+   
+   To create the fine named **/etc/apt/sources.list.d/pgdg.list**, do the following:
+   
+   ```
+   lsb_release -c # To  find out what to replace "buster" with
+   sudo nano /etc/apt/sources.list.d/pgdg.list
+   
+   deb http://apt.postgresql.org/pub/repos/apt bionic-pgdg main # Replace buster with the version given by lsb_release.
+   
+   CTRL+X
+   ```
+   
+   Now proceed with the installation:
+   
+   ```
+   sudo apt-get update
+   sudo apt-get install postgresql postgresql-contrib pgadmin4
+   ```
+   
+   
 
 ## [Optional] How to Adjust Touchpad Sensitivity
 
@@ -761,7 +803,7 @@ Comment: Lowers the Touchpad Sensitivity at Startup
 
 Make sure the file path is correct. Now when  you startup the computer, it will automatically run your bash script and change the options to your new defaults.
 
-One disclaimer here is that on my machine, the touchpad doesn't really get disabled when I type, and my touchpad is large enough that I always touch it while typing. This has been really annoying recently, so one way I get around it is to use an external mouse and just disable the touchpad completely when I'm writing a lot, for example, this blog post. When I solve this issue, I'll update this post again, this just isn't on my highest priority at the moment. There are packages other than synaptics that can also control the touchpad, and I have yet to try them all.
+One disclaimer here is that on my machine, the touchpad doesn't really get disabled when I type, and my touchpad is large enough that I always touch it while typing. This has been really annoying recently, so although this isn't a full solution, I found that if you disable "Tap to Click", enable "Edge Scrolling", and disable "Natural Scrolling" (two-finger scrolling), there's no way for your touchpad to accidentally click anything. Another solution is to just disable the touchpad completely and use an external mouse. When I resolve this issue once and for all, I'll update this post again, this just isn't currently a priority for me. If you do find a solution to this, feel free to [email me](mailto:harrison.c.wang@gmail.com).
 
 
 
@@ -869,7 +911,7 @@ As I mentioned above, this was a real struggle to setup. Even now that it works 
 
    
 
-## [Optional] How to Set Up Your Windows Compartment
+## [Optional] Setting Up Your Windows Compartment
 
 As convenient as it is to do all of your coding in Ubuntu, from time-to-time, you may want to use your Windows compartment to interface with Windows-only programs. For example, [Tableau Public](https://public.tableau.com/en-us/s/) is currently not available on Ubuntu. Also, I find Microsoft Office PowerPoint slides look more visually appealing than LibreOffice's Presentation slides.
 
@@ -914,6 +956,8 @@ If you want most of the same functionalities that you would get in Windows, here
    Harri@MSI MINGW64 ~
    $
    ```
+
+   See the section titled "[Bonus] Set Up Your Conda Environment" for instructions on setting up a basic data analysis environment called Starter.
 
 6. [PowerShell](https://git-scm.com/book/en/v2/Appendix-A%3A-Git-in-Other-Environments-Git-in-PowerShell). This is the command-line terminal on Windows. It is NOT a bash terminal, but if you do the following in PowerShell, it will look like a bash terminal with conda and git functionality.
 
@@ -989,7 +1033,151 @@ If you want most of the same functionalities that you would get in Windows, here
 
     Make sure you save your password somewhere or make it easy to remember. The password is required for Windows, whereas it can be bypassed in Linux.
 
-13. [Tableau Public](https://public.tableau.com/en-us/s/). I actually prefer [Plotly](https://plot.ly/python/) to Tableau, but you can't deny that you can make some really advanced plots for very little work in Tableau.
+13. [Tableau Public](https://public.tableau.com/en-us/s/). This is a very powerful visualization tool that's GUI based, but it has a lot more power, accessibility, and versatility compared to [Plotly](https://plot.ly/python/), which is already much more powerful than [matplotlib](https://matplotlib.org/). There is a learning curve, and its full power can't be realized until you connect it to a huge relational database, so you probably won't be using it much during the bootcamp. However, it's still good to play around with it a couple times, as it is especially great at handling and graphing geographical data.
+
+
+
+## [Bonus] Setting Up Your Macbook
+
+This part of the guide assumes that your Macbook is brand new out-of-the-box. If it is not, some of these steps will be irrelevant, but if you receive a laptop from your workplace, chances are that it will be brand new. This guide is based on my experience with two Macbooks that I've had to set up. I've also had to factory-reset a Macbook before, so I'll include those instructions at the end if you need it.
+
+First, before you do anything, update your machine from Mohave to Catalina. This process takes an hour, so plug in your laptop, start the update, then take a lunch break. Catalina was first released a few weeks after I started at my first job, so I had to [reinstall Conda](https://stackoverflow.com/questions/58291108/conda-not-found-after-upgrading-to-macos-catalina). After installation, do as many updates as you need to become current, then install the following programs:
+
+1. [Firefox](https://www.mozilla.org/en-US/firefox/mac/). Mac doesn't come with it, so you should install it with Safari so that you can use it to run Jupyter notebooks.
+
+2. [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12). Install this through the App Store. You will need this for [Homebrew](https://brew.sh/), which you will need to install packages. After installing it through the app store, open your terminal and type in:
+
+   ```
+   sudo xcodebuild --license
+   agree
+   ```
+
+   Try not to click enter too quickly, as it's easy to blow past the "agree/disagree" prompt.
+
+3. Download [Homebrew](https://brew.sh/) and use it to download wget. You'll need in order to download certain packages like postgres.
+
+   ```
+   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+   
+   brew install wget
+   ```
+
+4. [Java](https://java.com/en/download/mac_download.jsp). Like Homebrew, you'll need this to use certain software and web tools. Better to install it now.
+
+5. [Seagate Paragon Driver](https://www.seagate.com/support/software/paragon/). This tool will enable you to write to NTFS filesystem, which is commonly found on large external hard drives, which may be useful to you if you need to move large quantities of files off of your machine to make space for your bootcamp work.
+
+6. [Anaconda](https://www.anaconda.com/distribution/#macos). Use the 64-bit graphical installer. Note that [the installation path is different on MacOS](https://docs.anaconda.com/anaconda/install/mac-os/). On Ubuntu, the anaconda3 folder is installed in your home directory, but on MacOS, the anaconda3 folder is installed in the /opt/ directory. When you first install it, you'll find that jupyter notebook won't work, because [Apple changed the default shell from bash to zsh](https://www.theverge.com/2019/6/4/18651872/apple-macos-catalina-zsh-bash-shell-replacement-features), which is also the default for Catalina. In order to get it to work, [you'll need to copy the contents of ~/.bash_profile into ~/.zshrc](https://stackoverflow.com/questions/31615322/zsh-conda-pip-installs-command-not-found/48239937#48239937). Use:
+
+   ```
+   nano ~/.bash_profile
+   ```
+
+   and copy the contents. Then use 
+
+   ```
+   nano ~/.zshrc
+   ```
+
+   and paste everything there. If the file didn't previously exist, create it. For reference, mine looks like this:
+
+   ```
+   # !! Contents within this block are managed by 'conda init' !!
+   __conda_setup="$('/opt/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+   if [ $? -eq 0 ]; then
+       eval "$__conda_setup"
+   else
+       if [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+           . "/opt/anaconda3/etc/profile.d/conda.sh"
+       else
+           export PATH="/opt/anaconda3/bin:$PATH"
+       fi
+   fi
+   unset __conda_setup
+   # <<< conda initialize <<<
+   ```
+
+   To start conda, change the shell to zsh, add conda to path, then activate it
+
+   ```
+   chsh -s /bin/zsh
+   export PATH="/opt/anaconda3/bin:$PATH"
+   
+   # Activate
+   source /opt/anaconda3/bin/activate
+   conda init zsh
+   ```
+
+   See the section titled "[Bonus] Set Up Your Conda Environment" for instructions on setting up a basic data analysis environment called Starter.
+
+7. Slack should already come pre-installed, but if it isn't, download from [here](https://slack.com/downloads/mac).
+
+8. [Typora](https://typora.io/), which is used to read markdown files.
+
+9. [Sublime](https://www.sublimetext.com/) text editor. I use this a lot, especially to view .yml files, .sql files, and .py files.
+
+10. [Pycharm](https://www.jetbrains.com/pycharm/download/download-thanks.html?platform=mac&code=PCC). I don't personally use this, but a lot of people like it and you might too.
+
+11. [PostgreSQL](https://www.dyclassroom.com/howto-mac/how-to-install-postgresql-on-mac-using-homebrew).
+
+    ```
+    brew update
+    brew install postgres
+    ```
+
+    After installation, use the following commands to start and stop postgres and to get into the server.
+
+    ```
+    pg_ctl -D /usr/local/var/postgres start
+    pg_ctl -D /usr/local/var/postgres stop
+    
+    psql postgres
+    ```
+
+12. [LibreOffice](https://www.libreoffice.org/). If you are not used to Apple's iWork office suite (Pages, Number, and Keynote), you may want to download this, as it much more closely resembles early versions of MS Office. Do **NOT** download the latest version. There's a [bug](https://bugs.documentfoundation.org/show_bug.cgi?id=122218#c0) that makes versions after 6.1.4 blurry, so you want to make sure that your version is 6.1.3 or below. You can find earlier versions in the [archive](https://downloadarchive.documentfoundation.org/libreoffice/old/), and here is the [direct link to v6.1.3](https://downloadarchive.documentfoundation.org/libreoffice/old/6.1.3.2/mac/x86_64/).
+
+13. [Tableau Public](https://public.tableau.com/en-us/s/download). This is a very powerful visualization tool that's GUI based, but it has a lot more power, accessibility, and versatility compared to [Plotly](https://plot.ly/python/), which is already much more powerful than [matplotlib](https://matplotlib.org/). There is a learning curve, and its full power can't be realized until you connect it to a huge relational database, so you probably won't be using it much during the bootcamp. However, it's still good to play around with it a couple times, as it is especially great at handling and graphing geographical data.
+
+
+
+**Factory Reset Macbook**
+
+If you ever find yourself having to factory-reset your Macbook, for example, if you wanted to start with a brand new machine before your bootcamp experience. follow the instructions below.
+
+1. Back up all your files.
+
+2. Delete your files, then empty your recycle bin.
+
+3. Securely erase your files. For newer machines with SSDs, [there is no way to pattern overwrite your disk](https://discussions.apple.com/thread/250795166). Apple considers it secure enough to simply [generate a recovery key and throw it away](https://www.reddit.com/r/mac/comments/ecymz7/how_to_delete_freespace_on_an_apfs_drive_using/). Otherwise, if you're on a super old machine, follow the command line instructions in [here](https://www.groovypost.com/howto/securely-wipe-free-space-mac/) to wipe the free space:
+
+   ```
+   diskutil secureErase freespace 4 /Volumes/Macintosh\ HD
+   ```
+
+4. Turn on Filevault and generate a recovery key:
+
+   ```
+   System Preferences > Security & Privacy > FileVault > Turn On FileVault
+   Generate a recovery key
+   ```
+
+5. Sign out of Apple ID:
+
+   ```
+   System Preferences > Apple ID > Overview > Sign Out
+   ```
+
+6. Shut down your computer, then use "command + R" to get into recovery mode.
+
+7. The instructions for erasing your disk are found [here](https://support.apple.com/en-us/HT208496). Select the Disk Utility. **WARNING: DO NOT ERASE THE VOLUME GROUP!**
+
+   ```
+   Macintosh HD - Data > Erase > Erase
+   Macintosh HD > Erase > Erase
+   ```
+
+   If you didn't heed the warning and accidentally deleted the data partition like I did, fortunately, [you can still recover from this](https://discussions.apple.com/thread/8169085). Use  "command + option + r" to completely reset the macbook, then reinstall macOS from there.
+
+8. Reinstall macOS
 
 
 
@@ -1209,7 +1397,7 @@ conda env export > environment.yml
 
 Something to watch out for is that when you export an environment that has been in use for a long time, conda may run into issues trying to solve version conflicts and abort the operation altogether or otherwise install as many packages as it can while ignoring many of them. Therefore, the only way I've found to reliably reproduce environments is if we had the ORIGINAL environment.yml file and the history and executed the commands in the exact same order.
 
-To help you get started, I'll include instructions here on how to create the environment I use for basic data analysis work. Note that this environment is pretty bloated, you definitely don't need all these packages, but it may be useful during your bootcamp if you weren't starting from scratch.
+To help you get started, I'll include instructions here on how to create the environment I use for basic data analysis work. Note that this environment is pretty bloated, you definitely don't need all these packages, but it may be useful during your bootcamp that you aren't starting from scratch. The instructions on this will work for all three operating systems with slight modifications. If you're on Windows, use Git Bash as the terminal.
 
 Click [here](https://harrisonized.github.io/environment-files/environment-seed.yml) to download the environment-seed.yml file for the starter environment.
 
@@ -1235,11 +1423,11 @@ anaconda3/envs/starter/conda-meta
 
 This will fix the package version of the specified packages and prevent them from changing during conda updates.
 
-Next, install the following packages:
+Next, if you're on Windows / Ubuntu, do the following:
 
 ```
 # Graphviz
-sudo apt-get install python3-dev graphviz libgraphviz-dev pkg-config
+sudo apt-get install python3-dev graphviz libgraphviz-dev pkg-config # Ubuntu
 pip install pygraphviz
 pip install eralchemy
 pip install simpy==3.0.11
@@ -1259,7 +1447,44 @@ conda install -c conda-forge dash
 conda update --all
 ```
 
-Now if you check the the "history" file in the conda-meta folder (the same folder as "pinned"), you'll see all the conda installs in the history. However, the pip installs will not be there. For this reason, I would highly recommend keeping a text file in which you keep track of all the updates to your environment. This is something I wish I had done during the bootcamp, as I installed many different packages from many different places and now have no idea how that environment got to that point.
+If you're on MacOS, do the following:
+
+```
+# Graphviz
+brew install graphviz
+pip install --install-option="--include-path=/usr/local/include/" --install-option="--library-path=/usr/local/lib/" pygraphviz
+pip install pygraphviz
+pip install eralchemy
+pip install simpy==3.0.11
+
+# Other plotly related tools
+pip install squarify==0.4.3
+conda install -c conda-forge umap-learn
+pip install git+https://github.com/lmcinnes/umap.git@0.4dev
+conda install datashader
+conda install -c plotly plotly-orca psutil requests
+
+# Dash
+conda install -c conda-forge dash
+
+# Final update
+conda update --all
+
+=====
+Troubleshooting
+=====
+
+# If pip breaks:
+pip3 install --upgrade pip
+pip -V
+# See https://github.com/Homebrew/legacy-homebrew/issues/25752
+
+# If jupyter breaks:
+brew install jupyter
+# See https://github.com/jupyter/help/issues/317#issuecomment-371486264
+```
+
+If you check the the "history" file in the conda-meta folder (the same folder as "pinned"), you'll see all the conda installs in the history. However, the pip installs will not be there. For this reason, I would highly recommend keeping a text file in which you keep track of all the updates to your environment. This is something I wish I had done during the bootcamp, as I installed many different packages from many different places and now have no idea how that environment got to that point.
 
 Finally, if you want to see that your environment can't be reproduced by simply doing an export followed by an import, try to export your environment and then create another environment using the .yml file you created.
 
@@ -1287,6 +1512,9 @@ First, go into your local Postgres server using the following commands in the te
 ```
 sudo su -l postgres
 psql
+
+# For mac, use the following:
+psql postgres
 ```
 
 If this goes through, you should see:
@@ -1405,4 +1633,4 @@ VACUUM FULL;
 
 ## Congratulations!
 
-Truly congrats for having the persistence to make it to the end! Give yourself a pat on the back. You are now far more prepared than I was when I entered the bootcamp, and I do hope you enjoy your journey through data science and python programming. Cheers!
+Truly congrats for having the persistence to make it to the end! Give yourself a pat on the back. You are now far more prepared than I was when I entered the bootcamp, and I do hope you enjoy your journey through Data Science and Python programming. Cheers!
