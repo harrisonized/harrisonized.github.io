@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to Prepare Your Laptop for Data Science
+title: Prepare Your Laptop for Data Science
 ---
 
 
