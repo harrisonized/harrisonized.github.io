@@ -57,15 +57,13 @@ By the way, from time to time, I hear arguments about "Linux vs. Apple" or the r
 
 With the disadvantages of Apple stated above, as well as the generally inflated costs of Apple laptops (Windows is always cheaper for the same specs), if you already have a Windows computer, stick with it. Otherwise, you could purchase one with heavily ramped up specs for the same cost as a Macbook. In my case, I recently had the luxury to purchase a better laptop, and I settled on the [MSI GE65 Raider 9SF](https://www.msi.com/Laptop/GE65-RAIDER-9SX/Specification). Costco was having a sale just before the time of this writing on this particular laptop for $1750 before sales tax, with the following specs:
 
-> 9th-Gen Intel Core i7-9750H Processor 2.6GHz
->
-> 32GB DDR4 2666MHz RAM
->
-> 8GB NVIDIA GeForce RTX 2070 Graphics
->
-> 1 TB NVMe SSD
->
-> 15.6" FHD 240Hz 3ms Display
+```
+CPU: 9th-Gen Intel Core i7-9750H Processor 2.6GHz
+RAM: 32GB DDR4 2666MHz
+GPU: 8GB NVIDIA GeForce RTX 2070 Graphics
+HDD: 1 TB NVMe SSD
+Dim: 15.6" FHD 240Hz 3ms Display
+```
 
 If you're out in the market for a new laptop, you'll want to read [this guide by Tim Dettmers](https://timdettmers.com/2018/12/16/deep-learning-hardware-guide/) on selecting the right components for your laptop. From a really high level overview, [the GPU is most important](https://timdettmers.com/2019/04/03/which-gpu-for-deep-learning/), followed by getting the right CPU for your GPU. Chances are: you may not have time to use the GPU during the bootcamp, but afterward, you will have plenty of time. So the selection procedure is:
 
@@ -104,19 +102,14 @@ Before installing Ubuntu, there are a few things you need to do in your Windows 
    > Solution 2: disable system files
    >
    > 1. To fix this Disk Management error not enough space, you need to disable the system files as many as you can at this very moment. 1. Disable System Protection in Control Panel\System and Security\System\System Protection.
-   >
-   > 2. Run Disk Defragment. Type in "disk defragmenter" in the search box, and the defragment utility should show at the top of the search results.
-   >
+   >2. Run Disk Defragment. Type in "disk defragmenter" in the search box, and the defragment utility should show at the top of the search results.
    > 3. Disable Hibernation mode by run the command “powercfg /hibernate off “in the Command Prompt. In Windows 8/8.1 or Windows 10, the Hibernation mode is disabled as default.
-   >
-   > 4. Disable the kernel memory dump. In the Advanced Settings, go to Settings under Startup and Recovery, and then switch the drop-down menu under Write debugging information to “None”.
-   >
+   >4. Disable the kernel memory dump. In the Advanced Settings, go to Settings under Startup and Recovery, and then switch the drop-down menu under Write debugging information to “None”.
    > 5. Disable page files. In the same System, go to Advanced System Settings\Settings under Performance\Advanced\Change, uncheck the option Automatically manage paging file size for all drives, and check the option No Paging File. Restart your computer, and then delete your c:\pagefile.sys file.
-   >
-   > 6. Run the Disk Cleanup. Open Disk Cleanup at the Properties of the partition you want to clean up. Then click Clean up system files to remove the hibernation file and all restore points.
-
+   >6. Run the Disk Cleanup. Open Disk Cleanup at the Properties of the partition you want to clean up. Then click Clean up system files to remove the hibernation file and all restore points.
+   
    I was able to move those files without downloading the external software. In particular, moving the pagefile.sys is what fixed the issue for me.
-
+   
 5. **Create a bootable Ubuntu USB stick** with the Ubuntu image that you want. First, make sure your USB is at least 2 GB in size. Second, according to Donald Kinghorn, the Ubuntu image you are going to want is the [64-bit PC (AMD64) server install image](http://cdimage.ubuntu.com/releases/18.04.3/release/ubuntu-18.04.3-server-amd64.iso) on [Alternative Ubuntu Server installer](http://cdimage.ubuntu.com/releases/18.04.3/release/) page. Yes, it says AMD64, but [this is just a naming convention](https://askubuntu.com/questions/197001/is-the-64-bit-version-of-ubuntu-only-compatible-with-amd-cpus); it is the correct one for Intel CPUs, such as the Intel i7. You might be wondering: why would I choose to do the server installation over the [normal desktop installation](https://ubuntu.com/download/desktop)? If you read Donald Kinghorn's guide, it says that the server installer is more likely to succeed. Also, in my own experience, the server installer gave the tasksel menu up front, making it much easier to download useful packages.. For example, I was able to have a Postgres server ready after installing Ubuntu, whereas I remember during the bootcamp that it was a real struggle to download Postgres during class. After downloading the .iso file, download [Rufus](https://rufus.ie/), then follow [this tutorial](https://tutorials.ubuntu.com/tutorial/tutorial-create-a-usb-stick-on-windows#0) to "burn" the Ubuntu image onto your USB stick. Make sure there are no extra files on your USB stick, because they WILL get overwritten. If you're wondering what the other options are, keep the Partition Scheme as "MBR", BIOS System as "BIOS or UEFI", and make sure in the advanced format options that the "Quick format" option is checked, otherwise you might be waiting for a while.
 
 
