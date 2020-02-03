@@ -7,9 +7,7 @@ title: Prepare Your Laptop for Data Science
 
 ## **Introduction**
 
-I am writing this guide with the beginner data science bootcamp student in mind. It has only been a short while since I completed the [Metis Data Science Bootcamp](https://www.thisismetis.com/data-science-bootcamps) and successfully pivoted my career, and one thing I felt would have significantly improved my bootcamp experience was if there was a guide available to show me how to set up my computer before the bootcamp started. I'll never forget the many days of frustration in which I was stuck on a software issue during class and then had to play catch-up afterward.
-
-I wrote this guide mainly for Windows users, but if you're an Apple user, I'd like to help you too. Skip to the section titled "[Bonus] Setting Up Your Macbook".
+This guide was written with the beginner data science bootcamp student in mind. It has only been a short while since I completed the [Metis Data Science Bootcamp](https://www.thisismetis.com/data-science-bootcamps) and successfully pivoted my career, and one thing I felt would have significantly improved my bootcamp experience was if there was a guide available to show me how to set up my computer before the bootcamp started. I'll never forget the many days of frustration in which I was stuck on a software issue during class and then had to play catch-up afterward. I wrote this guide mainly for Windows users, but if you're an Apple user, I'd like to help you too. Skip to the section titled "[Bonus] Setting Up Your Macbook".
 
 What you will find in this guide are as follows:
 
@@ -721,6 +719,8 @@ Also, since this is an installation guide only, for more advanced usage, I will 
    sudo apt-get install postgresql postgresql-contrib pgadmin4
    ```
    
+7. [VLC Media Player](https://www.videolan.org/vlc/download-ubuntu.html). This is superior to the Videos app that comes with Ubuntu. Install it using snap, or otherwise follow the instructions in the link.
+
    
 
 ## [Optional] How to Adjust Touchpad Sensitivity
