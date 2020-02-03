@@ -58,9 +58,13 @@ By the way, from time to time, I hear arguments about "Linux vs. Apple" or the r
 With the disadvantages of Apple stated above, as well as the generally inflated costs of Apple laptops (Windows is always cheaper for the same specs), if you already have a Windows computer, stick with it. Otherwise, you could purchase one with heavily ramped up specs for the same cost as a Macbook. In my case, I recently had the luxury to purchase a better laptop, and I settled on the [MSI GE65 Raider 9SF](https://www.msi.com/Laptop/GE65-RAIDER-9SX/Specification). Costco was having a sale just before the time of this writing on this particular laptop for $1750 before sales tax, with the following specs:
 
 > 9th-Gen Intel Core i7-9750H Processor 2.6GHz
+>
 > 32GB DDR4 2666MHz RAM
+>
 > 8GB NVIDIA GeForce RTX 2070 Graphics
+>
 > 1 TB NVMe SSD
+>
 > 15.6" FHD 240Hz 3ms Display
 
 If you're out in the market for a new laptop, you'll want to read [this guide by Tim Dettmers](https://timdettmers.com/2018/12/16/deep-learning-hardware-guide/) on selecting the right components for your laptop. From a really high level overview, [the GPU is most important](https://timdettmers.com/2019/04/03/which-gpu-for-deep-learning/), followed by getting the right CPU for your GPU. Chances are: you may not have time to use the GPU during the bootcamp, but afterward, you will have plenty of time. So the selection procedure is:
