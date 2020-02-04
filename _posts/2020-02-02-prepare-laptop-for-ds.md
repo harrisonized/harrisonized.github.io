@@ -648,7 +648,7 @@ Also, since this is an installation guide only, for more advanced usage, I will 
    sudo apt-get install sublime-text
    ```
 
-5. [Pycharm](https://www.jetbrains.com/help/pycharm/installation-guide.html#) I don't personally use this, but you might like it.
+5. [Pycharm](https://www.jetbrains.com/help/pycharm/installation-guide.html#).
 
    ```
    sudo snap install pycharm-professional --classic
@@ -1112,7 +1112,7 @@ First, before you do anything, update your machine from Mohave to Catalina. This
 
 9. [Sublime](https://www.sublimetext.com/) text editor. I use this a lot, especially to view .yml files, .sql files, and .py files.
 
-10. [Pycharm](https://www.jetbrains.com/pycharm/download/download-thanks.html?platform=mac&code=PCC). I don't personally use this, but a lot of people like it and you might too.
+10. [Pycharm](https://www.jetbrains.com/pycharm/download/download-thanks.html?platform=mac&code=PCC).
 
 11. [PostgreSQL](https://www.dyclassroom.com/howto-mac/how-to-install-postgresql-on-mac-using-homebrew).
 
