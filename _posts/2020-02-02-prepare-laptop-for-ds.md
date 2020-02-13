@@ -718,6 +718,12 @@ Also, since this is an installation guide only, for more advanced usage, I will 
    
 7. [VLC Media Player](https://www.videolan.org/vlc/download-ubuntu.html). This is superior to the Videos app that comes with Ubuntu. Install it using snap, or otherwise follow the instructions in the link.
 
+8. [Heroku Command Line Interface](https://devcenter.heroku.com/articles/heroku-cli). This will be important if you want to deploy a Flask app. To install, use:
+
+   ```
+   sudo snap install --classic heroku
+   ```
+
    
 
 ## [Optional] How to Adjust Touchpad Sensitivity
@@ -1133,6 +1139,69 @@ First, before you do anything, update your machine from Mohave to Catalina. This
 12. [LibreOffice](https://www.libreoffice.org/). If you are not used to Apple's iWork office suite (Pages, Number, and Keynote), you may want to download this, as it much more closely resembles early versions of MS Office. Do **NOT** download the latest version. There's a [bug](https://bugs.documentfoundation.org/show_bug.cgi?id=122218#c0) that makes versions after 6.1.4 blurry, so you want to make sure that your version is 6.1.3 or below. You can find earlier versions in the [archive](https://downloadarchive.documentfoundation.org/libreoffice/old/), and here is the [direct link to v6.1.3](https://downloadarchive.documentfoundation.org/libreoffice/old/6.1.3.2/mac/x86_64/).
 
 13. [Tableau Public](https://public.tableau.com/en-us/s/download). This is a very powerful visualization tool that's GUI based, but it has a lot more power, accessibility, and versatility compared to [Plotly](https://plot.ly/python/), which is already much more powerful than [matplotlib](https://matplotlib.org/). There is a learning curve, and its full power can't be realized until you connect it to a huge relational database, so you probably won't be using it much during the bootcamp. However, it's still good to play around with it a couple times, as it is especially great at handling and graphing geographical data.
+
+14. [Platypus](https://sveinbjorn.org/platypus/). This tool helps you turn any shell scripts that you write into apps that can go into the Applications folder, which also enables you to create shortcuts on your desktop and doc. I'll provide an example below for how this works with Gedit.
+
+15. [Gedit](https://wiki.gnome.org/Apps/Gedit). This is the default text editor that comes with Ubuntu, and the reason I like it so much is that you can search using regex, which will help a lot if you're trying to learn regex.
+
+    ```
+    brew install gedit
+    # change the font to Menlo, size 12, which is the default for Apple's TextEdit
+    ```
+
+    Gedit itself doesn't come as a normal app with a clickable icon, so to turn it into one, do the following:
+
+    1. Download [Platypus](https://sveinbjorn.org/platypus/).
+
+    2. Find where your Gedit executable is installed:
+
+       ```
+       where gedit
+       ```
+
+       Mine is found here:
+
+       ```
+       /usr/local/bin/gedit
+       ```
+
+       Go there in your Finder, then click Settings > Show Original. Mine led me here:
+
+       ```
+       /usr/local/Cellar/gedit/3.34.1/bin/gedit
+       ```
+
+       Copy this file onto the desktop.
+
+    3. Create a bash script file called gedit.sh with the following contents:
+
+       ```
+       #!/usr/bin/env bash
+       
+       echo "Starting Gedit"
+       open -a gedit
+       ```
+
+    4. Download the gedit icon from [here](http://getdrawings.com/gedit-icon#gedit-icon-65.png).
+
+    5. Use Platypus to create an app with the following info:
+
+       ```
+       App Name: Gedit
+       Script Type: env /usr/bin/env
+       Script Path: /Users/harrisonized/Desktop/gedit.sh
+       ```
+
+       Save the app to the /Applications folder
+
+    6. Swap out the app script with your executable.
+
+       ```
+       Settings > Show Package Contents
+       Gedit > Contents > MacOS > Gedit
+       ```
+
+       Move the gedit executable copied in step 2 and replace.
 
 
 
