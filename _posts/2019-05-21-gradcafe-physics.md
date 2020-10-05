@@ -25,7 +25,7 @@ The data was scraped by Github user [evansjames](https://github.com/evansrjames/
 
 Although downloading the data is easier than scraping it myself, there is still some work I had to do. I cleaned the data by dropping NaNs, filtered out erroneous data, one-hot-encoded some categorical features, converted numbers from string to float type, and selected on Ph.D. admissions only. Furthermore, I chose to analyze applications after 2014, since this seems to be when the number of entries on The Grad Cafe reaches its peak, as seen in the figure below.
 
-![number-of-entries-by-year.png](https://raw.githubusercontent.com/harrisonized/gradcafe-physics/master/figures/eda/number-of-entries-by-year.png)
+![number-of-entries-by-year.png](https://raw.githubusercontent.com/harrisonized/gradcafe-physics/master/figures/eda/number-of-entries-per-year.png)
 
 
 
