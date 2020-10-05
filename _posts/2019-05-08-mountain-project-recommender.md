@@ -43,7 +43,7 @@ Generating a pair plot enables me to see how the features relate to each other a
 sns.pairplot(bishop_df[features_target_list])
 ```
 
-![baseline-pairplot.png](https://raw.githubusercontent.com/harrisonized/mountain-project-recommender/master/figures/bishop/eda/baseline-pairplot.png?raw=true)
+![baseline-pairplot.png](https://raw.githubusercontent.com/harrisonized/mountain-project-recommender/master/figures/eda/baseline-pairplot.png?raw=true)
 
 
 
@@ -55,7 +55,7 @@ plot_heat_map(bishop_df.loc[:,['StarRatings', 'Ticks', 'Avg Stars', 'Length', 'G
 ax.set_title('Correlation Heatmap for True Baseline Case', fontsize = 18)
 ```
 
-![correlation-heatmap-for-true-baseline-case.png](https://raw.githubusercontent.com/harrisonized/mountain-project-recommender/master/figures/bishop/eda/correlation-heatmap-for-true-baseline-case.png?raw=true)
+![correlation-heatmap-for-true-baseline-case.png](https://raw.githubusercontent.com/harrisonized/mountain-project-recommender/master/figures/eda/baseline-corr.png?raw=true)
 
 From both the pairplot and the heatmap, it is evident that StarRatings and Ticks are collinear. However, though trial-and-error, I found that keeping both features does, in fact, improve the model. If speed is valued over performance, then Ticks can be removed from the set of features.
 
@@ -105,7 +105,7 @@ As you can see from the score, the validation score shows that the model explain
 
 To see what this looks like, I plotted a graph of predicted vs. observed. In a perfect model, all the data points would align with the diagonal line, but as you can see, some of the data points do not fall perfectly on the line. Nonetheless, the model seems to be performing reasonably well.
 
-![predicted-vs-observed.png](https://raw.githubusercontent.com/harrisonized/mountain-project-recommender/master/figures/bishop/linear/predicted-vs-observed.png?raw=true)
+![predicted-vs-observed.png](https://raw.githubusercontent.com/harrisonized/mountain-project-recommender/master/figures/linear/observed-vs-predicted.png?raw=true)
 
 
 
@@ -125,15 +125,15 @@ To rein in the effects of heteroscedasticity, one effective technique is to use 
 
 With the graph below, it is possible to see how the weights of the linear regression model changes with regularization. As alpha approaches 0 (the right side of the graph), the weights should equal those of the linear regression, while as alpha approaches infinity (the left side of the graph), the weights shrink to zero. (Note: The x-axis is reversed; this is the convention in data science.)
 
-![weights-vs-alpha.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/bishop/ridge/weights-vs-alpha.png?raw=true)
+![weights-vs-alpha.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/ridge/weights-vs-alpha.png?raw=true)
 
 To find which value of alpha gives the best score, I plotted a graph of mean absolute error vs. alpha. With Ridge regression, the minimum in mean absolute error occurs at alpha = 1.6032453906900417.
 
-![mae-vs-alpha.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/bishop/ridge/mae-vs-alpha.png?raw=true)
+![mae-vs-alpha.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/ridge/mae-vs-alpha.png?raw=true)
 
 Let's see how well this new model fits the data.
 
-![predicted-vs-observed.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/bishop/ridge/predicted-vs-observed.png?raw=true)
+![predicted-vs-observed.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/ridge/observed-vs-predicted.png?raw=true)
 
 The predictions are doing slightly better on the lower end of the scale.
 
@@ -151,15 +151,15 @@ test_r2_score:  0.6582658734198588
 
 With the graph below, it is possible to see how the weights of the linear regression model changes with regularization. The results are similar to those of ridge regression, but the coefficients change in a dramatically different way.
 
-![weights-vs-alpha.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/bishop/lasso/weights-vs-alpha.png?raw=true)
+![weights-vs-alpha.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/lasso/weights-vs-alpha.png?raw=true)
 
 To find which value of alpha gives the best score, I plotted a graph of mean absolute error vs. alpha. With Lasso regression, the minimum in mean absolute error occurs at alpha = 0.4466835921509635.
 
-![mae-vs-alpha.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/bishop/lasso/mae-vs-alpha.png?raw=true)
+![mae-vs-alpha.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/lasso/mae-vs-alpha.png?raw=true)
 
 Finally, let's see how well Lasso performs on the data.
 
-![predicted-vs-observed.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/bishop/lasso/predicted-vs-observed.png?raw=true)
+![predicted-vs-observed.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/lasso/observed-vs-predicted.png?raw=true)
 
 Again, similar to ridge, but with subtle differences.
 
@@ -193,7 +193,7 @@ Here, the in-sample validation score more closely resembles the out-of-sample te
 
 Because the above pairplot shows that not all features are linearly related to the target, it is advantageous to transform the data using the log and square root transforms to linearize the features with respect to the target. After some trial-and-error in testing different combinations of features and targets, here's the pairplot for the combination that gave the highest R² score in linear regression.
 
-![log-linear-pairplot.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/bishop/log-linear/log-linear-pairplot.png?raw=true)
+![log-linear-pairplot.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/log-linear/log-linear-pairplot.png?raw=true)
 
 
 
@@ -207,7 +207,7 @@ test_r2_score:  0.7713159789396038
 
 In fact, the test score is higher than the validation score, suggesting that the model generalizes well to out-of-sample data. Let's see what this looks like in terms of predicted vs. observed.
 
-![predicted-vs-observed.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/bishop/log-linear/predicted-vs-observed.png?raw=true)
+![predicted-vs-observed.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/log-linear/observed-vs-predicted.png?raw=true)
 
 From the graph, it would appear that the regresssion is performing especially well on data in the lower left corner.
 
@@ -225,7 +225,7 @@ test_r2_score:  0.8212121466062641
 
 This is by far the best model. Both the in-sample cross-validation score and the out-of-sample test score are extremely high.
 
-![predicted-vs-observed.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/bishop/poisson/predicted-vs-observed.png?raw=true)
+![predicted-vs-observed.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/poisson/observed-vs-predicted.png?raw=true)
 
 Furthermore, this model performs well for data points toward the upper right side, far away from the origin.
 
@@ -235,7 +235,7 @@ The central theme throughout this entire process is the following: "Can we do be
 
 The process of combining multiple machine learning models is called [ensembling](https://en.wikipedia.org/wiki/Ensemble_learning). Similar to how ElasticNet is an ensemble of Ridge and Lasso regression, let's ensemble log-linear and Poisson regression to make a better model. The hyperparameter in this case is the ratio of log-linear to Poisson regression.
 
-![ratio-optimization.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/bishop/ensemble/ratio-optimization.png?raw=true)
+![ratio-optimization.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/ensemble/r2-vs-pct_log_lin.png?raw=true)
 
 Grid-searching across different combinations of Log-Linear and Lasso regression, I found that 0.76 log-linear regression combined with 0.24 Poisson regression gives the highest cross-validation score.
 
@@ -247,7 +247,7 @@ test_r2_score:  0.8420211467188347
 
 The out-of-sample R² score is even higher than just the Poisson regression alone, and you can see the predicted vs. observed are visibly closer to the diagonal than in any of the previous models.
 
-![predicted-vs-observed.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/bishop/ensemble/predicted-vs-observed.png?raw=true)
+![predicted-vs-observed.png](https://github.com/harrisonized/mountain-project-recommender/blob/master/figures/ensemble/observed-vs-predicted.png?raw=true)
 
 
 
