@@ -11,7 +11,7 @@ title: Analyzing Yelp Reviews for Climbing Gyms
 
 [Rock climbing](https://en.wikipedia.org/wiki/Rock_climbing) is one of the fastest growing sports in the world. According to the [Climbing Business Journal](https://www.climbingbusinessjournal.com/gyms-and-trends-2018/), the establishment of new climbing gyms in the United States is currently in exponential growth, with an estimated 100 new gyms opening between 2018 and 2020 to meet the growing demand of new climbers. As a [Data Scientist](https://www.linkedin.com/in/harrisonized) and a [rock climber](https://www.instagram.com/harrisonized/?hl=en), I wondered if there was any data-driven business insights I could deliver to new gym owners using my toolbox of data science techniques.
 
-![total-gyms-vs-percent-growth.png](https://raw.githubusercontent.com/harrisonized/yelp-climbing-gyms/master/climbing-business-journal/plotly-figures/total-gyms-vs-percent-growth.png)
+![total-gyms-vs-percent-growth.png](https://raw.githubusercontent.com/harrisonized/yelp-climbing-gyms/master/figures/cbj/num_gyms-vs-pct_growth.png)
 
 [Yelp](https://www.yelp.com/) is an online directory in which users can publish reviews on businesses. It is often a great resource for first-time visits to new areas. Using Yelp reviews, I wanted to see if I could use some natural language processing techniques to be able to categorize reviews and come up with a list of do's and don'ts for climbing gyms in California.
 
@@ -81,21 +81,21 @@ To understand what data I would be working with, I made some simple visualizatio
 
 A) The total number of reviews had been declining in the last three years. In my opinion, the most-likely reason is that new visitors do not feel the need to add more reviews to the already-existing corpus.
 
-![number-of-reviews-by-year.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/eda/number-of-reviews-by-year.png?raw=true)
+![number-of-reviews-by-year.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/eda/number-of-reviews-by-year.png?raw=true)
 
 B) Reviews are skewed heavily toward 5-star reviews. This is reflective of the overall [trend](https://minimaxir.com/2014/09/one-star-five-stars/) on Yelp in general, as most businesses follow this kind of a distribution.
 
-![number-of-reviews-by-rating-bar.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/eda/number-of-reviews-by-rating-bar.png?raw=true)
+![number-of-reviews-by-rating-bar.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/eda/number-of-reviews-by-rating.png?raw=true)
 
 C) There is a negative correlation between the length of the review and the star rating.
 
-![length-of-reviews-by-rating-bar.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/eda/length-of-reviews-by-rating-bar.png?raw=true)
+![length-of-reviews-by-rating-bar.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/eda/length-of-reviews-by-rating.png?raw=true)
 
 D) The other features offered by Yelp have a weak correlation with the star rating.
 
-![correlation-heatmap.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/eda/correlation-heatmap.png?raw=true)
+![correlation-heatmap.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/eda/correlation-heatmap.png?raw=true)
 
-![correlation-bar.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/plotly-figures/correlation-bar.png?raw=true)
+![correlation-bar.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/eda/correlation-bar.png?raw=true)
 
 
 
@@ -114,7 +114,7 @@ count_vectorizer = CountVectorizer(ngram_range=(1,3), stop_words='english')
 
 With the above setup, I can build a [logistic regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) classifier, which is a good first-choice for natural language processing. To get an overview of the model accuracy on the test set, I generated a [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix), which is a table that shows how many items from each class were correctly classified. For example the confusion matrix below shows that 963 5-star reviews were correctly classified, 109 5-star reviews were mis-classified as 4-star reviews, and the rest were mis-classified as 3 or below.
 
-![confusion-unweighted.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/classification/confusion-unweighted.png?raw=true)
+![confusion-unweighted.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/classification/confusion-unweighted.png?raw=true)
 
 Let's see how well this model performs on the test set using the following two metrics: micro-average and macro-average accuracy.
 
@@ -127,7 +127,7 @@ The micro-average test accuracy is the total number of correctly classified revi
 
 In this initial model, it is apparent that the classifier is great for 1- and 5-star reviews, but suffers for anything in between. This is very easy to see in the graph below, which shows what fraction of predictions fall in each category for each type of review. For example, looking at the purple curve, approximately 0.9 of 5-star reviews were correctly classified as being 5-stars, and approximately 0.1 of 5-star reviews were mis-classified as 4-star reviews.
 
-![class-predictions-unweighted.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/classification/class-predictions-unweighted.png?raw=true)
+![class-predictions-unweighted.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/classification/class-predictions-unweighted.png?raw=true)
 
 The performance of this classifier is great if the goal was only to separate positive from negative reviews. However, if the goal is to have finer granularity for purposes like sending coupons or advertisements to people who give 2- and 3-star reviews, but not 1-star reviews, then this classifier falls short.
 
@@ -144,7 +144,7 @@ features_train_vectorized_proba_array_new = normalize(features_train_vectorized_
 
 Let's see if using the new weights improves our classifier by looking at our confusion matrix.
 
-![confusion-weighted.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/classification/confusion-weighted.png?raw=true)
+![confusion-weighted.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/classification/confusion-weighted.png?raw=true)
 
 As can be seen in the confusion matrix above, the model is now better at classifying across the board, except for 5-star reviews, which took a minor drop in performance. This is reflected in our accuracy scores below.
 
@@ -155,7 +155,7 @@ Weighted Macro-Average Test Accuracy (+/-1):  0.8415133147419817
 
 If you only look at the micro-average test accuracy, the improvement might appear to be insignificant. However, this demonstrates that the macro-average test accuracy is a better metric for measuring the performance of the classifier. As seen in the graph below, except for 3-star reviews, the correct classification now makes up the majority of the predictions for each class.
 
-![class-predictions-weighted.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/classification/class-predictions-weighted.png?raw=true)
+![class-predictions-weighted.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/classification/class-predictions-weighted.png?raw=true)
 
 
 
@@ -167,7 +167,7 @@ A ROC curve plots the false positive rate (FPR) on the x-axis and the true posit
 
 The ROC curve has an additional [probabilistic interpretation](https://www.alexejgossmann.com/auc/) that the Area-Under-the-Curve (AUC) is the probability that given a random positive-negative pair that the classifier will classify each correctly. For example, given a 2-star review and a 5-star review, the classifier will correctly classify the 5-star review with probability 0.8719.
 
-![roc-weighted.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/classification/roc-weighted.png?raw=true)
+![roc-weighted.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/classification/roc-weighted.png?raw=true)
 
 In addition to the individual ROC curves, it is possible to calculate a micro-average and a macro-average ROC curve, using similar [procedures](https://datascience.stackexchange.com/questions/15989/micro-average-vs-macro-average-performance-in-a-multiclass-classification-settin) as with the accuracy score calculations. However, similar to before, the micro-average ROC AUC is an overestimate, because it is skewed by the enormous number of 5-star reviews in the dataset. Hence, the macro-average ROC curve is a better measure of performance, since it is a measure of how well the model will perform given a balanced dataset.
 
@@ -242,11 +242,11 @@ For topic 0, from the presence of words such as pass, day pass, lesson, groupon,
 
 To help visualize these in a nicer way than having a simple list of words, I used the [word_cloud](https://amueller.github.io/word_cloud/index.html) library to generate the following word clouds.
 
-![word-cloud-5_star-0.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/topic-modeling/word-cloud-5_star-0.png?raw=true)
+![word-cloud-5_star-0.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/topic-modeling/wordcloud-5_star-topic_0.png?raw=true)
 
 *Topic 0*
 
-![word-cloud-5_star-1.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/topic-modeling/word-cloud-5_star-1.png?raw=true)
+![word-cloud-5_star-1.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/topic-modeling/wordcloud-5_star-topic_1.png?raw=true)
 
 *Topic 1*
 
@@ -270,11 +270,11 @@ youth, continue, program continue, comps, program continue host, youth comps nea
 
 Topic 0 seems to be generically talking about the facility, for example, holds or rope being old and dirty. Topic 2 is a mix of youth team taking up too much space for competition practice and not enough supervision for toddlers, possibly leading to people wishing to cancel their membership or get a refund. The following word clouds may be somewhat easier to read.
 
-![word-cloud-1_star-0.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/topic-modeling/word-cloud-1_star-0.png?raw=true)
+![word-cloud-1_star-0.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/topic-modeling/wordcloud-1_star-topic_0.png?raw=true)
 
 *Topic 0*
 
-![word-cloud-1_star-2.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/yelp/figures/topic-modeling/word-cloud-1_star-2.png?raw=true)
+![word-cloud-1_star-2.png](https://github.com/harrisonized/yelp-climbing-gyms/blob/master/figures/topic-modeling/wordcloud-1_star-topic_2.png?raw=true)
 
 *Topic 2*
 
