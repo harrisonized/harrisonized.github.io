@@ -1,12 +1,18 @@
 ---
 layout: page
-title: About Harrison
+title: About
+permalink: /about/
+main_nav: true
 ---
 
-After working in RNA biology and immunology in the wet lab for 5 years, I studied at [Metis](https://www.thisismetis.com/) to make the transition to dry lab. In my latest role as a Data Scientist in the Dry Lab Operations team at Invitae, I combined my dedication to write maintainable code (Python, SQL, and Datalog) with my domain knowledge of biology to create software solutions for monitoring and troubleshooting next-generation sequencing operations. For more information on my career trajectory, please see my [LinkedIn](https://www.linkedin.com/in/harrisonized).
+![alt text]({{ site.baseurl }}/assets/profile-placeholder.gif "Profile Picture"){:.profile}
 
-The purpose of my blog is to showcase my portfolio of completed data projects by making them understandable to the average reader. All code I wrote for these projects is freely available on [Github](https://github.com/harrisonized?tab=repositories), which (as of September 2020) is a faithful representation of my coding abilities and preferred organizational style for coding projects.
+Centrarium is a custom theme for Jekyll, made by [Ben Centra][bencentra] for his own blog. He'd be humbled if you liked it enough to use it as well! Installation and configuration instructions can be found in the [GitHub repository](https://github.com/bencentra/centrarium).
 
-If you are currently a data science student, you have my permission to reproduce any part of my projects, including file organization, code, or explanations, as long as you give me due credit.
+This page is a good place to write about yourself, your project, your product, or whatever it is your site is for. You can replace the image above, or you can get rid of it entirely. 
 
-Please feel free to reach out to me at [harrison.c.wang@gmail.com](mailto:harrison.c.wang@gmail.com) if you would like schedule time to chat.
+You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/). And you can find the source code for Jekyll at [github.com/jekyll/jekyll](https://github.com/jekyll/jekyll)
+
+[centrarium]: https://github.com/bencentra/centrarium
+[bencentra]: http://bencentra.com
+[jekyll]: https://github.com/jekyll/jekyll
