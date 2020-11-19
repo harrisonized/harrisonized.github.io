@@ -5,13 +5,13 @@ plugins:
 
 # Site settings
 title: "Harrison's Blog"
-description: > # this means to ignore newlines until "email:"
+description: >  # this means to ignore newlines until "email:"
    
 
 email: harrison.c.wang@gmail.com
 #blog logo
-logo: "/assets/images/df_logo.jpg"
-float_logo: true # true, false (default)
+logo: "/assets/images/alphabet_letter_h.jpg"
+float_logo: true  # true, false (default)
 
 # blog cover
 cover: "/assets/images/On_top_of_the_Rubihorn_by_Matthias_Niess.jpg"
@@ -22,7 +22,7 @@ author_image: "/assets/images/author.jpg"
 
 paginate:	5
 
-url: "http://harrisonized.github.io" # the base hostname & protocol for your site
+url: "http://harrisonized.github.io"  # the base hostname & protocol for your site
 baseurl: ""
 #used to display twitter cards
 # twitter_handle: '@harrisonized'
