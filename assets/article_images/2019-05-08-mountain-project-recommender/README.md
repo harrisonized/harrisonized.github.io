@@ -1,0 +1,1 @@
+Cover image found here: https://www.mountainproject.com/route/106118096/lynn-hill-memorial-face-problem
