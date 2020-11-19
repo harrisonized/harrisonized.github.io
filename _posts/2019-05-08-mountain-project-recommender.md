@@ -5,6 +5,7 @@ date:   2019-05-08
 categories: 
 tags: featured
 image: /assets/article_images/2019-05-08-mountain-project-recommender/106118107_large_1558650441.jpg
+image2: /assets/article_images/2019-05-08-mountain-project-recommender/106118107_large_1558650441.jpg
 ---
 
 [Rock climbing](https://en.wikipedia.org/wiki/Rock_climbing) is one of the fastest growing sports in the world. According to the [Climbing Business Journal](https://www.climbingbusinessjournal.com/gyms-and-trends-2018/), the establishment of new climbing gyms in the United States is currently in exponential growth, with an estimated 100 new gyms opening between 2018 and 2020 to meet the growing demand of new climbers. With the ever-increasing number of new gym climbers, it is expected that more people will also become interested in outdoor climbing.
