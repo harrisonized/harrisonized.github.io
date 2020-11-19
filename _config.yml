@@ -1,33 +1,78 @@
-# Permalinks
-permalink:           
+# Build settings
+plugins:
+  - jemoji
+  - jekyll-paginate
 
-# Setup
-title:               Harrison Wang
-tagline:             Data Scientist
-url:                 http://harrisonized.github.io
-paginate:            2
-baseurl:             ""
+# Site settings
+title: "Harrison's Blog"
+description: > # this means to ignore newlines until "email:"
+   
 
-# Assets
-#
-# We specify the directory for Jekyll so we can use @imports.
-sass:
-  sass_dir:          _sass
-  style:            :compressed
+email: harrison.c.wang@gmail.com
+#blog logo
+logo: "/assets/images/df_logo.jpg"
+float_logo: true # true, false (default)
 
-# About/contact
-author:
-  name:              Harrison Wang
-  url:               https://www.linkedin.com/in/harrisonized/
-  email:             harrisonized@gmail.com
+# blog cover
+cover: "/assets/images/On_top_of_the_Rubihorn_by_Matthias_Niess.jpg"
 
-# Custom vars
-version:             2.0.0
-github:
-  repo:              https://github.com/harrisonized
+name: 'Harrison Wang'
+author: 'Harrison Wang'
+author_image: "/assets/images/author.jpg"
 
-# Page List
-pages_list:       
-  About: '/about'
-  Archive: '/archive'
-  Feed: '/index.html'
+paginate:	5
+
+url: "http://harrisonized.github.io" # the base hostname & protocol for your site
+baseurl: ""
+#used to display twitter cards
+# twitter_handle: '@harrisonized'
+
+#fill in disqus shortname to use disqus
+#disqus: disqus-shortname
+
+#google_analytics: UA-XXXXX-X
+
+# social icons and sharing options
+social:
+
+  - icon: github
+    url:  https://github.com/harrisonized
+    desc: Fork me on github
+    share_url:
+    share_title:
+    share_link:
+
+  - icon: linkedin
+    url:  https://www.linkedin.com/in/harrisonized/
+    desc: 
+    share_url:
+    share_title:
+    share_link:
+
+  - icon: file
+    url:  /resume/harrison-wang-resume.pdf
+    desc: resume
+    share_url:
+    share_title:
+    share_link:
+
+# - icon: twitter
+#   url:  https://twitter.com/harrisonized
+#   desc: Follow me on twitter
+#   share_url: http://twitter.com/share
+#   share_title: ?text=
+#   share_link: "&amp;url="
+
+#  - icon:  facebook
+#    url: https://facebook.com/???
+#    desc: Connect with me facebook
+#    share_url: https://www.facebook.com/sharer.php
+#    share_title: ?t=
+#    share_link: "&amp;u="
+
+#  - icon:	google-plus
+#    url:	https://google.com/???
+#    desc:	Add me on google+
+#    share_url:
+#    share_title:
+#    share_link:

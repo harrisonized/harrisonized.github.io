@@ -1,0 +1,1 @@
+Cover image found here: https://drkeithmcnulty.com/2018/08/30/decision-makers-need-more-math/

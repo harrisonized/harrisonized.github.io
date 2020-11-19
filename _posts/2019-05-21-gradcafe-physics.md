@@ -1,13 +1,11 @@
 ---
 layout: post
-title: Predicting PhD Admissions in Physics
+title: "Predicting PhD Admissions in Physics"
+date:   2019-05-21
+categories: 
+tags: featured
+image: /assets/article_images/2019-05-21-gradcafe-physics/mathematics-hub.jpg
 ---
-
-[Github Repository](https://github.com/harrisonized/gradcafe-physics)
-
-
-
-## Introduction
 
 Every year, many graduating students are confronted with the choice of whether to go on to graduate studies. One online tool that is very useful in monitoring graduate school applications is [The Grad Cafe](https://www.thegradcafe.com/), which is an online forum on which users can self-report their grades, GRE scores, subject GRE scores, and comment as to why they got their results.
 
@@ -25,7 +23,7 @@ The data was scraped by Github user [evansjames](https://github.com/evansrjames/
 
 Although downloading the data is easier than scraping it myself, there is still some work I had to do. I cleaned the data by dropping NaNs, filtered out erroneous data, one-hot-encoded some categorical features, converted numbers from string to float type, and selected on Ph.D. admissions only. Furthermore, I chose to analyze applications after 2014, since this seems to be when the number of entries on The Grad Cafe reaches its peak, as seen in the figure below.
 
-![number-of-entries-by-year.png](https://raw.githubusercontent.com/harrisonized/gradcafe-physics/master/figures/eda/number-of-entries-per-year.png)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/eda/number-of-entries-per-year.png)
 
 
 
@@ -37,7 +35,7 @@ To visualize and understand the data that I had, I used the following one-line-w
 sns.pairplot(physics_df, hue = "Decision")
 ```
 
-![pairplot.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/eda/pairplot.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/eda/pairplot.png)
 
 By coloring the hue based on the target, it becomes easy to see that the data is mostly non-separable, meaning that none of the variables by themselves were particularly strong indicators of admission. Since I found this to be interesting, I asked the additional question, "what if a student has perfect scores?" The following three pairplots show the cases for having perfect GPA, perfect subject GRE, and both.
 
@@ -47,7 +45,7 @@ Perfect GPA:
 sns.pairplot(physics_df[physics_df['GPA'] == 4.0], hue = "Decision")
 ```
 
-![pairplot-perfect-gpa.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/eda/pairplot-perfect-gpa.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/eda/pairplot-perfect-gpa.png)
 
 Perfect Subject GRE:
 
@@ -55,7 +53,7 @@ Perfect Subject GRE:
 sns.pairplot(physics_df[physics_df['GRE_Subject'] == 990], hue = "Decision")
 ```
 
-![pairplot-perfect-gre.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/eda/pairplot-perfect-gre.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/eda/pairplot-perfect-gre.png)
 
 Perfect GPA and Subject GRE:
 
@@ -63,7 +61,7 @@ Perfect GPA and Subject GRE:
 sns.pairplot(physics_df[physics_df['GPA'] == 4][physics_df['GRE_Subject'] == 990], hue = "Decision")
 ```
 
-![pairplot-perfect-gpa-and-gre.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/eda/pairplot-perfect-gpa-and-gre.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/eda/pairplot-perfect-gpa-and-gre.png)
 
 
 
@@ -73,7 +71,7 @@ I personally found it interesting that even with perfect scores, rejection was s
 
 ## **Feature Transforms**
 
-Since I was working with relatively small data (~5000 rows), I felt at liberty to add some additional features by [transforming](https://github.com/harrisonized/gradcafe-physics/blob/master/feature-transforms.ipynb) the existing ones and adding cross terms to hopefully improve separability. I had to be careful with this process, since it was easy to a cause [feature explosion](https://en.wikipedia.org/wiki/Feature_engineering#Feature_explosion), or a proliferation of excess features with no real benefits. The features I generated were the log, square, conversion of GRE scores to percentiles, and addition of cross terms between GRE scores. This increased the number of features I had from 8 to 26, which also means I had to choose which ones to keep. To test whether these contributed positively to separability, I used simple [logistic regression](https://en.wikipedia.org/wiki/Logistic_regression) as my baseline model, and through trial-and-error tested whether or not the features improved my classification accuracy.
+Since I was working with relatively small data (~5000 rows), I felt at liberty to add some additional features by [transforming](/assets/article_images/2019-05-21-gradcafe-physics/feature-transforms.ipynb) the existing ones and adding cross terms to hopefully improve separability. I had to be careful with this process, since it was easy to a cause [feature explosion](https://en.wikipedia.org/wiki/Feature_engineering#Feature_explosion), or a proliferation of excess features with no real benefits. The features I generated were the log, square, conversion of GRE scores to percentiles, and addition of cross terms between GRE scores. This increased the number of features I had from 8 to 26, which also means I had to choose which ones to keep. To test whether these contributed positively to separability, I used simple [logistic regression](https://en.wikipedia.org/wiki/Logistic_regression) as my baseline model, and through trial-and-error tested whether or not the features improved my classification accuracy.
 
 
 
@@ -99,15 +97,15 @@ The ROC AUC stands for the [Receiver Operating Characteristic](https://en.wikipe
 
 What about the [F1 score](https://en.wikipedia.org/wiki/F1_score)? The F1 score is the accuracy score if I set my threshold to balance precision and recall. In other words, if I adjust the threshold higher, then my precision will rise while my recall will fall, and vice versa. Let's see what this looks like in graphical form.
 
-![precision-and-recall.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/logistic-regression/precision-and-recall.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/logistic-regression/precision-and-recall.png)
 
 It is also possible to visualize precision and recall in one curve, shown below. As can be seen, increasing one necessarily decreases the other, except at the extremities.
 
-![precision-recall.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/logistic-regression/precision-recall.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/logistic-regression/precision-recall.png)
 
 Lastly, the ROC curve plots the false positive rate (FPR) on the x-axis and the true positive rate (TPR) on the y-axis.
 
-![roc.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/logistic-regression/roc.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/logistic-regression/roc.png)
 
 Like the precision-recall curve, the ROC curve is generated by considering all thresholds for each classification. A random guess is represented by a diagonal line, since FPR and TPR are equal on this line. Models that perform better than a random guess are pushed up toward the top left corner, since this is the space in which the TPR is higher than the FPR. The area under this curve is the ROC AUC, as explained above. When plotting multiple ROC curves on the same graph, it becomes very to see immediately which model performs the best.
 
@@ -147,11 +145,11 @@ To see if I can do better than Logistic Regression, I compared a number of class
 
 As mentioned above, the ROC curve is a great way to see which model performs the best.
 
-![roc.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/roc.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/roc.png)
 
 As shown here, the curve for Random Forest is higher than all other models for nearly all thresholds, and this becomes even more apparent in the bar chart below. Even at its worst, random forest performs better than the best of the next-best classifier.
 
-![roc-bar.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/roc-bar.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/roc-bar.png)
 
 
 
@@ -159,9 +157,11 @@ As shown here, the curve for Random Forest is higher than all other models for n
 
 Since [random forest](https://en.wikipedia.org/wiki/Random_forest) was my best model, I want to take some time to explain what it is. The following is a simple decision tree generated by [Graphviz](https://www.graphviz.org/) that can be used for classification. At each node in the tree, the classifier decides on a threshold and groups the data into two categories. Following the decision tree all the way down to the end is how the model returns a prediction.
 
-![decision-tree.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/decision-tree/decision-tree.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/decision-tree/decision-tree.png)
 
-The decision tree above is truncated so that you can see what is going on in each node. For humans, only small decision trees like the one above are interpretable, but for machines, the trees can be arbitrarily large and complex with many nodes and branches, like the one below.![decision-tree-large.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/decision-tree/decision-tree-large.png?raw=true)
+The decision tree above is truncated so that you can see what is going on in each node. For humans, only small decision trees like the one above are interpretable, but for machines, the trees can be arbitrarily large and complex with many nodes and branches, like the one below.
+
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/decision-tree/decision-tree-large.png)
 
 By itself, such a large decision tree is prone to overfitting. However, a random forest is an [ensemble](https://en.wikipedia.org/wiki/Ensemble_learning) of many such trees, and all the overfitting of individual trees is averaged out.
 
@@ -173,11 +173,11 @@ To really ensure that my random forest isn't overfitting the data, I decided to 
 
 Optimizing on the max depth of each tree, we see below that the max depth should be limited at 13, because anything above does not improve the test score, and this is also where the training score begins to plateau off. If access to the test set is not available, it is also possible to pick a cutoff using only the training set by requiring that each increase in depth yields above a threshold of improvement.
 
-![max-depth.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/random-forest/max-depth.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/random-forest/max-depth.png)
 
 After optimizing for max depth, I pruned the number of trees. As expected, this was less significant, but this does improve the training speed. The model plateaus after 8 trees.
 
-![number-of-trees.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/random-forest/number-of-trees.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/random-forest/number-of-trees.png)
 
 With a max depth of 13 and a limit of 8 trees in the ensemble, let's now see how the model performs.
 
@@ -193,7 +193,7 @@ This is an improvement upon just using the default options and a significant imp
 
 What does this look like in terms of the actual predictions? One way to visualize the predictions is to generate a [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix), which is a table that shows how many items from each class were correctly classified. Let's check what it looks like when the precision and recall are balanced at a threshold equal to 0.481.
 
-![confusion.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/random-forest-optimized/confusion.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/random-forest-optimized/confusion.png)
 
 As can be seen above, 518 out of the 801 entries in the test set were correctly classified. This is a classification accuracy of 0.647, which is equal to the f1-score.
 
@@ -203,7 +203,7 @@ As can be seen above, 518 out of the 801 entries in the test set were correctly 
 
 One important aspect of decision-tree-related algorithms such as random forest is that it's relatively easy to compute the [feature importances](https://scikit-learn.org/stable/modules/ensemble.html#feature-importance-evaluation). This option ranks the features in terms of their predictive power, from most predictive to least, by calculating, on average, how much each feature decreases the [gini coefficient](https://en.wikipedia.org/wiki/Gini_coefficient) across multiple trees. Although this approach may be [prone to error](https://explained.ai/rf-importance/), it can be used to provide some interpretability, as well as a sanity check to see if the classifier is performing as expected.
 
-![feature-importance.png](https://github.com/harrisonized/gradcafe-physics/blob/master/figures/random-forest-optimized/feature-importance.png?raw=true)
+![](/assets/article_images/2019-05-21-gradcafe-physics/figures/random-forest-optimized/feature-importance.png)
 
 As expected, GPA comes first, followed by GRE Verbal and GRE Subject, which are known in physics to be great predictors of whether one makes it to graduate school. Two features that seemed low were research and papers, but this also makes sense, since these were features derived from the comments section of the dataset, and not everyone who had research or publications necessarily reported on them.
 
@@ -212,3 +212,5 @@ As expected, GPA comes first, followed by GRE Verbal and GRE Subject, which are 
 ## Conclusions
 
 By testing different classifiers, I found that random forest performs the best, with an out-of-sample ROC AUC score of 0.704 compared to the 0.630 of logistic regression. The low score suggests that PhD admissions depends heavily on unavailable data such as letters of recommendations or research experience and provides a strong case for grades not being the major driver of graduate school admissions.
+
+Check out the Github repository [here](https://github.com/harrisonized/gradcafe-physics).

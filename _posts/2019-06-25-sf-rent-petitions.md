@@ -1,13 +1,11 @@
 ---
 layout: post
-title: Predicting Volume of Rent Petitions in San Francisco
+title: "Predicting Volume of Rent Petitions in San Francisco"
+date:   2019-06-25
+categories: 
+tags: featured
+image: /assets/article_images/2019-06-25-sf-rent-petitions/1*QJV6_bs-ZhU8DPXs5i7u1w.jpeg
 ---
-
-[Github Repository](https://github.com/harrisonized/sf-rent-petitions)
-
-
-
-### **Introduction**
 
 In San Francisco and other major cities in the United States, the cost of rent and the number of renters are both continually increasing at a steady pace. With the worsening of the housing crisis, San Francisco offers a mechanism through the [SF Rent Board](https://sfrb.org/) in order to mediate disputes between tenant and landlord for items such as capital improvement requests or wrongful evictions.
 
@@ -33,19 +31,19 @@ Duplicate entries are when single addresses submit multiple petitions on the sam
 
 Since I was interested in the count and not any of the individual features, I used the [groupby](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.groupby.html) function to generate some preliminary count plots of the data for all of SF. To check how different group sizes affected the signal-to-noise ratio of the data, I grouped by days, weeks, months, and years. The following plot below shows the difference between the groupings.
 
-![petitions-by-day.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sampling-rate/petitions-by-day.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/sampling-rate/petitions-by-day.png)
 
 
 
-![petitions-by-week.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sampling-rate/petitions-by-week.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/sampling-rate/petitions-by-week.png)
 
 
 
-![petitions-by-month.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sampling-rate/petitions-by-month.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/sampling-rate/petitions-by-month.png)
 
 
 
-![petitions-by-year.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sampling-rate/petitions-by-year.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/sampling-rate/petitions-by-year.png)
 
 
 
@@ -57,7 +55,7 @@ I found that grouping by month had the right balance between signal and noise th
 
 The following is a [Tableau](https://public.tableau.com/en-us/s/) plot of the 40 neighborhood groupings provided in the dataset.
 
- ![all-neighborhoods.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/tableau/all-neighborhoods.png?raw=true)
+ ![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/tableau/all-neighborhoods.png)
 
 
 
@@ -65,19 +63,19 @@ Since the block addresses and neighborhoods for all entries are provided in the 
 
 
 
-![mean-rent-petitions-by-neighborhood.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/eda/mean_per_month-by-neighborhood.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/eda/mean_per_month-by-neighborhood.png)
 
 
 
 The following figure shows that the trend for the Mission District is very similar as the trend for all of San Francisco. From now on, I will call neighborhoods with significant trend as time-varying.
 
-![petitions-for-mission.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/timeseries/mission.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/timeseries/mission.png)
 
 
 
 Just as an example, the following is a neighborhood that does not vary much over time; I labeled neighborhoods like this one as stationary.
 
-![petitions-for-financial-district-south-beach.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/timeseries/financial_district_south_beach.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/timeseries/financial_district_south_beach.png)
 
 
 
@@ -85,15 +83,15 @@ Since the Mission District is a main component of the overall trend, I found tha
 
 
 
-![correlation-with-mission.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/eda/correlation-with-mission.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/eda/correlation-with-mission.png)
 
 After collecting the neighborhoods in these two groups, I replotted the data and found that indeed, I had separated out the neighborhoods that had no trend.
 
-![time-varying-vs-stationary-neighborhoods.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/eda/stationary-vs-non_stationary.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/eda/stationary-vs-non_stationary.png)
 
 Let's see what this looks like from a geographic standpoint.
 
-![time-varying-vs-stationary.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/tableau/time-varying-vs-stationary.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/tableau/time-varying-vs-stationary.png)
 
 As expected, the neighborhoods that are stationary are in the sections of the city where renting is relatively rare due to the abundance of businesses and lack of homes. With the neighborhoods reasonably clustered, I am ready to begin [forecasting](https://en.wikipedia.org/wiki/Forecasting). The technique of [time-series analysis](https://en.wikipedia.org/wiki/Time_series) is the final component of my Data Science portfolio, which I presented on [Career Day](https://www.eventbrite.com/e/find-your-next-data-scientist-in-san-francisco-at-metis-career-day-for-employers-tickets-62002954506) at [Metis](https://www.thisismetis.com/), San Francisco.
 
@@ -107,11 +105,11 @@ For the neighborhoods that are grouped as time-varying, first, I used statsmodel
 petition_decomp = seasonal_decompose(petition_counts_by_neighborhood_df[seasonal_neighborhoods_list].sum(axis=1), model='additive', extrapolate_trend = True)
 ```
 
-![seasonal-decomp.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/seasonal-decomp.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/sarima/seasonal-decomp.png)
 
 Second, I set aside some data for the test set that will remain untouched while training the model. I found that 20% of the data occurs after January 1, 2014, so I split the dataset into a training set of data prior to this date and a test set of data after this date.
 
-![time-varying-neighborhoods-train-test-split.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/train-test-split.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/sarima/train-test-split.png)
 
 
 
@@ -129,7 +127,7 @@ where each of the components p, d, q, P, D, Q, and s are integers describing dif
 
 Let's use SARIMA to forecast the trend and the residual. To pick out initial parameters to try, we need to look at the [autocorrelation](https://en.wikipedia.org/wiki/Autocorrelation) function (ACF) and [partial autocorrelation function](https://en.wikipedia.org/wiki/Partial_autocorrelation_function) (PACF), given below.
 
-![acf-pacf-baseline.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/acf-pacf-baseline.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/sarima/acf-pacf-baseline.png)
 
 In the plot above, the shaded blue area represents the significance level. Anything outside of the shaded blue is significant.
 
@@ -160,7 +158,7 @@ mod = sm.tsa.statespace.SARIMAX(petition_train_df[['Datetime', 'Adj. Signal']].s
 results = mod.fit()
 ```
 
-![sarima-baseline.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/sarima-baseline.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/sarima/sarima-baseline.png)
 
 The [mean absolute error](https://en.wikipedia.org/wiki/Mean_absolute_error) (MAE) are 4.9 for 3 months, 11.4 for 1 year, and 14.8 for 5 years. This is pretty good, and another short grid-search on the parameters p, q, and s reveals that this is indeed the best model. However, for SARIMA models in general, it's pretty apparent from the graph that even though the MAE is low, the predictions are lagging behind the actual data. Furthermore, the 95% confidence interval is pretty large.
 
@@ -170,7 +168,7 @@ One way is to model on the trend alone, and then add back in the seasonal compon
 
 Like the approach above, I generated the ACF and PACF for the trend.
 
-![acf-pacf-trend.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/acf-pacf-trend.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/sarima/acf-pacf-trend.png)
 
 Looking at the ACF on the top, we can deduce the following:
 
@@ -201,11 +199,11 @@ results = mod.fit()
 
 Here's what the model predicts.
 
-![sarima-trend-only.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/sarima-trend-only.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/sarima/sarima-trend-only.png)
 
 After adding back the seasonality and residuals, we get the following:
 
-![sarima-trend-with-seasonality.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/sarima/sarima-trend-with-seasonality.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/sarima/sarima-trend-with-seasonality.png)
 
 The MAE are 7.5 for 3 months, 11.2 for 1 year, 12.5 for 5 years, and a grid-search over p, q, and s shows that this model is as good as it gets for this kind of model. The confidence intervals are now a lot smaller and the chronic lag in predictions seems to be eliminated. This model suffers for short-term predictions because it does not take residuals into account, but it is a better overall predictor in the long term.
 
@@ -215,11 +213,11 @@ The MAE are 7.5 for 3 months, 11.2 for 1 year, 12.5 for 5 years, and a grid-sear
 
 One thing I noticed when doing this project was that the number of rent petitions has a similar trend as the unemployment rate in San Francisco, which is plotted below.
 
-![petition-unemployment.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/petition-unemployment.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/linreg/petition-unemployment.png)
 
 In fact, the trends in the data seem so uncannily similar that I felt there might be a cause-and-effect type scenario here. If that's true, then it should be theoretically possible to predict to a high-degree of accuracy what the number of petitions is based on the unemployment rate. First, let's see how much the petitions data lags behind the unemployment rate.
 
-![correlation-vs-lag.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/correlation-vs-lag.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/linreg/correlation-vs-lag.png)
 
 Based on this graph, we should test a 3-month, 5-month, and 6-month lag, because they have the highest correlation coefficients. After testing all three, I found that a 3-month lag was the best predictor. To generate the coefficients for this one-feature one-target model, I used sklearn's [KFold](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html) function to make a 5-fold cross-validation loop with an 80-20 split so that I could obtain the training score and validate on the test set. 
 
@@ -232,11 +230,11 @@ test_r2_score:  0.3771517602333726
 
 Although the R² value may appear low, the following graph of the model shows that it is actually pretty reasonable.
 
-![linreg-3-months.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/linreg-3-months.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/linreg/linreg-3-months.png)
 
 By using the linear regression to transform the unemployment rate into a predicted number of rent petitions, I obtain the following model.
 
-![predicted-3-month-lag.png](https://github.com/harrisonized/sf-rent-petitions/blob/master/figures/linreg/predicted-3-month-lag.png?raw=true)
+![](/assets/article_images/2019-06-25-sf-rent-petitions/figures/linreg/predicted-3-month-lag.png)
 
 The MAE are 4.1 for 3 months, 10.1 for 1 year, and 13.5 for 5 years. This is nearly as good as the first SARIMA model for short-term prediction and even better for long-term prediction. This would be the preferred model if instantaneous speed is required, because the model takes nearly no time to train.
 
@@ -260,4 +258,5 @@ I made three different forecasting models to predict the number of rent petition
 
 The forecasting techniques presented here are invaluable tools in my collection of data science techniques and can generalize to any kind of data involving time-series.
 
-I hope you enjoyed this tutorial, and happy predicting!
+If you're interested, please check out the github repository [here](https://github.com/harrisonized/sf-rent-petitions). I hope you enjoyed this tutorial, and happy predicting!
+

@@ -1,13 +1,13 @@
 ---
 layout: post
-title: Prepare Your Laptop for Data Science
+title: "Prepare Your Laptop for Data Science"
+date:   2020-02-02
+categories: 
+tags: featured
+image: /assets/article_images/2020-02-02-prepare-laptop-for-ds/desktop.JPG
 ---
 
-
-
-## **Introduction**
-
-This guide was written with the beginner data science bootcamp student in mind. It has only been a short while since I completed the [Metis Data Science Bootcamp](https://www.thisismetis.com/data-science-bootcamps) and successfully pivoted my career, and one thing I felt would have significantly improved my bootcamp experience was if there was a guide available to show me how to set up my computer before the bootcamp started. I'll never forget the many days of frustration in which I was stuck on a software issue during class and then had to play catch-up afterward. I wrote this guide mainly for Windows users, but if you're an Apple user, I'd like to help you too. Skip to the section titled "[Bonus] Setting Up Your Macbook".
+It has only been a short while since I completed the [Metis Data Science Bootcamp](https://www.thisismetis.com/data-science-bootcamps) and successfully pivoted my career, and one thing I felt would have significantly improved my bootcamp experience was if there was a guide available to show me how to set up my computer before the bootcamp started. I'll never forget the many days of frustration in which I was stuck on a software issue during class and then had to play catch-up afterward. If you're a beginner starting your data science journey, I wrote this guide for you. Most of this guide will be focused on Windows users, but if you're an Apple user, I'd like to help you too. Skip to the section titled "[Bonus] Setting Up Your Macbook".
 
 What you will find in this guide are as follows:
 
@@ -1465,29 +1465,25 @@ Something to watch out for is that when you export an environment that has been 
 
 To help you get started, I'll include instructions here on how to create the environment I use for basic data analysis work. Note that this environment is pretty bloated, you definitely don't need all these packages, but it may be useful during your bootcamp that you aren't starting from scratch. The instructions on this will work for all three operating systems with slight modifications. If you're on Windows, use Git Bash as the terminal.
 
-Click [here](https://harrisonized.github.io/environment-files/environment-seed.yml) to download the environment-seed.yml file for the starter environment.
-
-Now move the environment-seed.yml file into home, then update your base conda version:
+Click [here](/assets/article_images/2020-02-02-prepare-laptop-for-ds/environment-files/starter-env.txt) to download the yml file for the starter environment. Copy and paste the text into a text file named starter-env.yml. Next, move the starter-env.yml file into home and update your base conda version:
 
 ```
 conda update -n base -c defaults conda
 ```
 
-Now create the environment. This may not always work. If it doesn't work, conda will tell you which packages can't be found. For those packages, remove the build number and try again. If the packages still can't be found, for example, if there are some macOS packages that were installed using homebrew, delete them.
+Now create the environment. This will take a while and may not always be successful. If it doesn't work, conda will tell you which packages can't be found. For those packages, remove the build number and try again. If the packages still can't be found, for example, if there are some macOS packages that were installed using homebrew, delete them.
 
 ```
-conda env create -f environment-seed.yml
+conda env create -f starter-env.yml
 conda activate starter
 conda update conda
 ```
 
-Click [here](https://harrisonized.github.io/environment-files/pinned) to download a file called pinned, and move the file into the following folder:
+To make sure your versions stay constant when you update your environment, conda allows you to pin packages at specific version numbers. For example, click [here](/assets/article_images/2020-02-02-prepare-laptop-for-ds/environment-files/pinned.txt) to view an example of a pinned file. Copy and paste the text into a text file, then name it pinned, with no extension. Move it into the following folder:
 
 ```
 anaconda3/envs/starter/conda-meta
 ```
-
-This will fix the package version of the specified packages and prevent them from changing during conda updates.
 
 Next, if you're on Windows / Ubuntu, do the following:
 
@@ -1550,7 +1546,7 @@ brew install jupyter
 # See https://github.com/jupyter/help/issues/317#issuecomment-371486264
 ```
 
-If you check the the "history" file in the conda-meta folder (the same folder as "pinned"), you'll see all the conda installs in the history. However, the pip installs will not be there. For this reason, I would highly recommend keeping a text file in which you keep track of all the updates to your environment. This is something I wish I had done during the bootcamp, as I installed many different packages from many different places and now have no idea how that environment got to that point.
+If you check the the "history" file in the conda-meta folder (the same folder as "pinned"), you'll see all the conda installs in the history. However, the pip installs will not be there. For this reason, I would highly recommend keeping a text file in which you keep track of all the updates to your environment. This is something I wish I had done during the bootcamp, as I installed many different packages from many different places and now have no idea how that environment got to that point. An example history file can be found [here](/assets/article_images/2020-02-02-prepare-laptop-for-ds/environment-files/history.txt). Make one for yourself.
 
 Finally, if you want to see that your environment can't be reproduced by simply doing an export followed by an import, try to export your environment and then create another environment using the .yml file you created.
 
@@ -1565,7 +1561,7 @@ Edit the name of the environment to 'new'. Then
 conda env create -f new-env.yml
 ```
 
-If this goes through, you got lucky. If not, it shows why knowing the history of the environment is important.
+If this goes through, you got lucky. If not, this demonstrates why keeping the install history of your conda environment is important for reproducing environments. 
 
 
 
