@@ -5,6 +5,7 @@ date:   2019-06-05
 categories: 
 tags: featured
 image: /assets/article_images/2019-06-05-yelp-climbing-gyms/MesaRim08-1-web.jpg
+image2: /assets/article_images/2019-06-05-yelp-climbing-gyms/MesaRim08-1-web.jpg
 ---
 
 [Rock climbing](https://en.wikipedia.org/wiki/Rock_climbing) is one of the fastest growing sports in the world. According to the [Climbing Business Journal](https://www.climbingbusinessjournal.com/gyms-and-trends-2018/), the establishment of new climbing gyms in the United States is currently in exponential growth, with an estimated 100 new gyms opening between 2018 and 2020 to meet the growing demand of new climbers. As a [Data Scientist](https://www.linkedin.com/in/harrisonized) and a [rock climber](https://www.instagram.com/harrisonized/?hl=en), I wondered if there was any data-driven business insights I could deliver to new gym owners using my toolbox of data science techniques.

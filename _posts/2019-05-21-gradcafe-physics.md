@@ -5,6 +5,7 @@ date:   2019-05-21
 categories: 
 tags: featured
 image: /assets/article_images/2019-05-21-gradcafe-physics/mathematics-hub.jpg
+image2: /assets/article_images/2019-05-21-gradcafe-physics/mathematics-hub.jpg
 ---
 
 Every year, many graduating students are confronted with the choice of whether to go on to graduate studies. One online tool that is very useful in monitoring graduate school applications is [The Grad Cafe](https://www.thegradcafe.com/), which is an online forum on which users can self-report their grades, GRE scores, subject GRE scores, and comment as to why they got their results.

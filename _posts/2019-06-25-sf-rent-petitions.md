@@ -5,6 +5,7 @@ date:   2019-06-25
 categories: 
 tags: featured
 image: /assets/article_images/2019-06-25-sf-rent-petitions/1*QJV6_bs-ZhU8DPXs5i7u1w.jpeg
+image2: /assets/article_images/2019-06-25-sf-rent-petitions/1*QJV6_bs-ZhU8DPXs5i7u1w.jpeg
 ---
 
 In San Francisco and other major cities in the United States, the cost of rent and the number of renters are both continually increasing at a steady pace. With the worsening of the housing crisis, San Francisco offers a mechanism through the [SF Rent Board](https://sfrb.org/) in order to mediate disputes between tenant and landlord for items such as capital improvement requests or wrongful evictions.
