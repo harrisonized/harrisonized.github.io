@@ -4,8 +4,8 @@ title: "Prepare Your Laptop for Data Science"
 date:   2020-02-02
 categories: 
 tags: featured
-image: /assets/article_images/2020-02-02-prepare-laptop-for-ds/desktop.JPG
-image2: /assets/article_images/2020-02-02-prepare-laptop-for-ds/desktop.JPG
+image: /assets/article_images/2020-02-02-prepare-laptop-for-ds/marvin-meyer-571072-unsplash.jpg
+image2: /assets/article_images/2020-02-02-prepare-laptop-for-ds/marvin-meyer-571072-unsplash.jpg
 ---
 
 It has only been a short while since I completed the [Metis Data Science Bootcamp](https://www.thisismetis.com/data-science-bootcamps) and successfully pivoted my career, and one thing I felt would have significantly improved my bootcamp experience was if there was a guide available to show me how to set up my computer before the bootcamp started. I'll never forget the many days of frustration in which I was stuck on a software issue during class and then had to play catch-up afterward. If you're a beginner starting your data science journey, I wrote this guide for you. Most of this guide will be focused on Windows users, but if you're an Apple user, I'd like to help you too. Skip to the section titled "[Bonus] Setting Up Your Macbook".

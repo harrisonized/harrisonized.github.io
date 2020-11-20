@@ -1,0 +1,1 @@
+Cover image found here: https://www.reddit.com/r/climbing/comments/1c8bir/boulders_for_daysss_bishop_buttermilks/

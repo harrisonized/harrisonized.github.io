@@ -1,0 +1,1 @@
+Cover image found here: https://www.planetware.com/california/best-campgrounds-in-joshua-tree-national-park-camping-details-us-ca-162.htm

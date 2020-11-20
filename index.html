@@ -30,8 +30,8 @@ layout: default
 
 <main class="content" role="main">
 
-<!--     {% if site.tags.featured %}
-    <h5 class="index-headline featured"><span>Featured</span></h5>
+    {% if site.tags.featured %}
+    <h5 class="index-headline featured" style="text-align:center"><span>Featured</span></h5>
 
     <div class="container featured">
       {% for post in site.tags.featured %}
@@ -41,16 +41,24 @@ layout: default
               <h2 class="post-title" itemprop="name"><a href="{{ post.url | prepend: site.baseurl }}" itemprop="url">{{ post.title }}</a></h2>
             </header>
             <section class="post-excerpt" itemprop="description">
-              <p>{{ post.content | strip_html | truncatewords: 50 }}</p>
+              <p>
+              	<a class="post-thumbnail" href="{{ post.url | prepend: site.baseurl }}" style="background-image: url('{{ post.image }}')"></a>
+              	{{ post.content | strip_html | truncatewords: 50 }}
+              	<a href="{{ post.url | prepend: site.baseurl }}">Read more</a>
+              </p>
             </section>
             <div class="post-meta">
-              <time datetime="{{ post.date | date_to_long_string }}">{{ post.date | date_to_long_string }}</time>
+              <time datetime="{{ post.date | date_to_string }}">
+                <!-- Copied from Lagrange -->
+                <!-- See: https://github.com/LeNPaul/Lagrange -->
+                <i class="fa fa-calendar" aria-hidden="true"></i> {{ post.date | date_to_string }} - <i class="fa fa-clock-o" aria-hidden="true"></i> {% include read-time.html %}</span>
+              </time>
             </div>
           </div>
         </article>
       {% endfor %}
     </div>
-    {% endif %} -->
+    {% endif %}
 
     <h5 class="index-headline normal" style="text-align:center"><span>Articles</span></h5>
 
