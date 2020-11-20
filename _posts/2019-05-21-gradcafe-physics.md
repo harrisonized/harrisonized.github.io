@@ -3,7 +3,7 @@ layout: post
 title: "Predicting PhD Admissions in Physics"
 date:   2019-05-21
 categories: 
-tags: featured
+tags: 
 image: /assets/article_images/2019-05-21-gradcafe-physics/mathematics-hub.jpg
 image2: /assets/article_images/2019-05-21-gradcafe-physics/mathematics-hub.jpg
 ---

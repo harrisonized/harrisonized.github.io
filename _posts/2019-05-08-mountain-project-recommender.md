@@ -3,7 +3,7 @@ layout: post
 title: "Predicting Popularity of Rock Climbs"
 date:   2019-05-08
 categories: 
-tags: featured
+tags: 
 image: /assets/article_images/2019-05-08-mountain-project-recommender/106118107_large_1558650441.jpg
 image2: /assets/article_images/2019-05-08-mountain-project-recommender/106118107_large_1558650441.jpg
 ---

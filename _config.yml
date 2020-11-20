@@ -10,11 +10,11 @@ description: >  # this means to ignore newlines until "email:"
 
 email: harrison.c.wang@gmail.com
 #blog logo
-logo: "/assets/images/alphabet_letter_h.jpg"
+logo: "/assets/images/favicon.jpg"
 float_logo: true  # true, false (default)
 
 # blog cover
-cover: "/assets/images/On_top_of_the_Rubihorn_by_Matthias_Niess.jpg"
+cover: "/assets/images/KGSjEa9Y_r7TjlqEUoUyPu9ZKn_Zmq4Z2JkeNiK3ugE.jpg"
 
 name: 'Harrison Wang'
 author: 'Harrison Wang'
