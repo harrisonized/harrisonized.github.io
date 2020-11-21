@@ -1,0 +1,1 @@
+Cover image found here: https://blog.techsoup.org/posts/understanding-the-videoconferencing-tools-available-to-your-nonprofit
