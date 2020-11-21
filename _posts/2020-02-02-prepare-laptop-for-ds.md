@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Prepare Your Laptop for Data Science"
-date:   2020-02-02
+date: 2020-02-02
 categories: 
 tags: featured
 image: /assets/article_images/2020-02-02-prepare-laptop-for-ds/marvin-meyer-571072-unsplash.jpg

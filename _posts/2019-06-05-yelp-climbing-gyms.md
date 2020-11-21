@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Analyzing Yelp Reviews for Climbing Gyms"
-date:   2019-06-05
+date: 2019-06-05
 categories: 
 tags: 
 image: /assets/article_images/2019-06-05-yelp-climbing-gyms/MesaRim08-1-web.jpg

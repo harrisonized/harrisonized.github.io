@@ -1,7 +1,7 @@
 ---
 layout: post
 title: A Dashboard for Tracking Personal Climbing Progress
-date:   2020-11-05
+date: 2020-11-05
 categories: 
 tags: 
 image: /assets/article_images/2020-11-05-climbing-dashboard/california-joshua-tree-national-park-near-belle-campground.jpg
@@ -10,7 +10,7 @@ image2: /assets/article_images/2020-11-05-climbing-dashboard/california-joshua-t
 
 
 
-Climbing has been a big part of my life ever since [Mark Fang](https://yeolab.github.io/mark-fang/) first brought me to [Mesa Rim](https://mesarim.com/miramesa/) in May 2015. Just over a year later, I completed my first boulder problem graded V6-V7. From then on, I began documenting my climbing accomplishments with the end-goal of being able to **derive meaningful insights from my data**. When I began my journey into data science, I knew I absolutely wanted to build a dashboard using my data, and I finally deployed the first version of this app around Thanksgiving 2019. Since then, I've updated the app several times, and with my recently newfound free time, I gave my app a complete make-over using a [HTML5UP template](https://html5up.net/dimension) for the main design.
+Climbing has been a big part of my life ever since [Mark Fang](https://yeolab.github.io/mark-fang/) first brought me to [Mesa Rim](https://mesarim.com/miramesa/) in May 2015. Just over a year later, I completed my first boulder problem graded V6-V7. From then on, I began documenting my climbing accomplishments with the end-goal of being able to **derive meaningful insights from my data**. When I began my journey into data science, I knew I absolutely wanted to build a dashboard using my data, and I finally deployed the first version of this app around Thanksgiving 2019. Since then, I've updated the app several times, and with my recently newfound free time, I gave my app a complete make-over using a [template](https://html5up.net/dimension) for the main design.
 
 Since I'm pretty happy with the current state of my project, in this blog post, I want to discuss some of the work and my thoughts that went into developing it.
 

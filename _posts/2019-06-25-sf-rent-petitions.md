@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Predicting Volume of Rent Petitions in San Francisco"
-date:   2019-06-25
+date: 2019-06-25
 categories: 
 tags: 
 image: /assets/article_images/2019-06-25-sf-rent-petitions/1*QJV6_bs-ZhU8DPXs5i7u1w.jpeg
