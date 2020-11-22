@@ -49,6 +49,13 @@ social:
     share_title:
     share_link:
 
+  - icon: envelope
+    url:  mailto:harrison.c.wang@gmail.com
+    desc: 
+    share_url:
+    share_title:
+    share_link:
+
   - icon: file
     url:  /resume/harrison-wang-resume.pdf
     desc: resume

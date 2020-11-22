@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Using Tensorflow to Add a Virtual Background to Zoom
+title: "Using Tensorflow to Add a Virtual Background to Zoom"
 date: 2020-11-20
 categories: 
 tags: 

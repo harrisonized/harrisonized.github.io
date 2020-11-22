@@ -1,0 +1,1 @@
+Cover image found here: https://www.kgun9.com/news/local-news/arizona-nevada-cuts-to-colorado-river-water-negligible
