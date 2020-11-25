@@ -145,7 +145,13 @@ One of the things that motivated me to modularize my code is that I was impresse
 
 ![Matplotlib](/assets/article_images/2020-11-05-climbing-dashboard/figures/v1/sends-by-date.png)
 
-![Plotly](/assets/article_images/2020-11-05-climbing-dashboard/figures/v2/sends-by-date.png)
+<iframe id="embed-responsive"
+    style="width: 100%; height: 540px;"
+    scrolling="yes"
+    frameborder="0"
+    src="/assets/article_images/2020-11-05-climbing-dashboard/figures/v2/sends-by-date.html">
+</iframe>
+<figcaption>Plotly</figcaption><br>
 
 In the first version of my app, my code was highly case-specific, which made it a relatively small program, but made an update like this one a lot of work! Therefore, I had to refactor the code, and only after the code was sufficiently modular was I able to comfortably swap out the old code without having to worry about dependent functions breaking.
 
