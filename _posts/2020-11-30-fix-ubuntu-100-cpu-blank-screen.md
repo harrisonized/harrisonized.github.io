@@ -3,7 +3,7 @@ layout: post
 title: Troubleshooting Ubuntu's Screensaver
 date: 2020-11-30
 categories: 
-tags: featured
+tags: 
 image: /assets/article_images/2020-11-30-fix-ubuntu-100-cpu-blank-screen/screenslaver3.jpg
 image2: /assets/article_images/2020-11-30-fix-ubuntu-100-cpu-blank-screen/screenslaver3.jpg
 ---
@@ -62,11 +62,11 @@ I selected these, then watched as when the screen turned off, the CPU started go
 
 After exploring the options, I narrowed the problem down further. The CPU only spikes up when "Standby After" is set to a non-zero number or when "Quick Power-off in Blank Only Mode" is turned on (or both). This tells me is that the problem with the screensaver specifically arises from the computer being in a "standby" state, whatever that means for Ubuntu machines. Xscreensaver can avoid this problem by just not allowing the computer to be in this state.
 
-At this point, I noticed xscreensaver does **NOT** lock on suspend by itself, which is a major issue because Ubuntu does not automatically prompt a password when coming out of suspend. Previously, gnome-screensaver worked well for this task; it's why I installed it in the first place. I liked gnome-screensaver's look and feel, so I reinstalled it to try and see if I can get it to display a blank image instead of turning off the screen. However, after searching in vain for gnome-screensaver preferences that just didn't work, I ended up switching back to xscreensaver.
 
 
+## Other Issues
 
-## Lock on Suspend
+At this point, I noticed xscreensaver does **NOT** lock on suspend by itself, which is a major issue because Ubuntu does not automatically prompt a password when coming out of suspend. Previously, gnome-screensaver worked well for this task, which is why I installed it in the first place. I liked gnome-screensaver's look and feel, so I reinstalled it to try and see if I can get it to display a blank image instead of turning off the screen. However, after searching in vain for gnome-screensaver preferences that just didn't work, I ended up switching back to xscreensaver.
 
 To get xscreensaver to lock on suspend, I found [this thread](https://ubuntu-mate.community/t/how-to-lock-screen-on-suspend/16836/17), which describes how to use xss-lock correctly by adding the following command to the Startup Applications.
 
@@ -74,7 +74,11 @@ To get xscreensaver to lock on suspend, I found [this thread](https://ubuntu-mat
 xss-lock -- xscreensaver-command -lock
 ```
 
-After restarting and testing the screensaver a few times, it functions as well as I can hope. Although I would have preferred something prettier than xscreensaver, this sufficiently solved my issues for now.
+Finally, I get a lock screen when resuming from suspend.
+
+If you thought we're done here... after about a day of use, I found that xscreensaver activates when I'm watching long Youtube videos. For this problem, my workaround is to install the `caffeine` app, which keeps the screen active when I activate it. I just have to remember to turn it on when I'm watching a long video and turn it off when I'm done. Maybe down the road, I'll write a bash script to automate this.
+
+After restarting and testing the screensaver a few times again, it functions as well as I can hope. Although I would have preferred something prettier than xscreensaver, this sufficiently solved my issues for now.
 
 
 

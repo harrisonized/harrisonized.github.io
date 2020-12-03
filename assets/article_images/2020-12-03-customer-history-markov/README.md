@@ -1,0 +1,1 @@
+Cover image found here: https://www.telegraph.co.uk/travel/cruises/articles/a-night-in-the-jungle-mid-Amazon-river-cruise/
