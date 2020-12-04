@@ -1,0 +1,1 @@
+Cover image found here: https://blog.datasciencedojo.com/open-source-ecosystem/
