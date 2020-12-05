@@ -3,7 +3,7 @@ layout: post
 title: Shiny New Blog
 date: 2020-11-22
 categories: 
-tags: featured
+tags: 
 image: /assets/article_images/2020-11-22-blog-update/ewscripps.brightspotcdn.com.jpeg
 image2: /assets/article_images/2020-11-22-blog-update/ewscripps.brightspotcdn.com.jpeg
 ---
