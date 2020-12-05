@@ -3,7 +3,7 @@ layout: post
 title: A Dashboard for Tracking Personal Climbing Progress
 date: 2020-11-05
 categories: 
-tags: 
+tags: featured
 image: /assets/article_images/2020-11-05-climbing-dashboard/california-joshua-tree-national-park-near-belle-campground.jpg
 image2: /assets/article_images/2020-11-05-climbing-dashboard/california-joshua-tree-national-park-near-belle-campground.jpg
 ---
