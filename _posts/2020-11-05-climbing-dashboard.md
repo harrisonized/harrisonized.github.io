@@ -235,5 +235,5 @@ In summary, beyond the practical aspects of just "analyzing data," there are man
 
 This project is very personal to me and is also my longest-standing project. Creating and maintaining this project has been fun, frustrating, and satisfying all at the same time. If you look at this project from the vantage point of the completed product, you may be tempted to think "duh, of course these are the metrics you should collect", or "duh, of course these are the figures you should display." But if there's one message I hope to impart, it's that **keeping an open mind is the basis of creativity**. 
 
-If you're interested in how the [app](http://harrisonized-climbing-app.herokuapp.com/) was built, please be sure to check out the Github repository [here](https://github.com/harrisonized/harrisonized-climbing-app), and happy data sciencing!
+If you're interested in how the [app](http://harrisonized-climbing-app.herokuapp.com/) was built, please be sure to check out the Github repository [here](https://github.com/harrisonized/climblog), and happy data sciencing!
 
