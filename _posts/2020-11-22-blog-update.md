@@ -72,7 +72,8 @@ Then, in [index.html](/index.html), I added the image just above the post previe
 To add the time-estimate, I copied [read-time.html](/_includes/read-time.html) from Lagrange, then added the time-estimate output by read-time.html just below the preview text.
 
 ```html
-<i class="fa fa-calendar" aria-hidden="true"></i> {{ post.date | date_to_string }} - <i class="fa fa-clock-o" aria-hidden="true"></i> {% include read-time.html %}</span>
+<i class="fa fa-calendar" aria-hidden="true"></i> {\{ post.date | date_to_string \}}
+- <i class="fa fa-clock-o" aria-hidden="true"></i> {\% include read-time.html \%} </span>
 ```
 
 
