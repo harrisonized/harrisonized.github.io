@@ -325,40 +325,39 @@ class Customer:
         return self.env.timeout(60)
 ```
 
-This is now shaping up. The final touch is to define how the `wait()` happens and add a `dropout_rate`.  With all the bells and whistles, here is our final `Customer`:
+This is now shaping up. The final touch is to define how the `wait()` happens and add a `dropout_rate`. Finally, let's move all the shared variables outside of the `__init__` function so that we don't instantiate many copies of the starting conditions and model parameters. With all the bells and whistles, here is our final `Customer`:
 
 ```python
 class Customer:
+    order_num = 0
+    max_order_num = 4  # stop recording after 5 rows
+    
+    # generate timestamps
+    earliest_start = dt.datetime(2020, 11, 24, 10, 15, 0)
+    latest_start = dt.datetime(2020, 11, 24, 12, 0, 0)
+    
+    # starting conditions
+    choices = ['Space Mountain', 'Indiana Jones Adventure', 'Haunted Mansion']
+    initial_weights = [0.50, 0.30, 0.20]
+    
+    # model parameters
+    env_start = dt.datetime(2020, 11, 24, 10, 0, 0)
+    transition_matrix = pd.DataFrame(
+        [[0.8, 0.15, 0.05],
+         [0.3, 0.65, 0.05],
+         [0.15, 0.05, 0.8]],
+        index=self.choices,
+        columns=self.choices,
+    )
+    wait_times = [65, 44, 23]
+    dropout_rates = [0.9, 0.3, 0.8]
+    
     def __init__(self, env, results, customer_id):
-        
         self.env = env
         self.results = results
-        
         self.customer_id = customer_id
-        self.order_num = 0
-        self.max_order_num = 4  # stop recording after 5 rows
-        
-        # generate timestamps
-        self.earliest_start = dt.datetime(2020, 11, 24, 10, 15, 0)
-        self.latest_start = dt.datetime(2020, 11, 24, 12, 0, 0)
         self.current_time = truncate_timestamp(self.first_timestamp())
-
-        # starting conditions
-        self.choices = ['Space Mountain', 'Indiana Jones Adventure', 'Haunted Mansion']
-        self.initial_weights = [0.50, 0.30, 0.20]
         self.current_choice = self.first_choice()
-        
-        # model parameters
-        self.env_start = dt.datetime(2020, 11, 24, 10, 0, 0)
-        self.transition_matrix = pd.DataFrame(
-            [[0.8, 0.15, 0.05],
-             [0.3, 0.65, 0.05],
-             [0.15, 0.05, 0.8]],
-            index=self.choices,
-            columns=self.choices,
-        )
-        self.wait_times = [65, 44, 23]
-        self.dropout_rates = [0.9, 0.3, 0.8]
         self.is_active = True        
 
     def make_choices(self):
