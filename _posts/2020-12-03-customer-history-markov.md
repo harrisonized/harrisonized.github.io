@@ -3,7 +3,7 @@ layout: post
 title: A Gentle Introduction to Markov Chains
 date: 2020-12-03
 categories: 
-tags: featured
+tags: 
 image: /assets/article_images/2020-12-03-customer-history-markov/amazon-GettyImages-918400278.jpg
 image2: /assets/article_images/2020-12-03-customer-history-markov/amazon-GettyImages-918400278.jpg
 ---
