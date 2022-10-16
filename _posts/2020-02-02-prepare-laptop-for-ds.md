@@ -599,9 +599,7 @@ Also, since this is an installation guide only, for more advanced usage, I will 
       
    7. See the section titled "[Bonus] Set Up Your Conda Environment" for instructions on setting up a basic data analysis environment called Starter.
 
-2. [Slack Desktop version](https://slack.com/downloads/linux) (NOT the app version). Download the .deb file and double-click it to install.
-
-3. [Typora](https://support.typora.io/Typora-on-Linux/), which is used to read markdown files. I've reproduced the instructions below for your convenience.
+2. [Typora](https://support.typora.io/Typora-on-Linux/), which is used to read markdown files. I've reproduced the instructions below for your convenience.
 
    ```
    # sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
@@ -631,6 +629,8 @@ Also, since this is an installation guide only, for more advanced usage, I will 
    ```
 
    Save it in the desktop as "typora.desktop".
+
+   Edit: As of November 23, 2021, Typora is [no longer free](https://support.typora.io/What's-New-1.0/). If you're on Apple, Macdown is a good alternative. I have not yet found a good alternative for Windows or Linux.
 
 4. [Sublime](https://www.sublimetext.com/) text editor. I use this a lot, especially to view .yml files, .sql files, and .py files. The download link is [here](https://www.sublimetext.com/docs/3/linux_repositories.html). Use the stable apt package. I've reproduced the instructions for your convenience.
 
@@ -717,14 +717,6 @@ Also, since this is an installation guide only, for more advanced usage, I will 
    sudo apt-get install postgresql postgresql-contrib pgadmin4
    ```
    
-7. [VLC Media Player](https://www.videolan.org/vlc/download-ubuntu.html). This is superior to the Videos app that comes with Ubuntu. Install it using snap, or otherwise follow the instructions in the link.
-
-8. [Heroku Command Line Interface](https://devcenter.heroku.com/articles/heroku-cli). This will be important if you want to deploy a Flask app. To install, use:
-
-   ```
-   sudo snap install --classic heroku
-   ```
-
    
 
 ## [Optional] How to Adjust Touchpad Sensitivity
@@ -925,8 +917,6 @@ If you want most of the same functionalities that you would get in Windows, here
 
 2. [Firefox](https://www.mozilla.org/en-US/exp/firefox/new/) web browser. If your windows computer doesn't already have it, this is a great browser to have. Also, I would recommend NOT having Google Chrome, because it's well known that Google Chrome eats up RAM in the background. On my older Windows 8 computer, even when Google Chrome isn't running, it collects metadata and drives my CPU usage up to 100%, a problem which went away when I removed it completely from my computer. One thing I would recommend, if you haven't already, is to clean up your bookmarks. During my first job after the bootcamp, I found it extremely helpful and comforting to reference and re-read the resources I saved during the bootcamp. I would recommend creating a "Resources" folder that is accessible from the Bookmarks Toolbar and saving all of the useful Data Science or Python related pages in well organized folders there.
 
-3. [Adobe Acrobat](https://acrobat.adobe.com/us/en/acrobat/pdf-reader.html). Make sure to deselect all the other junk that comes with this pdf viewer.
-
 4. [Git Bash](https://git-scm.com/download/win). This is super important, since it's the closest tool to having a bash Terminal, such as in Linux. This will help you interface with your conda packages and git version control. Also, even though it's possible to configure powershell to look like the bash terminal, I still prefer Git Bash. This is a must-have. According to [these instructions](https://www.computerhope.com/issues/ch001927.htm), you'll want to select the following options:
 
    ```
@@ -1021,13 +1011,11 @@ If you want most of the same functionalities that you would get in Windows, here
 
    I probably downloaded way more than I need, but this fixed my issue. You might want to just get these packages preemptively if you don't want to run into issues when setting up your conda environment.
 
-8. [Slack](https://slack.com/downloads/windows)
+9. [Typora](https://www.typora.io/#windows). See above.
 
-9. [Typora](https://www.typora.io/#windows)
+10. [Sublime Text](https://www.sublimetext.com/3). See above.
 
-10. [Sublime Text](https://www.sublimetext.com/3)
-
-11. [PyCharm Community Edition](https://www.jetbrains.com/pycharm/download/#section=windows)
+11. [PyCharm Community Edition](https://www.jetbrains.com/pycharm/download/#section=windows). See above.
 
 12. [PostgreSQL](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads). In the [PostgreSQL documentation](https://www.postgresql.org/download/windows/), they recommend using EnterpriseDB, so that's what I downloaded. Download PostgreSQL Version 12.1 for Windows x86-64. I tested this out with Jupyter and it works almost the same way as in Linux, except for one key difference. In Linux, PostgreSQL can be accessed through the bash terminal, but for Windows, PostgreSQL comes with "SQL Shell", which acts like a terminal, but purely for interacting with postgres. There is also a graphical interface that you can access through your web browser at the following address after you turn it on:
 
@@ -1068,7 +1056,7 @@ First, before you do anything, update your machine from Mohave to Catalina. This
 
 4. [Java](https://java.com/en/download/mac_download.jsp). Like Homebrew, you'll need this to use certain software and web tools. Better to install it now.
 
-5. [Seagate Paragon Driver](https://www.seagate.com/support/software/paragon/). This tool will enable you to write to NTFS filesystem, which is commonly found on large external hard drives, which may be useful to you if you need to move large quantities of files off of your machine to make space for your bootcamp work.
+5. [Seagate Paragon Driver](https://www.seagate.com/support/software/paragon/). This tool will enable you to write to NTFS filesystem, which is commonly found on large external hard drives, which may be useful to you if you need to move large quantities of files off of your machine to make space for your bootcamp work. Theoretically, you could format your hard drives as exFAT, but in my experience, exFAT tends to waste a lot of space, ie. the space on disk is MUCH larger than the size of the files.
 
 6. [Anaconda](https://www.anaconda.com/distribution/#macos). Use the 64-bit graphical installer. Note that [the installation path is different on MacOS](https://docs.anaconda.com/anaconda/install/mac-os/). On Ubuntu, the anaconda3 folder is installed in your home directory, but on MacOS, the anaconda3 folder is installed in the /opt/ directory. When you first install it, you'll find that jupyter notebook won't work, because [Apple changed the default shell from bash to zsh](https://www.theverge.com/2019/6/4/18651872/apple-macos-catalina-zsh-bash-shell-replacement-features), which is also the default for Catalina. In order to get it to work, [you'll need to copy the contents of ~/.bash_profile into ~/.zshrc](https://stackoverflow.com/questions/31615322/zsh-conda-pip-installs-command-not-found/48239937#48239937). Use:
 
@@ -1113,13 +1101,11 @@ First, before you do anything, update your machine from Mohave to Catalina. This
 
    See the section titled "[Bonus] Set Up Your Conda Environment" for instructions on setting up a basic data analysis environment called Starter.
 
-7. Slack should already come pre-installed, but if it isn't, download from [here](https://slack.com/downloads/mac).
+8. [Typora](https://typora.io/). See above.
 
-8. [Typora](https://typora.io/), which is used to read markdown files.
+9. [Sublime](https://www.sublimetext.com/). See above.
 
-9. [Sublime](https://www.sublimetext.com/) text editor. I use this a lot, especially to view .yml files, .sql files, and .py files.
-
-10. [Pycharm](https://www.jetbrains.com/pycharm/download/download-thanks.html?platform=mac&code=PCC).
+10. [Pycharm](https://www.jetbrains.com/pycharm/download/download-thanks.html?platform=mac&code=PCC). See above.
 
 11. [PostgreSQL](https://www.dyclassroom.com/howto-mac/how-to-install-postgresql-on-mac-using-homebrew).
 
@@ -1138,8 +1124,6 @@ First, before you do anything, update your machine from Mohave to Catalina. This
     ```
 
 12. [LibreOffice](https://www.libreoffice.org/). If you are not used to Apple's iWork office suite (Pages, Number, and Keynote), you may want to download this, as it much more closely resembles early versions of MS Office. Do **NOT** download the latest version. There's a [bug](https://bugs.documentfoundation.org/show_bug.cgi?id=122218#c0) that makes versions after 6.1.4 blurry, so you want to make sure that your version is 6.1.3 or below. You can find earlier versions in the [archive](https://downloadarchive.documentfoundation.org/libreoffice/old/), and here is the [direct link to v6.1.3](https://downloadarchive.documentfoundation.org/libreoffice/old/6.1.3.2/mac/x86_64/).
-
-13. [Tableau Public](https://public.tableau.com/en-us/s/download). This is a very powerful visualization tool that's GUI based, but it has a lot more power, accessibility, and versatility compared to [Plotly](https://plot.ly/python/), which is already much more powerful than [matplotlib](https://matplotlib.org/). There is a learning curve, and its full power can't be realized until you connect it to a huge relational database, so you probably won't be using it much during the bootcamp. However, it's still good to play around with it a couple times, as it is especially great at handling and graphing geographical data.
 
 14. [Platypus](https://sveinbjorn.org/platypus/). This tool helps you turn any shell scripts that you write into apps that can go into the Applications folder, which also enables you to create shortcuts on your desktop and doc. I'll provide an example below for how this works with Gedit.
 
@@ -1466,7 +1450,7 @@ Something to watch out for is that when you export an environment that has been 
 
 To help you get started, I'll include instructions here on how to create the environment I use for basic data analysis work. Note that this environment is pretty bloated, you definitely don't need all these packages, but it may be useful during your bootcamp that you aren't starting from scratch. The instructions on this will work for all three operating systems with slight modifications. If you're on Windows, use Git Bash as the terminal.
 
-Click [here](/assets/article_images/2020-02-02-prepare-laptop-for-ds/environment-files/starter-env.txt) to download the yml file for the starter environment. Copy and paste the text into a text file named starter-env.yml. Next, move the starter-env.yml file into home and update your base conda version:
+First, update your base conda version:
 
 ```
 conda update -n base -c defaults conda
@@ -1475,60 +1459,62 @@ conda update -n base -c defaults conda
 Now create the environment. This will take a while and may not always be successful. If it doesn't work, conda will tell you which packages can't be found. For those packages, remove the build number and try again. If the packages still can't be found, for example, if there are some macOS packages that were installed using homebrew, delete them.
 
 ```
-conda env create -f starter-env.yml
+conda create -n starter python=3.9
 conda activate starter
 conda update conda
-```
-
-To make sure your versions stay constant when you update your environment, conda allows you to pin packages at specific version numbers. For example, click [here](/assets/article_images/2020-02-02-prepare-laptop-for-ds/environment-files/pinned.txt) to view an example of a pinned file. Copy and paste the text into a text file, then name it pinned, with no extension. Move it into the following folder:
-
-```
-anaconda3/envs/starter/conda-meta
 ```
 
 Next, if you're on Windows / Ubuntu, do the following:
 
 ```
-# Graphviz
-sudo apt-get install python3-dev graphviz libgraphviz-dev pkg-config # Ubuntu
-pip install pygraphviz
-pip install eralchemy
-pip install simpy==3.0.11
+# graphing libraries
+conda install matplotlib
+conda install -c plotly plotly==4.5.0
+conda install -c plotly plotly_express==0.4.1
+conda install -c conda-forge cufflinks-py==0.17.0
+conda install psutil
+conda install -c plotly plotly-orca
 
-# Other plotly related tools
-pip install squarify==0.4.3
-conda install -c conda-forge umap-learn
-pip install git+https://github.com/lmcinnes/umap.git@0.4dev
-conda install datashader
-conda install -c plotly plotly-orca psutil requests
-sudo apt-get install libcanberra-gtk-module
+# jupyter
+conda install jupyter
+conda install jupyterlab
+# install nodejs using nvm
+conda install -c conda-forge nodejs  # also good for jupyterlab
+jupyter labextension install jupyterlab-plotly  # For using plotly with jupyterlab
 
-# Dash
-conda install -c conda-forge dash
+# SQL stuff
+conda install pandasql  # this should also install pandas
+conda install psycopg2
 
 # Final update
 conda update --all
+
+=====
+Troubleshooting
+=====
+
+# If you have connection issues between jupyter and your browser:
+pip install tornado==5.1.1
+# See: https://github.com/jupyter/notebook/issues/5024
 ```
 
 If you're on MacOS, do the following:
 
 ```
-# Graphviz
-brew install graphviz
-pip install --install-option="--include-path=/usr/local/include/" --install-option="--library-path=/usr/local/lib/" pygraphviz
-pip install pygraphviz
-pip install eralchemy
-pip install simpy==3.0.11
-
-# Other plotly related tools
-pip install squarify==0.4.3
-conda install -c conda-forge umap-learn
-pip install git+https://github.com/lmcinnes/umap.git@0.4dev
-conda install datashader
+# graphing libraries
+conda install matplotlib
 conda install -c plotly plotly-orca psutil requests
 
-# Dash
-conda install -c conda-forge dash
+# jupyter
+conda install jupyter
+conda install jupyterlab
+# install nodejs using nvm
+conda install -c conda-forge nodejs  # also good for jupyterlab
+jupyter labextension install jupyterlab-plotly  # For using plotly with jupyterlab
+
+# SQL stuff
+conda install pandasql  # this should also install pandas
+conda install psycopg2
 
 # Final update
 conda update --all
@@ -1545,9 +1531,19 @@ pip -V
 # If jupyter breaks:
 brew install jupyter
 # See https://github.com/jupyter/help/issues/317#issuecomment-371486264
+
+# If you have connection issues between jupyter and your browser:
+pip install tornado==5.1.1
+# See: https://github.com/jupyter/notebook/issues/5024
 ```
 
-If you check the the "history" file in the conda-meta folder (the same folder as "pinned"), you'll see all the conda installs in the history. However, the pip installs will not be there. For this reason, I would highly recommend keeping a text file in which you keep track of all the updates to your environment. This is something I wish I had done during the bootcamp, as I installed many different packages from many different places and now have no idea how that environment got to that point. An example history file can be found [here](/assets/article_images/2020-02-02-prepare-laptop-for-ds/environment-files/history.txt). Make one for yourself.
+If during your installation, you want the version of your packages to stay constant, conda allows you to pin packages at specific version numbers. For example, click [here](/assets/article_images/2020-02-02-prepare-laptop-for-ds/environment-files/pinned.txt) to view an example of a pinned file. Copy and paste the text into a text file, then name it pinned, with no extension. Move it into the following folder:
+
+```
+anaconda3/envs/starter/conda-meta
+```
+
+After installing your packages, if you check the the "history" file in the conda-meta folder (the same folder as "pinned"), you'll see all the conda installs in the history. However, the pip installs will not be there. For this reason, I would highly recommend keeping a text file in which you keep track of all the updates to your environment. This is something I wish I had done during the bootcamp, as I installed many different packages from many different places and now have no idea how that environment got to that point. An example history file can be found [here](/assets/article_images/2020-02-02-prepare-laptop-for-ds/environment-files/history.txt). Make one for yourself.
 
 Finally, if you want to see that your environment can't be reproduced by simply doing an export followed by an import, try to export your environment and then create another environment using the .yml file you created.
 
