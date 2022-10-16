@@ -1432,23 +1432,7 @@ Lastly, earlier I mentioned that you could use github to work with other people 
 
 ## [Bonus] Set Up Your Conda Environment
 
-In order to recreate a pre-existing conda environment, Conda has a [feature](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file) that allows you to create an environment file from an .yml file, which is a text file that lists all of the packages and version and build information from a given environment. For example, here's a line from an environment.yml file that I have:
-
-```
-numpy=1.16.4=py36h95a1406_0
-```
-
-numpy is the package name, 1.16.4 is the version information, and py36h95a1406_0 is the build number.
-
-The .yml file can be created by using the following command with the desired environment activated. I would name it something other than environment.yml, as you can easily get confused when you have multiple environments.
-
-```
-conda env export > environment.yml
-```
-
-Something to watch out for is that when you export an environment that has been in use for a long time, conda may run into issues trying to solve version conflicts and abort the operation altogether or otherwise install as many packages as it can while ignoring many of them. Therefore, the only way I've found to reliably reproduce environments is if we had the ORIGINAL environment.yml file and the history and executed the commands in the exact same order.
-
-To help you get started, I'll include instructions here on how to create the environment I use for basic data analysis work. Note that this environment is pretty bloated, you definitely don't need all these packages, but it may be useful during your bootcamp that you aren't starting from scratch. The instructions on this will work for all three operating systems with slight modifications. If you're on Windows, use Git Bash as the terminal.
+To help you get started, I'll include instructions here on how to create the environment I use for basic data analysis work. The instructions on this will work for all three operating systems with slight modifications. If you're on Windows, use Git Bash as the terminal.
 
 First, update your base conda version:
 
@@ -1545,20 +1529,34 @@ anaconda3/envs/starter/conda-meta
 
 After installing your packages, if you check the the "history" file in the conda-meta folder (the same folder as "pinned"), you'll see all the conda installs in the history. However, the pip installs will not be there. For this reason, I would highly recommend keeping a text file in which you keep track of all the updates to your environment. This is something I wish I had done during the bootcamp, as I installed many different packages from many different places and now have no idea how that environment got to that point. An example history file can be found [here](/assets/article_images/2020-02-02-prepare-laptop-for-ds/environment-files/history.txt). Make one for yourself.
 
-Finally, if you want to see that your environment can't be reproduced by simply doing an export followed by an import, try to export your environment and then create another environment using the .yml file you created.
+Now that you've created an environment, Conda has a nifty [feature](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file) that allows you to create an environment file from an .yml file, which is a text file that lists all of the packages and version and build information from a given environment. For example, here's a line from an environment.yml file that I have:
+
+```
+numpy=1.16.4=py36h95a1406_0
+```
+
+The .yml file can be created by using the following command with the desired environment activated. I would name it something other than environment.yml, as you can easily get confused when you have multiple environments.
+
+```
+conda env export > environment.yml
+```
+
+Something to watch out for is that when you export an environment that has been in use for a long time, conda may run into issues trying to solve version conflicts and abort the operation altogether or otherwise install as many packages as it can while ignoring many of them. Therefore, the only way I've found to reliably reproduce environments is if we had the installation history and executed the commands in the exact same order.
+
+However, if you want to see quickly set up a new environment based on your old one and manually resolve the conflicts later, you can export your environment as a .yml file, and then try create another environment using that .yml file.
 
 ```
 conda activate starter
-conda env export > new-env.yml
+conda env export > environment.yml
 ```
 
-Edit the name of the environment to 'new'. Then
+Edit the name of the environment within the file. Then run:
 
 ```
-conda env create -f new-env.yml
+conda env create -f environment.yml
 ```
 
-If this goes through, you got lucky. If not, this demonstrates why keeping the install history of your conda environment is important for reproducing environments. 
+If this goes through, you got lucky. If not, this demonstrates why keeping the install history of your conda environment is important for reproducing environments.
 
 
 
