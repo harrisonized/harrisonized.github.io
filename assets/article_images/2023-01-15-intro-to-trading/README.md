@@ -1,0 +1,1 @@
+Cover image found here: https://depositphotos.com/11011977/stock-photo-trading-and-investing.html
