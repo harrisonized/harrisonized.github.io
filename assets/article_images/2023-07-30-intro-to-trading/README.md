@@ -1,0 +1,10 @@
+| image | source |
+| :------------- | --------- |
+| stock-market-vector-id1024555126.jpg | [https://www.gobankingrates.com/investing/strategy/bear-vs-bull-market/](https://www.gobankingrates.com/investing/strategy/bear-vs-bull-market/) |
+| starting-early.png | [https://www.fidelity.com/learning-center/trading-investing/compound-interest](https://www.fidelity.com/learning-center/trading-investing/compound-interest) |
+| biggest-waves-ever-surfed.jpg | [https://www.surfertoday.com/surfing/the-biggest-waves-ever-surfed](https://www.surfertoday.com/surfing/the-biggest-waves-ever-surfed) |
+| volume-histogram-tradingview.jpg | [https://tradeproacademy.com/how-to-read-volume-on-tradingview/](https://https://tradeproacademy.com/how-to-read-volume-on-tradingview/) |
+| tradingterminal-replay-app.png | [https://replay.tradingterminal.com/](https://replay.tradingterminal.com/) |
+| RS800-Fleet-01.jpg | [https://www.rssailing.com/project/rs800/](https://www.rssailing.com/project/rs800/) |
+| market-close-december-14-2022-v0-lpz219q0kx5a1.png | [https://www.reddit.com/r/StockMarket/comments/zm2i01/market_close_december_14_2022/](https://www.reddit.com/r/StockMarket/comments/zm2i01/market_close_december_14_2022/) |
+| image__52_.png | [https://calebandbrown.com/blog/bitcoins-market-cycle/](https://calebandbrown.com/blog/bitcoins-market-cycle/) |
