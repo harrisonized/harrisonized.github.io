@@ -234,7 +234,7 @@ Options are great, because **options allow you to make money regardless of what 
 
 # Trading Styles and Methodologies
 
-What are the different ways to play the game? I will briefly cover the top five trading styles here.
+What are the different ways to play the game? I will briefly cover the top six trading styles here.
 
 ### Investing with Stocks
 
@@ -276,8 +276,6 @@ As a quick example for how to swing trade, say that you allocated $1000 to spend
 
 So why did I recommend only going in with half your allocation? Suppose instead, the market negated your hypothesis, and AAPL continued to fall, but because you weren't paying attention, you forgot to execute your stop loss. You determined your second entry is going to be at $125. After a few weeks, AAPL indeed falls to $125. Now since you didn't go all in, you still have $450 of cash to get into your new position, so you can buy 3 more shares. Then, over the next few days, AAPL goes back up to $150. Now since you have a total of 6 shares, you can sell 3 of them to replenish your cash, and you would have made a total of $75 while keeping your original three shares.
 
-Here is a perfect trade execution I made recently on NVTA. I noticed that NVTA has a very strong support at around $1.05, and every once in a while, it'll spike up to about $1.50, then dramatically crash back down. So when NVTA hovered around $1.10, I entered my 200 share position and waited (200xNVTA@1.10). After about a week and a half, NVTA indeed spiked up, and I sold 100 shares at $1.53 each (100xNVTA@1.53). The next day, it went higher to $1.65 at open, but I missed the top, which only lasted a couple of minutes. I sold the other 100 shares at $1.47 (100xNVTA@147). These trades neetted me a total of $80 for a low amount of effort.
-
 Notice in these examples that it's of utmost importance to replenish your cash. You very rarely want to be fully invested, just in case some shenanigans happens.
 
 ### Day Trading with Options
@@ -286,7 +284,7 @@ Notice in these examples that it's of utmost importance to replenish your cash. 
 
 The most important aspect of day trading is making sure that you are not overtrading. Day trading is most akin to fishing. You are waiting for the right setup to come along, and you ONLY trade if you see that setup. Many beginners (including myself) tend to overtrade due to time limitations or psychology, but the most successful day traders try to only make at most 3 good trades a DAY. Sometimes, if they don't see the setup that they like, they don't trade at all.
 
-Jimmy from TradingDecoded is a really accomplished day trader, and his YouTube videos paired with practice on TradingTerminal's Trading Replay App will be your best bet on learning how to day trade correctly and developing your own entry/exit strategies. I recommend learning how to day trade by using SPY single-leg options, as it will have the most liquidity. AAPL is a close second, if you don't like how random SPY can be. Just like with swing trading, the concept of risk/reward ratio is of utmost importance.
+[Jimmy from TradingDecoded](https://www.youtube.com/c/TradingDecoded) is a really accomplished day trader, and his YouTube videos paired with practice on [TradingTerminal's Trading Replay App](https://replay.tradingterminal.com/) will be your best bet on learning how to day trade correctly and developing your own entry/exit strategies. I recommend learning how to day trade by using SPY single-leg options, as it will have the most liquidity. AAPL is a close second, if you don't like how random SPY can be. Just like with swing trading, the concept of risk/reward ratio is of utmost importance.
 
 ### Buy the Rumor, Sell the News
 
@@ -311,17 +309,17 @@ In this final section, I wanted to share some of the successful trades I have ma
 
 ### Swing Trading with Stocks
 
-Throughout Summer 2023, I was watching NVTA, noticing that every time it hit support at around $1.00, it would rise dramatically up to around $1.50, then fall pretty dramatically too. So I bought 200 shares around $1.10, and as soon as I saw it rise to my target price, I sold them. The move was extremely fleeting, but I captured most of it.
+Throughout Summer 2023, I was watching NVTA, noticing that every time it hit support at around $1.05, it would rise dramatically up to around $1.50, then fall pretty dramatically just as quickly. So when NVTA hovered around $1.10, I entered my 200 share position and waited (200xNVTA@1.10).
 
 ![](/assets/article_images/2023-07-30-intro-to-trading/nvta/IMG_5523.PNG)
 
+After about a week and a half, NVTA indeed spiked up, and I sold 100 shares at $1.53 each (100xNVTA@1.53).
+
 ![](/assets/article_images/2023-07-30-intro-to-trading/nvta/IMG_5524.PNG)
 
-Note that I sold the other half a few minutes later. The next day, the stock fell dramaticaly:
+The next day, it went higher to $1.65 at open, but I missed the top, which only lasted a couple of minutes. I sold the other 100 shares at $1.47 (100xNVTA@147). These trades neetted me a total of $80 for a low amount of effort. The move was extremely fleeting, but I captured most of it. The fact that it fell confirmed to me that taking profit at that point in time was the right move.
 
-![](/assets/article_images/2023-07-30-intro-to-trading/nvta/IMG_5575.PNG)
-
-This confirmed to me that taking profit at that point in time was the right move.
+![](/assets/article_images/2023-07-30-intro-to-trading/nvta/IMG_5575.PNG)
 ### Day Trading with Options
 
 I experimented with this all throughout Summer 2022. Unfortunately, this is the one kind of trading where I haven't been able to find consistent success.
@@ -342,17 +340,17 @@ When you trade for real, it is imperative to keep a trading journal, much like t
 
 ### Buy the Rumor, Sell the News
 
-In July, 2023, I was watching TMO pretty closely, as earnings was approaching, and it was widely anticipated that they would post record earnings. Additionally, I noticed they had a strong support line at $515. So I bought 1 share and held it. When it spiked up to around $570 a few days before the earnings, I took profits, making about a 10% gain.
+In July, 2023, I was watching TMO pretty closely, as earnings was approaching, and it was [widely anticipated](https://seekingalpha.com/article/4614839-thermo-fisher-stock-master-compounder-healthcare-reiterate-buy) that they would beat earnings. Additionally, I noticed they had a strong support line at $515. So I bought 1 share and held it. When it spiked up to around $570 a few days before the earnings, I took profits, making about a 10% gain.
 
 ![](/assets/article_images/2023-07-30-intro-to-trading/tmo/IMG_5658.PNG)
 
 ![](/assets/article_images/2023-07-30-intro-to-trading/tmo/IMG_5659.PNG)
 
-Indeed, after the earnings, they dropped dramatically as institutions took profits and they slashed their forward guidance.
+Indeed, after the earnings, during which [they slashed their forward guidance](https://finance.yahoo.com/news/thermo-fisher-tmo-q2-earnings-150500098.html), they dropped dramatically.
 
 ![](/assets/article_images/2023-07-30-intro-to-trading/tmo/IMG_5684.PNG)
 
-However, by some miracle, the drop was extremely short-lived. As of this writing, they trade at around $570, with a strong support found at around $555. However, I couldn't have predicted that would happen from the earnings, so taking profits was still the right play.
+However, by some miracle, the drop was extremely short-lived. As of this writing, they trade at around $560, with a support found at around $555, which are both below my take-profit price.
 
 ### Earnings Plays with Options
 
@@ -394,4 +392,4 @@ This was one of my most profitable trades of all time.
 
 The stock market is a machine that reduces human behavior to a single number, encapsulating the greed and fear of cyclic human behavior. Although the market is constantly changing, from interest rate hikes from the US Federal Reserve to lawsuits that prevent companies such as Binance.US from allowing you to buy crypto using USD on their platform, the core principles of trading in the stock market remain the same, because **human behavior hasn't changed since the inception of capitalism**. If you can train yourself to identify patterns and get in when others are fearful and get out when others are greedy, then this will be a profitable venture for you. Not everyone will enjoy the same trading style, and it will take much experimentation on your part to find the style that best suits your personality, but when you do, I guarantee that the persistence will pay off.
 
-Again, I hope you've thoroughly enjoyed this post, and if you do, please support me by using my [Webull referral link](https://a.webull.com/iHwteseVUiEUqeoaBu). Thanks for reading, and happy trading!
+I hope you've thoroughly enjoyed this post, and if you do, please support me by using my [Webull referral link](https://a.webull.com/iHwteseVUiEUqeoaBu). Thanks for reading, and happy trading!
