@@ -173,7 +173,7 @@ One quirk of dataframes has to do with saving them. Universally, csv files shoul
 | Mazda RX4 Wag | 21   | 6    | 160  | 1    | 4    | 4    |
 | Datsun 710    | 22.8 | 4    | 108  | 1    | 4    | 1    |
 
-In this table, the table headers tells you about the data below, and the index column does not include a name for the column. The text representation of this is:
+In this table, the table headers tells you about the data below, and the index column does not include a name for the column. The csv representation of this is:
 
 ```R
 ,mpg,cyl,disp,am,gear,carb
@@ -197,7 +197,7 @@ When you open the table up in Excel, this is what you see:
 | Mazda RX4 Wag | 21   | 6    | 160 | 1    | 4    | 4   |
 | Datsun 710    | 22.8 | 4    | 108 | 1    | 4    | 1   |
 
-Notice that all the column names are left-shifted relative to the data. This is because the underlying text representation of this data is:
+Notice that all the column names are left-shifted relative to the data. This is because the underlying csv representation of this data is:
 
 ```R
 mpg,cyl,disp,am,gear,carb,
@@ -379,7 +379,7 @@ add_one_to_one <- function() {
 add_one_to_one()  # now x is acessible
 ```
 
-This can be used to modify variables in place, because if you instead returning the variable within the function, then assigning the return result outside the function, due to R's [copy-on-modify](https://adv-r.hadley.nz/names-values.html#copy-on-modify) system, this will result in [unnessary copying](https://adv-r.hadley.nz/names-values.html#modify-in-place) data, which leads to significant slowdowns.
+This can be used to modify variables in place, because if you instead returning the variable within the function, then assigning the return result outside the function, due to R's [copy-on-modify](https://adv-r.hadley.nz/names-values.html#copy-on-modify) system, this will result in R [copying your data twice](https://adv-r.hadley.nz/names-values.html#modify-in-place)!
 
 #### Mutli-Assignment
 
