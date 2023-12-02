@@ -8,19 +8,19 @@ image: /assets/article_images/2023-11-15-r-scripting/1-Jh-R8-Yqr7g9kn-YVYVmd7q-Q
 image2: /assets/article_images/2023-11-15-r-scripting/1-Jh-R8-Yqr7g9kn-YVYVmd7q-Q.png
 ---
 
-The most important feature of scripting is its ability to reduce the amount of time it takes to accomplish a specific task. In the words of Uwe Ligges and popularized in the book [R Inferno](https://www.burns-stat.com/pages/Tutor/R_inferno.pdf):
+The most important feature of scripting is its ability to reduce the amount of time it takes to accomplish a specific task. In the words of Uwe Ligges and popularized Patrick Burns' [R Inferno](https://www.burns-stat.com/pages/Tutor/R_inferno.pdf):
 
 > "Computers are cheap, and thinking hurts."
 
-In this post, I want to share how I streamline my R scripting to save myself from a lot of manual labor.
+In this post, I want to share how I streamline my R scripting. Hopefully, this will save you from a lot of manual labor.
 
 ## Using The Command Line
 
-In scripting, my main guiding principle is to ensure my scripts run out-of-the-box from the command line. If I have to open an R Markdown file in RStudio and run it block-by-block manually, then the script is not doing its job. This means I mostly do my coding in the [Sublime](https://www.sublimetext.com/) text editor, and I only use RStudio to test ideas, debug certain sections of code, or perform some exploratory data analysis tasks. To make this happen, there is a little bit of up front overhead involved in setting up the script, but I guarantee you that the time-savings down the road makes this approach absolutely worth it.
+My main guiding principle is to ensure my scripts run out-of-the-box from the command line. If I have to open an R Markdown file in RStudio and run it block-by-block manually, then the script is not doing its job. This means I mostly do my coding in the [Sublime](https://www.sublimetext.com/) text editor, and I only use RStudio to test ideas, debug code, or perform exploratory data analysis. To make this happen, there is a little bit of up front overhead in setting up the script, but I guarantee you that the time savings down the road makes this approach absolutely worth it.
 
 #### Directory Structure
 
-To make file management easy for myself and be able to quickly determine where to place files, I self-impose the following directory structure for all of my projects. Notice that this does not strictly follow [CRAN's package structure requirements](https://cran.r-project.org/doc/manuals/r-devel/R-exts.html#Package-structure). For example, it's missing some required files and directories, such as DESCRIPTION, NAMESPACE, tests, and vignettes. However, I've found that this is the absolute minimum I need to get up-and-running, so it's good enough for me.
+To make file management easy for myself and be able to quickly determine where to place files, I self-impose the following directory structure for all of my projects. Note that this does not strictly follow [CRAN's package structure requirements](https://cran.r-project.org/doc/manuals/r-devel/R-exts.html#Package-structure); it is missing some required files and directories, such as DESCRIPTION, NAMESPACE, tests, and vignettes. However, in my experience, this is the absolute minimum I need to get up-and-running, so it's good enough for me. If I need the other files, I can add them later.
 
 ```
 my_repository/
@@ -33,7 +33,7 @@ my_repository/
 └─ README.md
 ```
 
-If I have to work with multiple scripts, I make sure to create subfolders within the `data/` and `figures/` so that I don't end up with a huge dumping ground of files.
+If I have to work with multiple scripts, I always make sure to create subfolders within the `data/` and `figures/` folders so I don't end up with a huge dumping ground of files.
 
 #### Setting the Working Directory
 
@@ -43,7 +43,7 @@ This is one of the most useful lines of code I've ever written, and I include it
 wd = dirname(this.path::here())
 ```
 
-This line is helpful, because then I can easily reference any files within my repository, keeping things organized and self-contained.
+This line helps me to easily reference any files within my repository, like so:
 
 ```R
 # import from 'functions'
@@ -55,24 +55,24 @@ filepath = file.path(wd, 'data', 'mtcars.csv')
 write.table(mtcars, file = filepath, row.names = FALSE, sep=',')
 ```
 
-However, when you go to run your code in RStudio, if you try to run `this.path::here()`, you'll get the following error:
+Although this works when you run your script from the command line, if you're debugging, you will still need RStudio. However, if you try to run `this.path::here()` in RStudio, you will get the following error:
 
 ```R
 Error in .sys.path.toplevel() :   R is running from RStudio with no documents open (or source document has no path)
 ```
 
-For that reason, I usually also include a code comment with the absolute path to the directory. For example, on my local machine, my personal **harrisonRTools** repository lives in my `~/github/R` folder, so the full line I have is this:
+For that reason, I usually also include a code comment with the absolute path to the directory. For example, on my local machine, my personal copy of **harrisonRTools** repository lives in my `~/github/R` folder, so the full line I have is this:
 
 ```R
 wd = dirname(this.path::here())  # wd = '~/github/R/harrisonRTools'
 ```
 
-If I'm debugging, I can copy and paste the script starting from the comment. You might wonder, why don't you just use the absolute path directly? If you use hard-coded paths, moving the entire repository to somewhere else will cause it not to run.
+If I'm debugging, I can then copy and paste the script starting from the comment. You might wonder, why don't you just use the absolute path directly? The answer is that having the program algorithmically determine its file location means you can move the entire repository around without worrying about changing all the instances where you hardcoded the paths.
 
 
 #### Imports
 
-Most of the time, people just use `library()` or `source()`, but often, this is not ideal. Clogging up the namespace with `dplyr` functions is not good for memory footprint of your program and can cause unexpected hidden behaviors. For example, if you have many library imports, changing the order of those imports will change which functions are loaded in your namespace. To get around this, you can use the [import package](https://cran.r-project.org/web/packages/import/vignettes/import.html#basic-usage) to import specific functions. Here's a minimum reproducible example of only importing what we need:
+Most of the time, people just use `library()` or `source()`, but this is not ideal for two reasons. First, if you have many library imports, changing the order of those imports will change which functions are loaded in your namespace. Second, for large packages like `dplyr`, clogging up the namespace with `dplyr` functions is not good for memory footprint of your program and can cause unexpected hidden behaviors. To get around this, you can use the [import package](https://cran.r-project.org/web/packages/import/vignettes/import.html#basic-usage) to import specific functions.
 
 ```R
 import::from(magrittr, "%>%")
@@ -97,11 +97,19 @@ import::from(
 )
 ```
 
-Notice that in addition to using less memory, being explicit about where the functions come from also enables traceability, which greatly helps when debugging code. However, sometimes imports can become very verbose, especially when you're importing many functions from the same source, so sometimes you may still want to use `library()` or `source()` directly, especially if the library is small. For example, if you use `library('magrittr')`, most people will know it's because you want to use the pipe `%>%` operator.
+Notice that this has the potential to become very verbose, especially if you have to import many functions from the same package. Therefore, sometimes when the library or file is relatively small, you may still want to consider using `library()` or `source()` directly. For example, if you use `library('magrittr')`, most people will know it's because you want to use the pipe `%>%` operator.
+
+In addition to using less memory, being explicit about where the functions come from also helps with traceability. When someone opens your files for the first time, they will see instantly at the top of the file what the dependencies are. Therefore, I would not recommend using the double-colon `::` operator without also including the import statement at the top of the file. Not only does this make your commands more verbose, it prevents you from benefitting from traceability.
+
+```R
+mean_mpg_per_cyl <- mtcars %>%
+  dplyr::group_by(cyl) %>%
+  dplyr::summarize(mean_mpg = mean(mpg))
+```
 
 #### Command Line Arguments
 
-Since we're using the command line, we need to be able to pass arguments to the script when we run it. Most frequently, this means using flags to specify input files `-i`, but can also be used to choose between different options for how the script should run or the output should look. For handling command-line arguments, [optparse](https://github.com/trevorld/r-optparse) is my preferred go-to library, because it is convenient to use and syntactically very similar to Python's [argparse](https://docs.python.org/3/library/argparse.html) library.
+Since we're using the command line, we need to be able to pass arguments to the script when we run it. Most of the time, this means using flags to specify input files `-i`, but this can also be used to choose between different settings for how the script should be run or how the output should look. For handling command-line arguments, [optparse](https://github.com/trevorld/r-optparse) is my preferred go-to library, because it is convenient to use and syntactically very similar to Python's [argparse](https://docs.python.org/3/library/argparse.html) library.
 
 ```R
 library('optparse')
@@ -123,7 +131,7 @@ opt_parser = OptionParser(option_list=option_list)
 opt = parse_args(opt_parser)
 ```
 
-One of the options I always include is a flag called "troubleshooting", because by wrapping your save functions with this flag, you can quickly disable all the outputs and just see if your code runs.
+One of the options I always include is a flag called "troubleshooting", because by wrapping your save functions with this flag, you can quickly disable all the outputs and just see if your code runs. This is especially helpful if you copy and paste sections of code into RStudio, so you don't have to worry about accidentally copying lines that will overwrite your original files.
 
 ```R
 # save
@@ -135,7 +143,7 @@ if (!troubleshooting) {
 
 #### Logging
 
-In the command line, if you don't print or log anything, it will just look like nothing happened for a few seconds, and then the terminal prompt will appear again. Other times, you'll get an error message, but it won't be clear which line the error originated from. In order to get useful feedback on your script, it's helpful to mark sections in the code. To do this, I usually put this line below my argument parsing and before any code I have for my main script:
+In the command line, if you don't print or log anything, it will just look like nothing happened for a few seconds, and then the terminal prompt will appear again. Other times, you may get an error message, but it won't be clear which line the error originated from. In order to get useful feedback on your script, it's helpful to mark sections in the code. To do this, I usually put this line below my argument parsing and before any code I have for my main script:
 
 ```R
 library('logr')
@@ -161,7 +169,7 @@ In between, I mark major sections of code using `log_print()`, so if the program
 
 #### Saving Files
 
-For saving files, I always consider saving programmatically first, using functions like [write.table](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/write.table) or [ggsave](https://ggplot2.tidyverse.org/reference/ggsave.html). I think using RStudio's Export button should only be a last resort. Even for libraries in which it's not obvious how you would save programmatically, it may be possible to accomplish this. For example, when I was working with [chromoMap](https://lakshay-anand.github.io/chromoMap/index.html), even though the [documentation recommends using RStudio](https://lakshay-anand.github.io/chromoMap/docs.html#Export_to_PNGSVGHTML) and [top answer on StackOverflow](https://stackoverflow.com/questions/69995135/save-chromomap-plots-in-base-r) is to just use a different library for the plotting altogether due to the lack of save functionality, I found that the object actually just an [htmlWidget](https://www.htmlwidgets.org/index.html) object, so it can be saved using the [saveWidget](https://www.rdocumentation.org/packages/htmlwidgets/versions/1.6.2/topics/saveWidget) command.
+For saving files, I always consider saving programmatically first, using functions like [write.table](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/write.table) or [ggsave](https://ggplot2.tidyverse.org/reference/ggsave.html). I think using RStudio's Export button should only be a last resort. Even for libraries in which it's not obvious how you would save programmatically, it may be possible to accomplish this. For example, when I was working with [chromoMap](https://lakshay-anand.github.io/chromoMap/index.html), even though the [documentation recommends using RStudio](https://lakshay-anand.github.io/chromoMap/docs.html#Export_to_PNGSVGHTML) and the [top answer on StackOverflow](https://stackoverflow.com/questions/69995135/save-chromomap-plots-in-base-r) is to just use a different library for the plotting altogether due to the lack of save functionality, I found that the object actually just an [htmlWidget](https://www.htmlwidgets.org/index.html) object, so it can be saved using the [saveWidget](https://www.rdocumentation.org/packages/htmlwidgets/versions/1.6.2/topics/saveWidget) command. If you're stuck, you can always examine objects using the [str](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/str) command.
 
 #### Saving Dataframes
 
@@ -230,7 +238,7 @@ View(mtcars)
 
 ## Nonstandard Evaluation
 
-One of the things that bothers me about R is that some functions, such as dplyr's `group_by()` or ggplot's `aes()`, accept and require unquoted strings. In most languages, unquoted strings are variables, and uninstantiated variables should result in this: `Error: object 'x' not found`. Yet in R, some functions require you to use unquoted strings. For example, consider the following [example code](https://dplyr.tidyverse.org/reference/group_by.html#ref-examples) from dplyr's documentation:
+One of the things that bothered me a lot about R is that some functions, such as dplyr's `group_by()` or ggplot's `aes()`, accept and require unquoted strings. In most languages, unquoted strings are variables, and uninstantiated variables should result in this: `Error: object 'x' not found`. Yet in R, some functions require you to use unquoted strings. For example, consider the following [example code](https://dplyr.tidyverse.org/reference/group_by.html#ref-examples) from dplyr's documentation:
 
 ```R
 library(dplyr)
@@ -245,7 +253,7 @@ ggplot(mean_mpg_per_cyl, aes(x=cyl, y=mean_mpg)) +
   geom_bar(stat="identity")
 ```
 
-In some contexts, this may seem acceptable, but the subtle problem with this code is that it is inflexible. Suppose you want to compare mpg across the groups `cyl`, `gear`, and `carb` and then save the files. Doing something like this will result in an error:
+In some contexts, this may seem acceptable, but the subtle problem with this code is that it is inflexible. Suppose you want to compare mpg across the groups `cyl`, `gear`, and `carb` and then save the resulting dataframes. Doing something like this will result in an error:
 
 ```R
 groups <- c('cyl', 'gear', 'carb')
@@ -301,19 +309,19 @@ Obviously, this code duplication is terrible, but how can we do better? Here are
 	  summarize(mean_mpg = mean(!!!syms('mpg')))
 	```
 	
-	This is especially helpful if you have multiple values you want to replace. For example, if you wanted to group by `'cyl'` and `'am'`, it would be verbose to see repeated instances of `.data`.
+	This is especially helpful if you have multiple values you want to replace. For example, if you wanted to group by both `'cyl'` and `'am'`, it would be verbose to see repeated instances of `.data`.
 		
 	```R
 	# verbose
 	mean_mpg_per_cyl <- mtcars %>%
 	  group_by(.data[['cyl']], .data[['am']]) %>%
-	  summarize(mean_mpg = mean(.data[['mpg']]))
+	  summarize(mean_mpg = mean(.data[['mpg']]), .groups = 'drop')
 	
 	# better
 	groups = c('cyl', 'am')
 	mean_mpg_per_cyl <- mtcars %>%
 	  group_by(!!!syms(groups)) %>%
-	  summarize(mean_mpg = mean(!!!syms('mpg')))
+	  summarize(mean_mpg = mean(!!!syms('mpg')), .groups = 'drop')
 	```
 
 If [nonstandard evaluation](http://adv-r.had.co.nz/Computing-on-the-language.html) encourages such bad practices, why is it included with the language, and when can it be useful? Suppose you are writing a function to modify your variable inplace (or at least give that appearance), using `deparse(substitute())` to get the variable name, you can do something like this:
@@ -338,11 +346,11 @@ In general, [nonstandard evaluation](http://adv-r.had.co.nz/Computing-on-the-lan
 
 ## Variables
 
-The ideas here are meant to help mainly with code readability.
+At a first glance, [assigning](http://adv-r.had.co.nz/Environments.html#binding) and [accessing](http://adv-r.had.co.nz/Functions.html#lexical-scoping) variables may seem like such a trivial task. You've probably done it thousands of times. However, being familiar with the different ways variables to accomplish this will help with code readability, and on a broader scale, help you write properly scoped functions and prevent name collisions and redundant calculations.
 
-#### Variable Assignment
+#### Single Assignment
 
-There are three main operators to perform variable assignment: the arrow operator `<-`, the equals operator `=`, and the double-arrow operator `<<-`. Most of the programming languages uses the equal operator for assignment. I recently learned why this is not necessarily so in R. As explained in [this blog post](https://www.r-bloggers.com/2018/09/why-do-we-use-arrow-as-an-assignment-operator/) by Colin Fay, R came from the [S programming language](https://en.wikipedia.org/wiki/S_(programming_language)), which mainly used `<-` and `_` as assignment operators and `=` to test equality. This also explains why CamelCase is preferred over snake_case (which I personally prefer). In 2003, the `_` operator for assignment was removed, but the conventions stuck.
+There are [three main operators](https://stat.ethz.ch/R-manual/R-patched/library/base/html/assignOps.html) to perform variable assignment: the equals operator `=`, the assignment operator `<-`, and the deep-assignment operator `<<-`. Most of the programming languages uses the equal operator for assignment. I recently learned why this is not necessarily so in R. As explained in [this blog post](https://www.r-bloggers.com/2018/09/why-do-we-use-arrow-as-an-assignment-operator/) by Colin Fay, R came from the [S programming language](https://en.wikipedia.org/wiki/S_(programming_language)), which mainly used `<-` and `_` as assignment operators and `=` to test equality. This also explains why CamelCase is preferred over snake_case (which I personally prefer). In 2003, the `_` operator for assignment was removed, but the conventions stuck.
 
 In the global environment, the arrow operator `<-` is interchangeable with the equals operator `=`, but within functions, they differ in their scope and precedence. The equals operator `=` is limited in scope, because it only peforms argument passing, whereas the arrow operator performs argument passing and object assignment. Consider the function `add_one`:
 
@@ -379,7 +387,8 @@ add_one_to_one <- function() {
 add_one_to_one()  # now x is acessible
 ```
 
-This can be used to modify variables in place, because if you instead returning the variable within the function, then assigning the return result outside the function, due to R's [copy-on-modify](https://adv-r.hadley.nz/names-values.html#copy-on-modify) system, this will result in R [copying your data twice](https://adv-r.hadley.nz/names-values.html#modify-in-place)!
+This can be used to modify variables in place, because if you instead returning the variable within the function, then assigning the return result outside the function, due to R's [copy-on-modify](https://adv-r.hadley.nz/names-values.html#copy-on-modify) system, this will result in R copying your data twice! [Here's an example](https://adv-r.hadley.nz/names-values.html#modify-in-place) from Hadley Wickham demonstrating this principle, in which updating a particular value in a dataframe results in it being copied three times per iteration!
+
 
 #### Mutli-Assignment
 
@@ -433,7 +442,7 @@ The problem with the dollar-sign operator is that if you ever want to swap out t
 
 ## Basic Data Structures
 
-Understanding how these are implemented under the hood is essential in ensuring that your code runs optimally and does not have any unnecessary side-effects.
+Understanding [the basic data structures of R](http://adv-r.had.co.nz/Data-structures.html) is essential in essential ensuring that your code runs optimally and does not have any unnecessary side-effects.
 
 #### Data Types
 
@@ -451,7 +460,7 @@ for file in in files:
 	results.append(df)	
 ```
 
-Therefore, I was suprised to learn that actually, R does not work that way. Instead, R primarily uses [copy-on-modify](https://adv-r.hadley.nz/names-values.html#copy-on-modify), meaning that when you append a list, the entire list will get copied. This can lead to a lot of unnecessary copying of data, which causes significant slowdowns. [Here's an example](https://adv-r.hadley.nz/names-values.html#modify-in-place) from Hadley Wickham where updating a particular value in a dataframe results in it being copied three times for each iteration.
+Therefore, I was suprised to learn that actually, R does not work that way. Instead, R primarily uses [copy-on-modify](https://adv-r.hadley.nz/names-values.html#copy-on-modify), meaning that when you append a list, [the entire list will get copied](https://adv-r.hadley.nz/perf-improve.html#avoid-copies). This can lead to a lot of unnecessary copying of data, which causes significant slowdowns.
 
 I haven't found a good workaround for this yet, but the solution seems to be to use an [R environment](https://adv-r.hadley.nz/names-values.html#env-modify) due to its modify-in-place properties. Here's a [StackOverflow post](https://stackoverflow.com/questions/17046336/here-we-go-again-append-an-element-to-a-list-in-r/17050160#17050160) discussing the approach.
 
@@ -491,4 +500,6 @@ However, R environments still suffer from the issue of only allowing characters 
 
 ## Outro
 
-The examples listed here were not taught to me in intro or intermediate R classes, but rather, were the result of deliberate practice, much trial-and-error, and reading [Advanced R](https://adv-r.hadley.nz/index.html) by Hadley Wickham, which is an excellent resource for learning more. I hope you found these techniques useful, and I will see you in the next blog post!
+The examples included in this post are a result of much trial-and-error and deliberate practice. They provide a template to start getting away from the manual labor of interacting with RStudio and more toward constructing standardized automatic data analysis pipelines, which will ultimately save you a lot of time. However, this barely skims the surface on what R can do. For more information on writing better code, I highly recommend reading [this chapter](https://adv-r.hadley.nz/perf-improve.html) from Hadley Wickham's [Advanced R](https://adv-r.hadley.nz/index.html). To see how I construct my R projects, please see my [Github](https://github.com/harrisonized?tab=repositories&q=language%3AR&type=public&language=r&sort=).
+
+I hope you found this insightful, and I will see you in the next blog post!
