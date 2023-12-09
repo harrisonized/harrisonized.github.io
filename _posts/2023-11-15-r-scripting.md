@@ -258,7 +258,9 @@ In some contexts, this may seem acceptable, but the subtle problem with this cod
 ```R
 groups <- c('cyl', 'gear', 'carb')
 for (group in groups) {
-  df <- mtcars %>% group_by(group) %>% summarize(mean_mpg = mean(mpg))
+  df <- mtcars %>%
+    group_by(group) %>%
+    summarize(mean_mpg = mean(mpg))
   write.table(df, file = paste0(group, '.csv'), sep=',')
 }
 
@@ -295,7 +297,9 @@ Obviously, this code duplication is terrible, but how can we do better? Here are
 	groups <- c('cyl', 'gear', 'carb')
 	dataframes <- list()
 	for (group in groups) {
-	  df <- mtcars %>% group_by(.data[[group]]) %>% summarize(mean_mpg = mean(.data[['mpg']]))
+	  df <- mtcars %>%
+	    group_by(.data[[group]]) %>%
+	    summarize(mean_mpg = mean(.data[['mpg']]))
      write.table(df, file = paste0(group, '.csv'), sep=',')
    }
 	```	
@@ -466,7 +470,9 @@ Fortunately, there is a simple workaround for this, by using an [R environment](
 
 ```R
 library('dplyr')
-groups <- c('cyl', 'gear', 'carb')dataframes <- new.env()for (group in groups) {    dataframes[[group]] <- mtcars %>% group_by(.data[[group]]) %>% summarize(mean_mpg = mean(.data[['mpg']]))}dataframes <- as.list(dataframes)
+groups <- c('cyl', 'gear', 'carb')dataframes <- new.env()for (group in groups) {    dataframes[[group]] <- mtcars %>%
+      group_by(.data[[group]]) %>%
+      summarize(mean_mpg = mean(.data[['mpg']]))}dataframes <- as.list(dataframes)
 ```	
 
 #### Dictionaries
