@@ -395,7 +395,7 @@ This can be used to modify variables in place, because if you instead returning 
 The [zeallot](https://cran.r-project.org/web/packages/zeallot/index.html) library allows you to access the `%<-%` operator to perform multi-assignment, which can be helpful if you are trying assign from a function that returns multiple values or if you are assigning multiple variables within functions and you want to make your code more compact.
 
 ```R
-library(zeallot)c(a, b, c) %<-% c(1, 2, 3)```
+library('zeallot')c(a, b, c) %<-% c(1, 2, 3)```
 
 #### Multi-Argument Passing
 
@@ -462,9 +462,12 @@ for file in in files:
 
 Therefore, I was suprised to learn that actually, R does not work that way. Instead, R primarily uses [copy-on-modify](https://adv-r.hadley.nz/names-values.html#copy-on-modify), meaning that when you append a list, [the entire list will get copied](https://adv-r.hadley.nz/perf-improve.html#avoid-copies). This can lead to a lot of unnecessary copying of data, which causes significant slowdowns.
 
-I haven't found a good workaround for this yet, but the solution seems to be to use an [R environment](https://adv-r.hadley.nz/names-values.html#env-modify) due to its modify-in-place properties. Here's a [StackOverflow post](https://stackoverflow.com/questions/17046336/here-we-go-again-append-an-element-to-a-list-in-r/17050160#17050160) discussing the approach.
+Fortunately, there is a simple workaround for this, by using an [R environment](https://adv-r.hadley.nz/names-values.html#env-modify). First, instantiate the R environment, then at the end, convert it the environment back into a list.
 
-For now, I've taken care to avoid collecting results in a growing list in any of my scripts.
+```R
+library('dplyr')
+groups <- c('cyl', 'gear', 'carb')dataframes <- new.env()for (group in groups) {    dataframes[[group]] <- mtcars %>% group_by(.data[[group]]) %>% summarize(mean_mpg = mean(.data[['mpg']]))}dataframes <- as.list(dataframes)
+```	
 
 #### Dictionaries
 
