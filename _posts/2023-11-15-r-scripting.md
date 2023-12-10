@@ -1,6 +1,6 @@
 ---
 layout: post
-title: A Quick Primer on R Scripting
+title: Getting Started with R Scripting
 date: 2023-11-15
 categories: 
 tags: 
@@ -72,7 +72,7 @@ If I'm debugging, I can then copy and paste the script starting from the comment
 
 #### Imports
 
-Most of the time, people just use `library()` or `source()`, but this is not ideal for two reasons. First, if you have many library imports, changing the order of those imports will change which functions are loaded in your namespace. Second, for large packages like `dplyr`, clogging up the namespace with `dplyr` functions is not good for memory footprint of your program and can cause unexpected hidden behaviors. To get around this, you can use the [import package](https://cran.r-project.org/web/packages/import/vignettes/import.html#basic-usage) to import specific functions.
+Most of the time, people just use `library()` or `source()`, but this is not ideal for two reasons. First, if you have many library imports, changing the order of those imports will change which functions are loaded in your namespace. Second, for large packages like `dplyr`, clogging up the namespace with `dplyr` functions is not good for memory footprint of your program and can cause unexpected hidden behaviors. To get around this, you can use the [import package](https://cran.r-project.org/web/packages/import/vignettes/import.html#basic-usage) to restrict your import to specific functions.
 
 ```R
 import::from(magrittr, "%>%")
@@ -97,15 +97,15 @@ import::from(
 )
 ```
 
-Notice that this has the potential to become very verbose, especially if you have to import many functions from the same package. Therefore, sometimes when the library or file is relatively small, you may still want to consider using `library()` or `source()` directly. For example, if you use `library('magrittr')`, most people will know it's because you want to use the pipe `%>%` operator.
-
-In addition to using less memory, being explicit about where the functions come from also helps with traceability. When someone opens your files for the first time, they will see instantly at the top of the file what the dependencies are. Therefore, I would not recommend using the double-colon `::` operator without also including the import statement at the top of the file. Not only does this make your commands more verbose, it prevents you from benefitting from traceability.
+In addition to being more memory efficient, being explicit about where the functions come from also helps with traceability. When someone opens your files for the first time, they will see instantly at the top of the file what the dependencies are. Therefore, I would not recommend using the double-colon `::` operator directly without the accompanying import statement at the top.
 
 ```R
 mean_mpg_per_cyl <- mtcars %>%
   dplyr::group_by(cyl) %>%
   dplyr::summarize(mean_mpg = mean(mpg))
 ```
+
+Lastly, if you try to `import::from` a file with `library()` or `import::from` at the top, you may run into an error due to scoping, where the functions cannot access their dependencies. To get around this, there are two strategies. If you have a small number of functions to import, use `import::here`, which is similar to `import::from`, but restricts the access of the dependencies. If you have a large number of functions to import, typically from ggplot2, you should just `source()` the file and use `library(ggplot2)` in the file itself.
 
 #### Command Line Arguments
 
