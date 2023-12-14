@@ -27,13 +27,21 @@ my_repository/
 ├─ data/
 ├─ figures/
 ├─ R/
-│   ├─ functions/
+│   ├─ tools/
 │   └─ my_script.R
 ├─ ref/
 └─ README.md
 ```
 
-If I have to work with multiple scripts, I always make sure to create subfolders within the `data/` and `figures/` folders so I don't end up with a huge dumping ground of files.
+If I have to work with multiple scripts, I always make sure to create subfolders within the `data/` and `tools/` folders so I don't end up with a huge dumping ground of files. This is a very Pythonic style of file organization, because in R, the best practice is to have all `.R` files be top-level. However, when I see how overwhelmingly many files are in the toplevel of repositories like [dplyr](https://github.com/tidyverse/dplyr/tree/main/R), I'd much rather break that rule to remain organized than follow it and be confused.
+
+This directory structure has worked well for me, but it is not the only one. Throughout the years, people have come out with many different [standards](https://xkcd.com/927/), and I don't think there's a consensus for script-centric repositories. For example, here is [a paper](https://doi.org/10.1080/00031305.2017.1375986) describing the system that worked well for these authors that differs greatly from mine.
+
+![](/assets/article_images/2023-11-15-r-scripting/standards_2x.png)
+
+I think the most important thing is just to pick a system and stick with it. 
+
+However, there is one exception. If your goal is to [create an R package](https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/) to house reusable functions (and no scripts), which you can install and call using `library()`, then R does require you to use top-level `.R` files. This is because [Roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) cannot detect or document any functions in nested R directories, so they will not be installed. In this case, I recommend reading chapters 6-8 of Hadley Wickham's [R Packages](https://r-pkgs.org/code.html) book and looking at some examples of stable libraries, such as [broman](https://github.com/kbroman/broman) or [harrisonRTools](https://github.com/harrisonized/harrisonRTools) (modeled after broman).
 
 #### Setting the Working Directory
 
