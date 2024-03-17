@@ -1,3 +1,3 @@
 | image | source |
 | :------------- | --------- |
-| 1-Jh-R8-Yqr7g9kn-YVYVmd7q-Q.png | [https://www.kdnuggets.com/2019/06/ten-useful-things-r.html](https://www.kdnuggets.com/2019/06/ten-useful-things-r.html)
+| F100029914-programmer_man_coding.jpg | [https://en.freejpg.com.ar/free/info/100029914/programmer-man-coding](https://en.freejpg.com.ar/free/info/100029914/programmer-man-coding)

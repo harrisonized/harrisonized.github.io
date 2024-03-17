@@ -4,8 +4,8 @@ title: Getting Started with R Scripting
 date: 2023-11-15
 categories: 
 tags: 
-image: /assets/article_images/2023-11-15-r-scripting/1-Jh-R8-Yqr7g9kn-YVYVmd7q-Q.png
-image2: /assets/article_images/2023-11-15-r-scripting/1-Jh-R8-Yqr7g9kn-YVYVmd7q-Q.png
+image: /assets/article_images/2023-11-15-r-scripting/F100029914-programmer_man_coding.jpg
+image2: /assets/article_images/2023-11-15-r-scripting/F100029914-programmer_man_coding.jpg
 ---
 
 The most important feature of scripting is its ability to reduce the amount of time it takes to accomplish a specific task. In the words of Uwe Ligges and popularized Patrick Burns' [R Inferno](https://www.burns-stat.com/pages/Tutor/R_inferno.pdf):
