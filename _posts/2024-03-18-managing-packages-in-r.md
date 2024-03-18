@@ -93,17 +93,13 @@ If you select `yes` here, R will then automatically create the default user libr
 /Users/harrison/Library/R/arm64/4.3/library
 ```
 
-If you were to create other library paths, this is where I would recommend placing them, just for convenience. (Of course, you can place your libraries wherever you want, this is just where I'd recommend.) On my machine, I have the following library paths:
+If you were to create other library paths, this is where I would recommend placing them. (Of course, you can place your libraries wherever you want, but I like to keep things all together.) For example, to install the latest version of [Seurat](https://satijalab.org/seurat/articles/install_v5) (v5.0.2 at the time of this writing), I ran the following command:
 
 ```R
-> .libPaths()
-[1] "/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
-[2] "/Users/harrison/Library/R/arm64/4.3/library"
-[3] "/Users/harrison/Library/R/arm64/seurat-4.3/library"
-[4] "/Users/harrison/Library/R/arm64/seurat-5.0/library"
+install.packages("Seurat", lib="~/Library/R/arm64/seurat-5.0/library")
 ```
 
-I installed [Seurat v4.3.0](https://github.com/satijalab/seurat/releases/tag/v4.3.0) into `seurat-4.3` and [Seurat v5.0.2](https://github.com/satijalab/seurat/releases/tag/v5.0.2) into `seurat-5.0`, keeping each of these and their dependencies isolated. This is perfect, because [Seurat v4.3.0 requires Matrix v1.6-1](https://github.com/cole-trapnell-lab/monocle3/issues/690), Seurat v5.0.2 requires Matrix v1.6-5, and when you try to use Seurat v4.3.0 with Matrix v1.6-5, you'll get [this error](https://github.com/cole-trapnell-lab/monocle3/issues/690).
+I installed [Seurat v5.0.2](https://github.com/satijalab/seurat/releases/tag/v5.0.2) into `seurat-5.0` and [Seurat v4.3.0](https://github.com/satijalab/seurat/releases/tag/v4.3.0) into `seurat-4.3`, keeping each of these and their dependencies isolated. This is perfect, because [Seurat v4.3.0 requires Matrix v1.6-1](https://github.com/cole-trapnell-lab/monocle3/issues/690), Seurat v5.0.2 requires Matrix v1.6-5, and when you try to use Seurat v4.3.0 with Matrix v1.6-5, you'll get [this error](https://github.com/cole-trapnell-lab/monocle3/issues/690).
 
 ## Controlling How Packages are Imported
 
@@ -113,6 +109,7 @@ When you run the `.libPaths()` command, you get a list of libraries in the order
 > .libPaths()
 [1] "/Users/harrison/Library/R/arm64/4.3/library"                           [2] "/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
 ```
+
 To change this ad hoc, you can pass a list directly into `.libPaths()`:
 
 ```R
@@ -125,23 +122,24 @@ To change this ad hoc, you can pass a list directly into `.libPaths()`:
 # [1] "/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
 # [2] "/Users/harrison/Library/R/arm64/4.3/library"
 ```
-However, since this requires hardcoding paths and you have to remember doing this for every script, I would not recommend this ad hoc approach.
+However, since this requires hardcoding paths and you have to remember doing this for every script, I would not recommend this approach.
 
-A better, more permanent way to change the order is to set the `.Renviron` file, a plaintext file that goes in your home directory. In this file, you can specify two environmental variables: `R_LIBS`, which specifies your System Library, and `R_LIBS_USER`, which specifies your User Libraries using a colon-separated list. Here are the three ways to set it:
+A better, more reliable way to change the order is to set the `.Renviron` file, a plaintext file that goes in your home directory. In this file, you can specify two environmental variables: `R_LIBS` specifies your System Library, and `R_LIBS_USER` specifies your User Libraries. Here are the various ways to achieve the different orderings:
 
-1. To import from your System Library, then User Library, set `R_LIBS` in addition to `R_LIBS_USER`.
+1. As mentioned above, by default, if you do not set anything, by default, R imports from your User Library first and the System Library. You can also have the variables set, but hash-commented:
 
 	```
-	R_LIBS="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
-R_LIBS_USER="/Users/harrison/Library/R/arm64/seurat-5.0/library:/Users/harrison/Library/R/arm64/seurat-4.3/library:/Users/harrison/Library/R/arm64/4.3/library"
+	# R_LIBS="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
+	# R_LIBS_USER="/Users/harrison/Library/R/arm64/4.3/library"
 	```
 	
 	```R
 	> .libPaths()
-	[1] "/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"	[2] "/Users/harrison/Library/R/arm64/seurat-5.0/library"                    	[3] "/Users/harrison/Library/R/arm64/seurat-4.3/library"                    	[4] "/Users/harrison/Library/R/arm64/4.3/library" 
+	[1] "/Users/harrison/Library/R/arm64/4.3/library"
+	[2] "/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
 	```
-
-2. To import from your User Library first, only set `R_LIBS_USER`, and either comment out `R_LIBS` or don't set `R_LIBS` at all.
+	
+2. To keep the same order (User Library, then System Library) but add additional User Libraries, set that using the `R_LIBS_USER` variable, which takes a colon-separated list. For example:
 
 	```
 	# R_LIBS="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
@@ -152,8 +150,22 @@ R_LIBS_USER="/Users/harrison/Library/R/arm64/seurat-5.0/library:/Users/harrison/
 	> .libPaths()	[1] "/Users/harrison/Library/R/arm64/seurat-5.0/library"                    	[2] "/Users/harrison/Library/R/arm64/seurat-4.3/library"                    	[3] "/Users/harrison/Library/R/arm64/4.3/library"
 	[4] "/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library" 
 	```
+	
+	The order of the colon-separated list dictates the order of the User Libraries.
 
-3. Finally, to prevent the User Libraries from being used, you must deliberately unset it. Otherwise, the default User Library (`~/Library/R/arm64/4.3/library`) will automatically be found. 
+3. To reverse the order and import the System Library before the User Library, set both `R_LIBS` and `R_LIBS_USER`.
+
+	```
+	R_LIBS="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
+R_LIBS_USER="/Users/harrison/Library/R/arm64/4.3/library"
+	```
+	
+	```R
+	> .libPaths()
+	[1] "/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"	[2] "/Users/harrison/Library/R/arm64/4.3/library" 
+	```
+
+4. Finally, to prevent the User Libraries from being used, you must deliberately unset it. Otherwise, the default User Library (`~/Library/R/arm64/4.3/library`) will automatically be found. 
 
 	```
 	R_LIBS="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
@@ -164,8 +176,8 @@ R_LIBS_USER=""
 	> .libPaths()	[1] "/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library" 
 	```
 	
-This order specified is preseved regardless of whether you use RStudio or an Rscript. Also, regardless of your settings, you cannot unset the System Library, as [this is where all of the base packages live](https://stackoverflow.com/questions/54946732/dont-use-r-system-library).
+This order specified is preseved regardless of whether you use RStudio or an Rscript. Also, regardless of your settings, [you cannot unset the System Library](https://stackoverflow.com/questions/54946732/dont-use-r-system-library), as this is where all of the base packages live. You can, however, set it to a path that doesn't exist, and in that case, you will not even be able to run base R, so make sure you set this with care.
 
-##  Outtro
+#  Outro
 
 Hopefully, this guide will save you the headache of going through dependency hell. For sure it is not the only way to manage packages, but I think this is the most straightforward and reliable way to set packages. Happy coding, and until next time!
