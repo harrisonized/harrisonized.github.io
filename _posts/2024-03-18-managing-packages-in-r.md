@@ -51,7 +51,7 @@ If you now go to the specified folder, you'll see a lot of the packages availabl
 dplyr├─ data├─ DESCRIPTION├─ doc├─ help├─ html├─ INDEX├─ libs├─ LICENSE├─ Meta├─ NAMESPACE├─ NEWS.md└─ R
 ```
 
-You'll recognize many of the components available from the [source code](https://github.com/tidyverse/dplyr), but when you open the R folder, rather than the source code itself, you'll see `dplyr`, `dplyr.rdb`, and `dplyr.rdx`. These are [compiled versions of the source code](https://reproducible-builds.org/news/2017/05/03/reproduciing-r-packages/), and it's where R gets the functions when you import it using `library('dplyr')`.
+You'll recognize many of the components available from the [source code](https://github.com/tidyverse/dplyr), but when you open the R folder, rather than the source code itself, you'll see `dplyr`, `dplyr.rdb`, and `dplyr.rdx`. These are [compiled versions of the source code](https://cran.r-project.org/doc/manuals/r-release/R-ints.html#Lazy-loading-1), and it's where R gets the functions when you import it using `library('dplyr')`. (You can actually inspect the dplyr.rdx file using the `readRDS` function.)
 
 Note that in this example, I called `install.packages()` using the default parameters, and the installation was extremely fast. This is because R grabbed the latest version of the package, which comes pre-compiled from [CRAN](https://cran.r-project.org/). In fact, all the pre-compiled packages available are listed [here](https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.3/). However, since I'm on R version 4.3.0, when I go to import dplyr using `library('dplyr')`, I now get this warning:
 
