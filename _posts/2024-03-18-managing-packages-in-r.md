@@ -87,10 +87,16 @@ The key to package management is that you can install packages into different lo
 > install.packages("dplyr", lib="")Warning in install.packages :  'lib = ""' is not writableWould you like to use a personal library instead? (yes/No/cancel)
 ```
 
-If you select `yes` here, R will then automatically create the default user library path for you. On my machine, this is located at:
+If you select `yes` here, R will then automatically create the default user library path for you. On my macbook, this is located at:
 
 ```
 /Users/harrison/Library/R/arm64/4.3/library
+```
+
+On my Windows machine, this is located at:
+
+```
+C:/Users/harrison/AppData/Local/R/win-library/4.3
 ```
 
 If you were to create other library paths, this is where I would recommend placing them. (Of course, you can place your libraries wherever you want, but I like to keep things all together.) For example, to install the latest version of [Seurat](https://satijalab.org/seurat/articles/install_v5) (v5.0.2 at the time of this writing), I ran the following command:
@@ -99,7 +105,7 @@ If you were to create other library paths, this is where I would recommend placi
 install.packages("Seurat", lib="~/Library/R/arm64/seurat-5.0/library")
 ```
 
-I installed [Seurat v5.0.2](https://github.com/satijalab/seurat/releases/tag/v5.0.2) into `seurat-5.0` and [Seurat v4.3.0](https://github.com/satijalab/seurat/releases/tag/v4.3.0) into `seurat-4.3`, keeping each of these and their dependencies isolated. This is perfect, because [Seurat v4.3.0 requires Matrix v1.6-1](https://github.com/cole-trapnell-lab/monocle3/issues/690), Seurat v5.0.2 requires Matrix v1.6-5, and when you try to use Seurat v4.3.0 with Matrix v1.6-5, you'll get [this error](https://github.com/cole-trapnell-lab/monocle3/issues/690).
+Note that you need to create the corresponding folder outside of R first. I installed [Seurat v5.0.2](https://github.com/satijalab/seurat/releases/tag/v5.0.2) into `seurat-5.0` and [Seurat v4.3.0](https://github.com/satijalab/seurat/releases/tag/v4.3.0) into `seurat-4.3`, keeping each of these and their dependencies isolated. This is perfect, because [Seurat v4.3.0 requires Matrix v1.6-1](https://github.com/cole-trapnell-lab/monocle3/issues/690), Seurat v5.0.2 requires Matrix v1.6-5, and when you try to use Seurat v4.3.0 with Matrix v1.6-5, you'll get [this error](https://github.com/cole-trapnell-lab/monocle3/issues/690).
 
 ## Controlling How Packages are Imported
 
@@ -124,14 +130,14 @@ To change this ad hoc, you can pass a list directly into `.libPaths()`:
 ```
 However, since this requires hardcoding paths and you have to remember doing this for every script, I would not recommend this approach.
 
-A better, more reliable way to change the order is to set the `.Renviron` file, a plaintext file that goes in your home directory. In this file, you can specify two environmental variables: `R_LIBS` specifies your System Library, and `R_LIBS_USER` specifies your User Libraries. Here are the various ways to achieve the different orderings:
+A better, more reliable way to change the order is to set the `.Renviron` file, a plaintext file that goes in your home directory. (On Windows, this file goes into Documents.) In this file, you can specify two environmental variables: `R_LIBS` specifies your System Library, and `R_LIBS_USER` specifies your User Libraries. 
 
-1. As mentioned above, by default, if you do not set anything, by default, R imports from your User Library first and the System Library. You can also have the variables set, but hash-commented:
 
-	```
-	# R_LIBS="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
-	# R_LIBS_USER="/Users/harrison/Library/R/arm64/4.3/library"
-	```
+## Controlling How Packages are Imported on Mac
+
+Here are the various ways to achieve the different orderings:
+
+1. By default, if you do not set anything, by default, R imports from your default User Library first, followed by the default System Library.
 	
 	```R
 	> .libPaths()
@@ -139,11 +145,10 @@ A better, more reliable way to change the order is to set the `.Renviron` file, 
 	[2] "/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
 	```
 	
-2. To keep the same order (User Library, then System Library) but add additional User Libraries, set that using the `R_LIBS_USER` variable, which takes a colon-separated list. For example:
+2. To keep the same order (User Library, then System Library) but add additional User Libraries, set that using the `R_LIBS_USER` variable, which takes a **colon-separated** list. For example:
 
 	```
-	# R_LIBS="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
-R_LIBS_USER="/Users/harrison/Library/R/arm64/seurat-5.0/library:/Users/harrison/Library/R/arm64/seurat-4.3/library:/Users/harrison/Library/R/arm64/4.3/library"
+	R_LIBS_USER="~/Library/R/arm64/seurat-5.0/library:~/Library/R/arm64/seurat-4.3/library:~/Library/R/arm64/4.3/library"
 	```
 	
 	```R
@@ -157,7 +162,7 @@ R_LIBS_USER="/Users/harrison/Library/R/arm64/seurat-5.0/library:/Users/harrison/
 
 	```
 	R_LIBS="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
-R_LIBS_USER="/Users/harrison/Library/R/arm64/4.3/library"
+R_LIBS_USER="~/Library/R/arm64/4.3/library"
 	```
 	
 	```R
@@ -169,7 +174,7 @@ R_LIBS_USER="/Users/harrison/Library/R/arm64/4.3/library"
 
 	```
 	R_LIBS="/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library"
-R_LIBS_USER=""
+R_LIBS_USER=" "
 	```
 	
 	```R
@@ -178,6 +183,62 @@ R_LIBS_USER=""
 	
 This order specified is preseved regardless of whether you use RStudio or an Rscript. Also, regardless of your settings, [you cannot unset the System Library](https://stackoverflow.com/questions/54946732/dont-use-r-system-library), as this is where all of the base packages live. You can, however, set it to a path that doesn't exist, and in that case, you will not even be able to run base R, so make sure you set this with care.
 
+## Controlling How Packages are Imported on Windows
+
+On Windows, the `~` character, which usually is a shortcut for `$HOME`, points to the Documents folder by default. This is non-standard behavior, but it can be overridden by setting the `R_USER` variable in your `.Renviron` file. Add your equivalent of the following line above all other lines:
+
+```
+R_USER="C:/Users/harrison/"
+```
+
+On Windows, the ordering is easy, because it's controlled entirely by the `R_LIBS_USER` environmental variable, and `R_LIBS` is useless. Here are the various ways to achieve the different orderings:
+
+1. By default, if you do not set anything, by default, R imports from your default User Library first, followed by the default System Library.
+	
+	```R
+	> .libPaths()
+	[1] "C:/Users/harrison/AppData/Local/R/win-library/4.3"
+	[2] "C:/Program Files/R/R-4.3.0/library"
+	```
+	
+2. To keep the same order (User Library, then System Library) but add additional User Libraries, set that using the `R_LIBS_USER` variable, which takes a **semicolon-separated** list. For example:
+
+	```
+	R_USER="C:/Users/harrison/"
+	R_LIBS_USER="~/AppData/Local/R/win-library/seurat-5.0;~/AppData/Local/R/win-library/seurat-4.3;~/AppData/Local/R/win-library/4.3"
+	```
+		
+	```R
+	> .libPaths()	[1] "C:/Users/harrison/AppData/Local/R/win-library/seurat-5.0"                    	[2] "C:/Users/harrison/AppData/Local/R/win-library/seurat-4.3"                    	[3] "C:/Users/harrison/AppData/Local/R/win-library/4.3"
+	[4] "C:/Program Files/R/R-4.3.0/library"
+	```
+	
+	The order of the semicolon-separated list dictates the order of the User Libraries.
+
+3. To reverse the order and import the System Library before the User Library, set both `R_LIBS` and `R_LIBS_USER`, but make sure to preceed `R_LIBS_USER` with a semicolon. (Otherwise, R will import the System Library second.)
+
+	```
+	R_USER="C:/Users/harrison/"
+	R_LIBS="C:/Program Files/R/R-4.3.0/library"
+	R_LIBS_USER=";~/AppData/Local/R/win-library/4.3"
+	```
+	
+	```R
+	> .libPaths()     
+	[1] "C:/Program Files/R/R-4.3.0/library"         	[2] "C:/Users/harrison/AppData/Local/R/win-library/4.3"
+	```
+
+4. Finally, to prevent the User Libraries from being used, you must deliberately unset it. Otherwise, the default User Library (`~/Library/R/arm64/4.3/library`) will automatically be found. 
+
+	```
+	R_USER="C:/Users/harrison/"
+	R_LIBS_USER=" "
+	```
+	
+	```R
+	> .libPaths()	[1] "C:/Program Files/R/R-4.3.0/library"
+	```
+
 #  Outro
 
-Hopefully, this guide will save you the headache of going through dependency hell. For sure it is not the only way to manage packages, but I think this is the most straightforward and reliable way to set packages. Happy coding, and until next time!
+Hopefully, this guide will save you the headache of going through dependency hell. For sure it is not the only method to manage packages, but I think this is the most straightforward and reliable method. Happy coding, and until next time!
