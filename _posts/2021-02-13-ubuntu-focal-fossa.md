@@ -5,7 +5,7 @@ date: 2021-02-13
 categories: 
 tags: 
 image: /assets/article_images/2021-02-13-ubuntu-focal-fossa/fossa-cropped.jpg
-image2: /assets/article_images/2021-02-13-ubuntu-focal-fossa/fossa-croppped.jpg
+image2: /assets/article_images/2021-02-13-ubuntu-focal-fossa/fossa-cropped.jpg
 ---
 
 
