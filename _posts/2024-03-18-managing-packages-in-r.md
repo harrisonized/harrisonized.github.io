@@ -76,7 +76,11 @@ clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/in
 ld: warning: -single_module is obsoleteld: warning: -multiply_defined is obsoleteinstalling to /Users/harison/Library/R/arm64/4.3/library/00LOCK-dplyr/00new/dplyr/libs** R** data*** moving datasets to lazyload DB** inst** byte-compile and prepare package for lazy loading** help*** installing help indices*** copying figures** building package indices** installing vignettes** testing if installed package can be loaded from temporary location** checking absolute paths in shared objects and dynamic libraries** testing if installed package can be loaded from final location** testing if installed package keeps a record of temporary installation path* DONE (dplyr)
 ```
 
-If you install a package such as [dplyr](https://github.com/tidyverse/dplyr) from Github, you'll also have to compile it. Note that on a Macbook, in order for libraries to be compiled successfully, you [must](https://stackoverflow.com/questions/68647868/unable-to-install-packages-via-renvrestore-r-was-unable-to-find-one-or-mor) install [gfortran-6.1.pkg](https://cran.r-project.org/bin/macosx/tools/gfortran-6.1.pkg) from [here](https://cran.r-project.org/bin/macosx/tools/). It cannot be [homebrew](https://brew.sh/)'s version of [gfortran](https://formulae.brew.sh/formula/gcc), otherwise, you'll run into [this error](https://stackoverflow.com/questions/77836548/library-gfortran-not-found-when-installing-r-packages), for which I spent far too much time trying to figure out [how to fix this error](https://blog.cynkra.com/posts/2021-03-16-gfortran-macos/), which ultimately didn't end up working.
+If you install a package such as [dplyr](https://github.com/tidyverse/dplyr) from Github, you'll also have to compile it.
+
+On a Macbook, in order for libraries to be compiled successfully, you [must](https://stackoverflow.com/questions/68647868/unable-to-install-packages-via-renvrestore-r-was-unable-to-find-one-or-mor) install [gfortran-6.1.pkg](https://cran.r-project.org/bin/macosx/tools/gfortran-6.1.pkg) from [here](https://cran.r-project.org/bin/macosx/tools/). It cannot be [homebrew](https://brew.sh/)'s version of [gfortran](https://formulae.brew.sh/formula/gcc), otherwise, you'll run into [this error](https://stackoverflow.com/questions/77836548/library-gfortran-not-found-when-installing-r-packages), for which I spent far too much time trying to figure out [how to fix](https://blog.cynkra.com/posts/2021-03-16-gfortran-macos/), which ultimately didn't end up working.
+
+On a Windows, in order for libraries to be compiled successfully, you must install [Rtools43](https://cran.r-project.org/bin/windows/Rtools/), from [here](https://cran.r-project.org/bin/windows/Rtools/rtools43/rtools.html). On my machine, it just worked properly after installation, so that was nice.
 
 
 ## Controlling Where Packages are Installed
@@ -133,7 +137,7 @@ However, since this requires hardcoding paths and you have to remember doing thi
 A better, more reliable way to change the order is to set the `.Renviron` file, a plaintext file that goes in your home directory. (On Windows, this file goes into Documents.) In this file, you can specify two environmental variables: `R_LIBS` specifies your System Library, and `R_LIBS_USER` specifies your User Libraries. 
 
 
-## Controlling How Packages are Imported on Mac
+## Controlling How Packages are Imported
 
 Here are the various ways to achieve the different orderings:
 
@@ -191,7 +195,7 @@ On Windows, the `~` character, which usually is a shortcut for `$HOME`, points t
 R_USER="C:/Users/harrison/"
 ```
 
-On Windows, the ordering is easy, because it's controlled entirely by the `R_LIBS_USER` environmental variable, and `R_LIBS` is useless. Here are the various ways to achieve the different orderings:
+Like mac, the ordering is controlld by the `R_LIBS` and `R_LIBS_USER` environmental variables. Here are the various ways to achieve the different orderings:
 
 1. By default, if you do not set anything, by default, R imports from your default User Library first, followed by the default System Library.
 	
